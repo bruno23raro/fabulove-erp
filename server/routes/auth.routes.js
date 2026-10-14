@@ -15,6 +15,8 @@ import {
   refreshToken,
   logout,
   me,
+  forgotPassword,
+  resetPassword,
 } from '../controllers/auth.controller.js';
 import { authenticateToken } from '../utils/jwt.js';
 
@@ -34,5 +36,9 @@ router.post('/logout', authenticateToken, logout);
 
 // Perfil — protegido
 router.get('/me', authenticateToken, me);
+
+// Recuperação de senha (sem auth — usuário não está logado)
+router.post('/forgot-password', forgotPassword);
+router.post('/reset-password', resetPassword);
 
 export default router;

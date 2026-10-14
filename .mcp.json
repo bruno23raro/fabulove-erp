@@ -1,0 +1,25 @@
+{
+  "mcpServers": {
+    "playwright": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@playwright/mcp@latest",
+        "--user-data-dir",
+        "C:\\Users\\brunow\\fabulove-erp\\.playwright-profile"
+      ],
+      "env": {}
+    },
+    "filesystem": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "C:\\Users\\brunow\\fabulove-erp"
+      ],
+      "env": {}
+    }
+  }
+}

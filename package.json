@@ -36,10 +36,12 @@
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
+    "nodemailer": "^6.9.11",
     "pg": "^8.11.3",
     "winston": "^3.19.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.64.1",
     "@vitejs/plugin-vue": "^4.5.2",
     "@vitest/coverage-v8": "^1.6.0",
     "axios": "^1.6.2",

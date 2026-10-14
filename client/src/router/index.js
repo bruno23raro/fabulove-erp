@@ -9,6 +9,12 @@ const routes = [
     meta: { public: true },
   },
   {
+    path: '/reset-password',
+    name: 'ResetPassword',
+    component: () => import('@/views/ResetPasswordView.vue'),
+    meta: { public: true },
+  },
+  {
     path: '/',
     component: () => import('@/views/layouts/AppLayout.vue'),
     meta: { requiresAuth: true },

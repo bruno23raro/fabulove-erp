@@ -11,3 +11,4 @@ Thumbs.db
 scripts/
 server/scripts/migrate.js.backup
 server/scripts/seed.js.backup
+.playwright-profile/

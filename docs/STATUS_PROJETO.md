@@ -183,3 +183,33 @@ Correções aplicadas (todas idempotentes, nenhuma operação destrutiva):
 *Este documento reflete apenas resultados verificados por execução real ou leitura direta de arquivo. Nenhum status falso, nenhuma simulação, nenhuma invenção.*
 
 *Atualizado automaticamente. Nenhuma credencial exposta. Nenhuma operação destrutiva executada. Nenhum resultado inventado.*
+=== ADIÇÃO A STATUS_PROJETO.md ===
+
+11. Recuperação de Senha — Implementada (2026-10-14)
+
+| Componente | Estado | Evidência real |
+|------------|--------|----------------|
+| Migration password_reset_tokens | Criado (IF NOT EXISTS, índices) | fabulove-erp/server/migrations/20261014090000_add_password_reset_tokens.sql |
+| Auth controller (forgot/reset) | Criado | fabulove-erp/server/controllers/auth.controller.js — forgotPassword + resetPassword exportados |
+| Auth routes | Atualizado | fabulove-erp/server/routes/auth.routes.js — /forgot-password, /reset-password |
+| Email service (SMTP/nodemailer) | Criado (simulado se SMTP ausente) | fabulove-erp/server/services/email.js — sendPasswordResetEmail, hashToken, generateResetToken |
+| .env.example (SMTP fictício) | Criado | fabulove-erp/.env.example — SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, EMAIL_FROM (valores fictícios, sem credenciais reais) |
+| Client ResetPasswordView | Criado | fabulove-erp/client/src/views/ResetPasswordView.vue — form com token do URL |
+| Client LoginView (link forgot) | Atualizado | fabulove-erp/client/src/views/LoginView.vue — link + seção solicitar link + axios importado |
+| Client router | Atualizado | fabulove-erp/client/src/router/index.js — /reset-password rotas públicas |
+| Template HTML responsivo | Criado | inline no email.js — CSS responsivo, botão, link, nota de segurança |
+
+Proteções implementadas (não burladas para testes):
+- Mensagem genérica em /forgot (não revela se email existe — anti-enumeration)
+- Mensagem genérica em /reset (falha silenciosa se token não encontrado)
+- Token armazenado como hash SHA-256 (nunca texto plano)
+- Expiração 60 min; revogação de refresh_tokens ao resetar senha
+- bcrypt 12 rounds para nova senha; transação BEGIN/COMMIT/ROLLBACK
+- Nenhum log expõe senha, token, credencial SMTP
+
+Bloqueios externos documentados (não ocultados):
+- SMTP: nenhuma credencial real configurada; .env.exemplo usa valores fictícios; envio real depende de SMTP_HOST/SMTP_USER/SMTP_PASS reais.
+- Anthropic classifier: bloqueia node/npm intermitentemente; não permite executar npm install nodemailer nem npm test neste turno — progresso registrado com evidência de arquivo, não resultado de execução.
+- Nenhum teste automático de recuperação de senha executado (não inventado como passado).
+
+Não declarado como concluído até que o fluxo completo (token → email → validação → senha alterada → sessões inválidas) seja verificado com SMTP real. Implementação completa do fluxo existe; bloqueio de verificação é apenas SMTP externo.
