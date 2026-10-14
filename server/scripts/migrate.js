@@ -61,7 +61,14 @@ async function runMigration(client, filePath, filename) {
     logger.info(`✅ Migration aplicada: ${filename}`);
   } catch (error) {
     await client.query('ROLLBACK');
-    throw new Error(`Erro na migration ${filename}: ${error.message}`);
+    const pgCode  = error.code || 'N/A';
+    const pgDetail = error.detail || '';
+    const pgHint   = error.hint || '';
+    const pgPos    = error.position !== undefined ? error.position : '';
+    const safeMsg = error.message || 'unknown';
+    // Nenhuma credencial (password, token, secret) é logada — apenas códigos SQL e metadados do erro
+    logger.error(`❌ Migration ${filename} falhou: ${safeMsg} [PG code=${pgCode}] ${pgDetail ? 'detail='+pgDetail+' ' : ''}${pgHint ? 'hint='+pgHint+' ' : ''}${pgPos !== '' ? 'position='+pgPos : ''}`);
+    throw new Error(`Erro na migration ${filename}: ${safeMsg} [PG ${pgCode}]`);
   }
 }
 

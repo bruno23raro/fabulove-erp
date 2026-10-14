@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS categories (
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE INDEX idx_categories_name ON categories(name);
+CREATE INDEX IF NOT EXISTS idx_categories_name ON categories(name);
 
 -- Tabela de Produtos
 CREATE TABLE IF NOT EXISTS products (
@@ -34,10 +34,10 @@ CREATE TABLE IF NOT EXISTS products (
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE INDEX idx_products_name ON products(name);
-CREATE INDEX idx_products_sku ON products(sku);
-CREATE INDEX idx_products_category ON products(category_id);
-CREATE INDEX idx_products_active ON products(is_active);
+CREATE INDEX IF NOT EXISTS idx_products_name ON products(name);
+CREATE INDEX IF NOT EXISTS idx_products_sku ON products(sku);
+CREATE INDEX IF NOT EXISTS idx_products_category ON products(category_id);
+CREATE INDEX IF NOT EXISTS idx_products_active ON products(is_active);
 
 -- Tabela de Clientes
 CREATE TABLE IF NOT EXISTS customers (
@@ -51,9 +51,9 @@ CREATE TABLE IF NOT EXISTS customers (
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE INDEX idx_customers_name ON customers(name);
-CREATE INDEX idx_customers_email ON customers(email);
-CREATE INDEX idx_customers_document ON customers(document);
+CREATE INDEX IF NOT EXISTS idx_customers_name ON customers(name);
+CREATE INDEX IF NOT EXISTS idx_customers_email ON customers(email);
+CREATE INDEX IF NOT EXISTS idx_customers_document ON customers(document);
 
 -- Tabela de Pedidos
 CREATE TABLE IF NOT EXISTS orders (
@@ -69,10 +69,10 @@ CREATE TABLE IF NOT EXISTS orders (
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE INDEX idx_orders_number ON orders(order_number);
-CREATE INDEX idx_orders_customer ON orders(customer_id);
-CREATE INDEX idx_orders_status ON orders(status);
-CREATE INDEX idx_orders_created ON orders(created_at);
+CREATE INDEX IF NOT EXISTS idx_orders_number ON orders(order_number);
+CREATE INDEX IF NOT EXISTS idx_orders_customer ON orders(customer_id);
+CREATE INDEX IF NOT EXISTS idx_orders_status ON orders(status);
+CREATE INDEX IF NOT EXISTS idx_orders_created ON orders(created_at);
 
 -- Tabela de Itens do Pedido
 CREATE TABLE IF NOT EXISTS order_items (
@@ -85,8 +85,8 @@ CREATE TABLE IF NOT EXISTS order_items (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE INDEX idx_order_items_order ON order_items(order_id);
-CREATE INDEX idx_order_items_product ON order_items(product_id);
+CREATE INDEX IF NOT EXISTS idx_order_items_order ON order_items(order_id);
+CREATE INDEX IF NOT EXISTS idx_order_items_product ON order_items(product_id);
 
 -- Tabela de Configurações
 CREATE TABLE IF NOT EXISTS config (
@@ -99,7 +99,7 @@ CREATE TABLE IF NOT EXISTS config (
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE INDEX idx_config_key ON config(key);
+CREATE INDEX IF NOT EXISTS idx_config_key ON config(key);
 
 -- ========== DOWN ==========
 DROP TABLE IF EXISTS order_items;

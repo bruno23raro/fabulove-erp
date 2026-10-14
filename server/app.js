@@ -78,8 +78,9 @@ if (fs.existsSync(clientDist)) {
 app.get('/api/health',  (req, res) => res.json({ status: 'ok', timestamp: new Date().toISOString() }));
 app.get('/api/version', (req, res) => res.json({ version: '1.0.0', name: 'Fabulove AI Seller Agent ERP' }));
 
-// ── Rate limiting em auth ─────────────────────────────────────────────────────
-app.use('/api/auth', authRateLimit);
+// ── Rate limiting ─────────────────────────────────────────────────────────────
+app.use('/api/auth', authRateLimit);   // mais restritivo — 20 req/15min
+app.use('/api',      apiRateLimit);    // geral — 300 req/15min
 
 // ── Rotas da API ──────────────────────────────────────────────────────────────
 app.use('/api/auth',         authRoutes);

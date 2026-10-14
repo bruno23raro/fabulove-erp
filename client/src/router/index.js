@@ -61,8 +61,17 @@ const router = createRouter({
   routes,
 })
 
-router.beforeEach((to, _from, next) => {
+// Flag para garantir que restoreSession rode apenas uma vez
+let sessionRestored = false
+
+router.beforeEach(async (to, _from, next) => {
   const auth = useAuthStore()
+
+  // Restaura sessão na primeira navegação (token no localStorage → user preenchido)
+  if (!sessionRestored) {
+    sessionRestored = true
+    await auth.restoreSession()
+  }
 
   if (to.meta.public) {
     // Já logado? Redireciona para o dashboard

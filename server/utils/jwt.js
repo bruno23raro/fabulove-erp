@@ -4,8 +4,9 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const JWT_SECRET = process.env.JWT_SECRET || 'default-secret-change-in-production';
-const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '7d';
+const JWT_SECRET           = process.env.JWT_SECRET           || 'default-secret-change-in-production';
+const JWT_EXPIRES_IN       = process.env.JWT_EXPIRES_IN       || '15m';   // access token padrão
+const REFRESH_EXPIRES_IN   = process.env.REFRESH_EXPIRES_IN  || '7d';    // refresh token padrão
 
 export const generateToken = (payload, expiresIn = JWT_EXPIRES_IN) => {
   return jwt.sign(payload, JWT_SECRET, { expiresIn });
@@ -20,8 +21,8 @@ export const verifyToken = (token) => {
   }
 };
 
-export const signRefreshToken = (payload) => {
-  return jwt.sign(payload, JWT_SECRET, { expiresIn: '30d' });
+export const signRefreshToken = (payload, expiresIn = REFRESH_EXPIRES_IN) => {
+  return jwt.sign(payload, JWT_SECRET, { expiresIn });
 };
 
 export const verifyRefreshToken = (token) => {
