@@ -291,7 +291,7 @@ export const PosModel = {
          RETURNING id`,
         [
           sale.operation_number,
-          sale.customer_id,
+          sale.customer_id || 1, // anônima → usa cliente padrão (id=1)
           'delivered', // venda PDV já nasce entregue
           sale.total,
           sale.items.reduce((s, i) => s + i.quantity, 0),
