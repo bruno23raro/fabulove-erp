@@ -322,6 +322,19 @@ export const PosModel = {
         );
       }
 
+      // Cria conta a receber para pagamentos a prazo (credit_card, pix, boleto)
+      const CREDIT_METHODS = ['credit_card', 'pix', 'boleto'];
+      if (CREDIT_METHODS.includes(paymentMethod)) {
+        const dueDate = new Date();
+        dueDate.setDate(dueDate.getDate() + 30);
+        await client.query(
+          `INSERT INTO accounts_receivable (order_id, description, amount, due_date, payment_method, status, notes, created_at)
+           VALUES ($1, $2, $3, $4, $5, $6, $7, CURRENT_TIMESTAMP)
+           RETURNING id`,
+          [orderId || null, `Venda PDV ${sale.operation_number}`, sale.total, dueDate.toISOString().slice(0, 10), paymentMethod, 'pending', `PDV ${sale.operation_number}`]
+        );
+      }
+
       await client.query('COMMIT');
       return this.findById(saleId);
     } catch (err) {

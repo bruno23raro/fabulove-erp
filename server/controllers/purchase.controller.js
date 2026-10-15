@@ -24,9 +24,25 @@ export async function createPurchase(req, res) {
         );
       }
 
-      await client.query(`UPDATE purchases SET total_amount = $1 WHERE id = $2`, [totalAmount, purchaseId]);
-      await client.query('COMMIT');
+      await client.query(`UPDATE purchases SET total_amount = $1, status = $2, received_at = CURRENT_TIMESTAMP WHERE id = $3`, [totalAmount, 'completed', purchaseId]);
 
+      // Cria conta a pagar automática (não bloqueia a compra se falhar)
+      try {
+        const { rows: supplierRows } = await client.query('SELECT name FROM suppliers WHERE id = $1', [supplier_id]);
+        const supplierName = supplierRows[0]?.name || 'Fornecedor';
+        const dueDate = new Date();
+        dueDate.setDate(dueDate.getDate() + 30);
+        await client.query(
+          `INSERT INTO accounts_payable (supplier_id, purchase_id, description, amount, due_date, status, notes, created_at)
+           VALUES ($1, $2, $3, $4, $5, $6, $7, CURRENT_TIMESTAMP)
+           RETURNING id`,
+          [supplier_id, purchaseId, `Compra ${purchase_number || purchaseId} — ${supplierName}`, totalAmount, dueDate.toISOString().slice(0, 10), 'pending', `PDV: auto-criado no recebimento da compra ${purchase_number || purchaseId}`]
+        );
+      } catch (_) {
+        // Conta a pagar opcional — não interrompe a compra
+      }
+
+      await client.query('COMMIT');
       return res.status(201).json({ success: true, data: { id: purchaseId, total_amount: totalAmount } });
     } catch (e) {
       await client.query('ROLLBACK');

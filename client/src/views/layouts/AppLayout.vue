@@ -73,6 +73,7 @@ const navItems = [
   { to: '/purchases',  icon: '📋', label: 'Compras' },
   { to: '/stock',      icon: '📦', label: 'Estoque' },
   { to: '/reports',    icon: '📈', label: 'Relatórios' },
+  { to: '/financial',  icon: '💰', label: 'Financeiro' },
   { to: '/config',     icon: '⚙️', label: 'Configurações' },
 ]
 
@@ -87,6 +88,7 @@ const titles = {
   '/purchases':  'Compras',
   '/stock':      'Estoque',
   '/reports':    'Relatórios',
+  '/financial':  'Financeiro',
   '/config':     'Configurações',
 }
 

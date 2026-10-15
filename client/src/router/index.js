@@ -79,6 +79,18 @@ const routes = [
         name: 'PDV',
         component: () => import('@/views/PosView.vue'),
       },
+      {
+        path: 'financial',
+        name: 'Financeiro',
+        redirect: '/financial',
+        component: () => import('@/views/layouts/FinancialLayout.vue'),
+        children: [
+          { path: '', name: 'FinanceiroDash', component: () => import('@/views/FinancialDashboardView.vue') },
+          { path: 'receivables', name: 'ContasReceber', component: () => import('@/views/AccountsReceivableView.vue') },
+          { path: 'payable', name: 'ContasAPagar', component: () => import('@/views/AccountsPayableView.vue') },
+          { path: 'cash', name: 'Caixa', component: () => import('@/views/CashView.vue') },
+        ],
+      },
     ],
   },
   {
