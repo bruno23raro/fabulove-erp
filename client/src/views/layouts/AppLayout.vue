@@ -68,6 +68,10 @@ const navItems = [
   { to: '/categories', icon: '🏷️', label: 'Categorias' },
   { to: '/customers',  icon: '👥', label: 'Clientes' },
   { to: '/orders',     icon: '🛒', label: 'Pedidos' },
+  { to: '/suppliers',  icon: '🚚', label: 'Fornecedores' },
+  { to: '/purchases',  icon: '📋', label: 'Compras' },
+  { to: '/stock',      icon: '📦', label: 'Estoque' },
+  { to: '/reports',    icon: '📈', label: 'Relatórios' },
   { to: '/config',     icon: '⚙️', label: 'Configurações' },
 ]
 
@@ -77,6 +81,10 @@ const titles = {
   '/categories': 'Categorias',
   '/customers':  'Clientes',
   '/orders':     'Pedidos',
+  '/suppliers':  'Fornecedores',
+  '/purchases':  'Compras',
+  '/stock':      'Estoque',
+  '/reports':    'Relatórios',
   '/config':     'Configurações',
 }
 

@@ -17,7 +17,7 @@
  */
 import crypto from 'crypto';
 import pool from '../config/database.js';
-import { signAccessToken, signRefreshToken } from '../utils/jwt.js';
+import { generateToken, signRefreshToken } from '../utils/jwt.js';
 import bcrypt from 'bcryptjs';
 import { sendPasswordResetEmail, generateResetToken, hashToken } from '../services/email.js';
 
@@ -132,8 +132,9 @@ export async function resetPassword(req, res) {
   }
 
   // Gera novos tokens de sessão (rotação)
-  const newRefreshToken = signRefreshToken(userId);
-  const newAccessToken = signAccessToken(userId);
+  const newRefreshToken = signRefreshToken({ id: userId });
+  const { rows } = await pool.query('SELECT role FROM users WHERE id = $1', [userId]);
+  const newAccessToken = generateToken({ id: userId, role: rows[0]?.role || 'admin' });
 
   try {
     await pool.query(
@@ -144,8 +145,8 @@ export async function resetPassword(req, res) {
 
   return res.json({
     message: 'Senha atualizada com sucesso. Faça login novamente.',
-    access_token: newAccessToken,
-    refresh_token: newRefreshToken,
+    accessToken: newAccessToken,
+    refreshToken: newRefreshToken,
   });
 }
 
@@ -194,8 +195,8 @@ export async function login(req, res) {
       [req.ip, user.id]
     );
 
-    const accessToken = signAccessToken(user.id);
-    const refreshToken = signRefreshToken(user.id);
+    const accessToken = generateToken({ id: user.id, role: user.role });
+    const refreshToken = signRefreshToken({ id: user.id });
     const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
 
     await pool.query(
@@ -204,8 +205,8 @@ export async function login(req, res) {
     );
 
     return res.json({
-      access_token: accessToken,
-      refresh_token: refreshToken,
+      accessToken,
+      refreshToken,
       user: {
         id: user.id,
         name: user.name,
@@ -238,8 +239,8 @@ export async function register(req, res) {
     );
     const user = rows[0];
 
-    const accessToken = signAccessToken(user.id);
-    const refreshToken = signRefreshToken(user.id);
+    const accessToken = generateToken({ id: user.id, role: user.role });
+    const refreshToken = signRefreshToken({ id: user.id });
     const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
     await pool.query(
       'INSERT INTO refresh_tokens (user_id, token_hash, expires_at, ip_address, user_agent) VALUES ($1, $2, $3, $4, $5)',
@@ -247,8 +248,8 @@ export async function register(req, res) {
     );
 
     return res.status(201).json({
-      access_token: accessToken,
-      refresh_token: refreshToken,
+      accessToken,
+      refreshToken,
       user: { id: user.id, name: user.name, email: user.email, role: user.role },
     });
   } catch (err) {
@@ -285,7 +286,7 @@ export async function refreshToken(req, res) {
     await pool.query('BEGIN');
     try {
       await pool.query('UPDATE refresh_tokens SET revoked_at = CURRENT_TIMESTAMP WHERE id = $1', [rt.id]);
-      const newRefresh = signRefreshToken(rt.user_id);
+      const newRefresh = signRefreshToken({ id: rt.user_id });
       const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
       await pool.query(
         'INSERT INTO refresh_tokens (user_id, token_hash, expires_at, ip_address, user_agent) VALUES ($1, $2, $3, $4, $5)',
@@ -294,8 +295,8 @@ export async function refreshToken(req, res) {
       await pool.query('COMMIT');
 
       return res.json({
-        access_token: signAccessToken(rt.user_id),
-        refresh_token: newRefresh,
+        accessToken: generateToken({ id: rt.user_id, role: rt.role }),
+        refreshToken: newRefresh,
         user: { id: rt.uid, name: rt.name, email: rt.email, role: rt.role },
       });
     } catch (e) {

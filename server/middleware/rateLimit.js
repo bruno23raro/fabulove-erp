@@ -7,6 +7,9 @@
  * Limites padrão:
  * - Auth (login/register): 20 requests por 15 min por IP
  * - API geral: 300 requests por 15 min por IP
+ *
+ * Em desenvolvimento (NODE_ENV !== 'production'), rate limiting é desativado
+ * para evitar falsos positivos durante testes E2E.
  */
 
 const windows = new Map(); // ip:route -> { count, resetAt }
@@ -37,16 +40,18 @@ function createLimiter({ max, windowMs }) {
   };
 }
 
-// 20 tentativas por 15 minutos — para login/register
-export const authRateLimit = createLimiter({ max: 20, windowMs: 15 * 60 * 1000 });
+const devPassthrough = (_req, _res, next) => next();
+const isDev = process.env.NODE_ENV !== 'production';
 
-// 300 requests por 15 minutos — para API geral
-export const apiRateLimit = createLimiter({ max: 300, windowMs: 15 * 60 * 1000 });
+export const authRateLimit = isDev ? devPassthrough : createLimiter({ max: 20, windowMs: 15 * 60 * 1000 });
+export const apiRateLimit  = isDev ? devPassthrough : createLimiter({ max: 300, windowMs: 15 * 60 * 1000 });
 
-// Limpa entradas antigas periodicamente (evita vazamento de memória)
-setInterval(() => {
-  const now = Date.now();
-  for (const [key, entry] of windows.entries()) {
-    if (now > entry.resetAt) windows.delete(key);
-  }
-}, 5 * 60 * 1000);
+// Cleanup old entries every 5 minutes (only needed in production)
+if (!isDev) {
+  setInterval(() => {
+    const now = Date.now();
+    for (const [key, entry] of windows.entries()) {
+      if (now > entry.resetAt) windows.delete(key);
+    }
+  }, 5 * 60 * 1000);
+}

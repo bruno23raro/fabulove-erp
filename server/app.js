@@ -32,6 +32,9 @@ import automationRoutes from './routes/automation.routes.js';
 import marketplaceRoutes from './routes/marketplace.routes.js';
 import reportRoutes     from './routes/report.routes.js';
 import configRoutes     from './routes/config.routes.js';
+import supplierRoutes   from './routes/supplier.routes.js';
+import purchaseRoutes   from './routes/purchase.routes.js';
+import stockRoutes      from './routes/stock.routes.js';
 
 import errorHandler from './middleware/errorHandler.js';
 import { authRateLimit, apiRateLimit } from './middleware/rateLimit.js';
@@ -93,6 +96,9 @@ app.use('/api/automation',   automationRoutes);
 app.use('/api/marketplaces', marketplaceRoutes);
 app.use('/api/reports',      reportRoutes);
 app.use('/api/config',       configRoutes);
+app.use('/api/suppliers',    supplierRoutes);
+app.use('/api/purchases',    purchaseRoutes);
+app.use('/api/stock',        stockRoutes);
 
 // ── SPA fallback (só se o build existir) ─────────────────────────────────────
 if (fs.existsSync(clientDist)) {

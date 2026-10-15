@@ -8,8 +8,9 @@ const JWT_SECRET           = process.env.JWT_SECRET           || 'default-secret
 const JWT_EXPIRES_IN       = process.env.JWT_EXPIRES_IN       || '15m';   // access token padrão
 const REFRESH_EXPIRES_IN   = process.env.REFRESH_EXPIRES_IN  || '7d';    // refresh token padrão
 
-export const generateToken = (payload, expiresIn = JWT_EXPIRES_IN) => {
-  return jwt.sign(payload, JWT_SECRET, { expiresIn });
+export const generateToken = (payloadOrId, expiresIn = JWT_EXPIRES_IN) => {
+  const payload = typeof payloadOrId === 'number' ? { id: payloadOrId } : payloadOrId;
+  return jwt.sign(payload, JWT_SECRET, expiresIn ? { expiresIn } : undefined);
 };
 
 export const verifyToken = (token) => {
@@ -21,8 +22,9 @@ export const verifyToken = (token) => {
   }
 };
 
-export const signRefreshToken = (payload, expiresIn = REFRESH_EXPIRES_IN) => {
-  return jwt.sign(payload, JWT_SECRET, { expiresIn });
+export const signRefreshToken = (payloadOrId, expiresIn = REFRESH_EXPIRES_IN) => {
+  const payload = typeof payloadOrId === 'number' ? { id: payloadOrId } : payloadOrId;
+  return jwt.sign(payload, JWT_SECRET, expiresIn ? { expiresIn } : undefined);
 };
 
 export const verifyRefreshToken = (token) => {

@@ -10,12 +10,11 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function login(email, password) {
     const { data } = await api.post('/auth/login', { email, password })
-    const d = data.data
-    accessToken.value = d.accessToken
-    user.value = d.user
-    localStorage.setItem('accessToken', d.accessToken)
-    localStorage.setItem('refreshToken', d.refreshToken)
-    return d.user
+    accessToken.value = data.accessToken
+    user.value = data.user
+    localStorage.setItem('accessToken', data.accessToken)
+    localStorage.setItem('refreshToken', data.refreshToken)
+    return data.user
   }
 
   async function logout() {
@@ -36,7 +35,7 @@ export const useAuthStore = defineStore('auth', () => {
     if (!accessToken.value) return
     try {
       const { data } = await api.get('/auth/me')
-      user.value = data.data.user
+      user.value = data.user
     } catch (_) {
       accessToken.value = null
       localStorage.removeItem('accessToken')

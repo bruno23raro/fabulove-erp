@@ -12,3 +12,6 @@ scripts/
 server/scripts/migrate.js.backup
 server/scripts/seed.js.backup
 .playwright-profile/
+
+test-results/
+.env
