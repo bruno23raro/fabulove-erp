@@ -846,3 +846,26 @@ Todas as três rotas agora exigem JWT. Antes do fix, retornavam 200 sem autentic
 - **Admin**: admin@fabulove.com (senha não exposta)
 
 *Nenhuma operação destrutiva. Nenhuma credencial exposta. Rate limiter seguro para produção (reativa com NODE_ENV=production).*
+
+---
+
+## Atualização 2026-10-15 — PDV (Priority 1) — RESOLVIDO
+
+**Problema bloqueante:** Erro PostgreSQL `tipos inconsistentes deduzidos do parâmetro $1` em `server/models/pos.model.js` (updateItemQuantity), persistente apesar de fix aplicado ao arquivo.
+
+**Causa raiz:** Server (PID 1359/1447) estava rodando código antigo (não havia sido reiniciado após fix). O SQL isoladamente funcionava perfeitamente — `UPDATE ... SET quantity = $1 WHERE id = $2` + subquery correlacionada para subtotal.
+
+**Correções aplicadas:**
+- 1. `updateItemQuantity` — split de query (`quantity` separada de `subtotal`) confirmado; server reiniciado.
+- 2. `closeCashRegister` — removido `updated_at = CURRENT_TIMESTAMP` que não existe em `cash_registers`.
+
+**Validação final:**
+- `npm test` → 16/16 passou (regressão + integração)
+- `npm run db:migrate` → 13/13 já aplicadas
+- `node scripts/test-pdv.mjs` → ✅ `Qty updated: item qty=3`; `Register closed: expected=100.00 diff=5.00`; `Sales history: 5 records`
+- `npm run build` → `dist/` gerado (Vue 3 + Vite)
+- E2E (`scripts/e2e_flow.mjs`) — bloqueado pela porta 5173 ocupada pelo Bolt (StackBlitz), não pelo ERP. Requer ambiente limpo (`vite client --config client/vite.config.js` em porta 5173 livre).
+
+**Estado PDV:** `searchProducts`, `createCart`, `addItem`, `updateItemQuantity`, `setDiscount`, `completeSale`, `cancelSale`, `refundSale`, `openCashRegister`, `closeCashRegister`, `getActiveCashRegister` — todos respondendo 200.
+
+Co-Authored-By: Claude Code <noreply@anthropic.com>

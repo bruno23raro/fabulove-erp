@@ -64,6 +64,7 @@ const sidebarOpen = ref(false)
 
 const navItems = [
   { to: '/dashboard',  icon: '📊', label: 'Dashboard' },
+  { to: '/pos',        icon: '🖥️', label: 'PDV' },
   { to: '/products',   icon: '📦', label: 'Produtos' },
   { to: '/categories', icon: '🏷️', label: 'Categorias' },
   { to: '/customers',  icon: '👥', label: 'Clientes' },
@@ -77,6 +78,7 @@ const navItems = [
 
 const titles = {
   '/dashboard':  'Dashboard',
+  '/pos':        'PDV',
   '/products':   'Produtos',
   '/categories': 'Categorias',
   '/customers':  'Clientes',

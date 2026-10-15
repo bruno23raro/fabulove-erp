@@ -74,6 +74,11 @@ const routes = [
         component: () => import('@/views/ConfigView.vue'),
         meta: { role: 'admin' },
       },
+      {
+        path: 'pos',
+        name: 'PDV',
+        component: () => import('@/views/PosView.vue'),
+      },
     ],
   },
   {
