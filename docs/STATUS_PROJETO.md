@@ -869,3 +869,39 @@ Todas as três rotas agora exigem JWT. Antes do fix, retornavam 200 sem autentic
 **Estado PDV:** `searchProducts`, `createCart`, `addItem`, `updateItemQuantity`, `setDiscount`, `completeSale`, `cancelSale`, `refundSale`, `openCashRegister`, `closeCashRegister`, `getActiveCashRegister` — todos respondendo 200.
 
 Co-Authored-By: Claude Code <noreply@anthropic.com>
+
+---
+
+## Atualização 2026-10-15 — PDV Bug Fix: Anonymous Sale (completeSale)
+
+**Bug encontrado durante validação do fluxo completo de venda:**
+`completeSale` falhava com `NOT NULL constraint violation` em `orders.customer_id` quando o carrinho era criado sem `customer_id` (venda anônima).
+
+**Causa raiz:** `pos_sales.customer_id` permite NULL, mas `orders.customer_id` é `BIGINT NOT NULL REFERENCES customers(id)`. O INSERT na tabela `orders` passava `sale.customer_id` diretamente.
+
+**Correção aplicada:**
+- `server/models/pos.model.js` linha 294: `sale.customer_id` → `sale.customer_id || 1` (fallback para cliente id=1 existente no seed)
+
+**Teste de validação executado:**
+```
+✅ Login OK
+✅ Register opened: id=16
+✅ Cart created: id=22 customer_id=null
+✅ Item 1 added, Item 2 added
+✅ Cart total=249.70 items=2
+✅ Sale completed successfully!
+✅ Order created in orders table: 1 record(s)
+✅ Product stock decremented: 20 → 18
+✅ Register closed
+```
+
+**Status pós-fix:**
+| Teste | Resultado |
+|-------|-----------|
+| `npm test` (unit + integration) | **16/16 passing** |
+| Fluxo completo PDV (anônimo + estoque + order) | **✅ Passing** |
+| `npm run build` | **✓ built in 2.06s** |
+
+**Commit:** `b9b9b8c` — fix(pos): fallback customer_id=1 for anonymous PDV sales
+
+Co-Authored-By: Claude Code <noreply@anthropic.com>
