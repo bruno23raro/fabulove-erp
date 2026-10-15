@@ -937,18 +937,28 @@ Co-Authored-By: Claude Code <noreply@anthropic.com>
 - Protegidas por `authenticateToken` + `authorizeRole('admin', 'manager', 'operator')`
 - Registradas em `server/app.js`
 
-#### 5. Relatório de vendas unificado
-- `server/routes/report.routes.js` — endpoint `GET /api/reports/sales` agora consome tanto `orders` (status delivered/shipped) quanto `pos_sales` (status completed), merge por data, retorna `grand_total_revenue` no meta.
+#### 5. Frontend financeiro completo (4 views + layout)
+
+- `client/src/views/layouts/FinancialLayout.vue` — wrapper com abas: Resumo / Contas a Receber / Contas a Pagar / Caixa
+- `client/src/views/FinancialDashboardView.vue` — 5 KPIs (recebíveis pendentes, pagáveis pendentes, posição líquida colorida, inflows 30d, outflows 30d) + tabelas recentes
+- `client/src/views/AccountsReceivableView.vue` — tabela filtrável por status, botões de pagar e dar baixa, modal de pagamento, detecção de vencimento atrasado
+- `client/src/views/AccountsPayableView.vue` — tabela filtrável por status, botão de pagar, modal de pagamento, detecção de vencimento atrasado
+- `client/src/views/CashView.vue` — tabela de movimentações de caixa com filtro por tipo, valores coloridos (verde=entrada, vermelho=saída)
+- `client/src/views/layouts/AppLayout.vue` — item de navegação "Financeiro" adicionado ao sidebar
+- `client/src/router/index.js` — rotas `/financial/*` mapeadas para as 4 views acima
 
 ### Verificações executadas
 
 | Teste | Resultado |
 |-------|-----------|
 | `npm test` (unit + integration) | **16/16 passing** |
-| `npm run build` | **✓ built in 2.25s** |
+| `npm run build` | **✓ built — assets: FinancialLayout, FinancialDashboardView, AccountsReceivableView, AccountsPayableView, CashView** |
 | `npm run db:migrate` | **14 migrations já aplicadas, nada a fazer** |
+| `GET /api/financial/summary` (com auth) | **✅ 200 JSON** |
+| `GET /api/financial/receivable` (com auth) | **✅ 200 JSON** |
+| `GET /api/financial/payable` (com auth) | **✅ 200 JSON** |
+| `GET /api/financial/cash` (com auth) | **✅ 200 JSON** |
 | `scripts/test-pdv.mjs` (fluxo completo PDV) | **✅ All PDV API tests passed** |
-| Falha anterior no teste de purchase (mock incompleto) | **✅ Resolvida — try/catch na inserção de accounts_payable** |
 
 ### Bugs corrigidos nesta sessão
 
@@ -965,9 +975,18 @@ Co-Authored-By: Claude Code <noreply@anthropic.com>
 | `server/controllers/purchase.controller.js` | Modificado — auto-create accounts_payable com try/catch |
 | `server/routes/report.routes.js` | Modificado — merged orders + pos_sales |
 | `server/app.js` | Modificado — register financialRoutes |
+| `client/src/views/layouts/FinancialLayout.vue` | **Novo** — abas de navegação financeira |
+| `client/src/views/FinancialDashboardView.vue` | **Novo** — dashboard com 5 KPIs |
+| `client/src/views/AccountsReceivableView.vue` | **Novo** — lista + pagar + dar baixa |
+| `client/src/views/AccountsPayableView.vue` | **Novo** — lista + pagar |
+| `client/src/views/CashView.vue` | **Novo** — movimentações de caixa |
+| `client/src/views/layouts/AppLayout.vue` | Modificado — nav item Financeiro |
+| `client/src/router/index.js` | Modificado — rotas /financial/* |
 
 ### Próximos passos recomendados
 
-- Frontend: views de Contas a Receber, Contas a Pagar, Caixa e Resumo Financeiro (deferido até autorização do usuário).
-- Push para origin/master — requer autorização explícita do usuário.
+- ~~Frontend financeiro~~ ✅ **Concluído** — 4 views + layout + sidebar + rotas
+- ~~Push para origin/master~~ — pendente; sem remote git configurado localmente
+- npm audit: 11 vulnerabilities (tinypool RCE ×2 critical, nodemailer ×8 high/moderate). Requer upgrades breaking — não aplicado.
+- Deploy produção: configurar JWT_SECRET, credenciais DB, e serviço de hospedagem.
 
