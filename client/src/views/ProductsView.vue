@@ -29,7 +29,8 @@
               <th>SKU</th>
               <th>Código de Barras</th>
               <th>Categoria</th>
-              <th class="text-right">Preço</th>
+              <th class="text-right">Preço PDV</th>
+              <th class="text-right">Preço Shopee</th>
               <th class="text-right">Estoque</th>
               <th>Status</th>
               <th></th>
@@ -37,7 +38,7 @@
           </thead>
           <tbody>
             <tr v-if="!products.length">
-              <td colspan="8" style="text-align:center;color:var(--color-text-muted);padding:40px">
+              <td colspan="9" style="text-align:center;color:var(--color-text-muted);padding:40px">
                 Nenhum produto encontrado
               </td>
             </tr>
@@ -47,6 +48,7 @@
               <td class="text-muted text-sm" style="font-family:monospace">{{ p.barcode || '—' }}</td>
               <td>{{ p.category_name || '—' }}</td>
               <td class="text-right">{{ formatCurrency(p.price) }}</td>
+              <td class="text-right" style="color:var(--color-success);font-weight:600">{{ formatCurrency(p.price_shopee) }}</td>
               <td class="text-right" :style="p.stock <= p.stock_min ? 'color:var(--color-danger);font-weight:600' : ''">
                 {{ p.stock }}
               </td>
@@ -100,12 +102,12 @@
             </div>
             <div class="form-row">
               <div class="form-group">
-                <label class="form-label">Preço *</label>
+                <label class="form-label">Preço PDV *</label>
                 <input v-model="form.price" type="number" step="0.01" min="0" class="form-control" required />
               </div>
               <div class="form-group">
-                <label class="form-label">Custo</label>
-                <input v-model="form.cost" type="number" step="0.01" min="0" class="form-control" />
+                <label class="form-label">Preço Shopee (auto)</label>
+                <input :value="shopeePrice" class="form-control" disabled style="background:var(--color-surface-2);color:var(--color-success);font-weight:600" />
               </div>
             </div>
             <div class="form-row">
@@ -234,7 +236,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, computed, onMounted } from 'vue'
 import api from '@/utils/api.js'
 
 const products = ref([])
@@ -261,8 +263,14 @@ const isDragging = ref(false)
 const fileInput = ref(null)
 
 const form = reactive({
-  name: '', sku: '', description: '', price: '', cost: '',
+  name: '', sku: '', barcode: '', description: '', price: '', cost: '',
   stock: 0, stock_min: 5, categoryId: '', isActive: true,
+})
+
+const shopeePrice = computed(() => {
+  const p = parseFloat(form.price)
+  if (isNaN(p) || p <= 0) return 'R$ 0,00'
+  return formatCurrency(Math.round((p * 1.19 + 4.71) * 100) / 100)
 })
 
 let searchTimer = null

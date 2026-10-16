@@ -33,7 +33,7 @@ export const PosModel = {
     if (!trimmed) return [];
 
     const { rows } = await pool.query(
-      `SELECT p.id, p.name, p.sku, p.barcode, p.price, p.stock, p.stock_min,
+      `SELECT p.id, p.name, p.sku, p.barcode, p.price, p.price_shopee, p.stock, p.stock_min,
               p.is_active, c.name as category_name
        FROM products p
        LEFT JOIN categories c ON c.id = p.category_id
@@ -56,7 +56,7 @@ export const PosModel = {
   async findByBarcodeExact(barcode) {
     if (!barcode) return null;
     const { rows } = await pool.query(
-      `SELECT p.id, p.name, p.sku, p.barcode, p.price, p.stock, p.stock_min,
+      `SELECT p.id, p.name, p.sku, p.barcode, p.price, p.price_shopee, p.stock, p.stock_min,
               p.is_active, c.name as category_name
        FROM products p
        LEFT JOIN categories c ON c.id = p.category_id

@@ -15,7 +15,7 @@ export const ProductModel = {
   async findAll({ limit = 50, offset = 0, search = null, categoryId = null } = {}) {
     let query = `
       SELECT p.id, p.name, p.sku, p.barcode, p.description, p.price, p.cost, p.stock, p.stock_min,
-             p.is_active, p.image_url, c.name as category_name, c.id as category_id,
+             p.price_shopee, p.is_active, p.image_url, c.name as category_name, c.id as category_id,
              p.created_at, p.updated_at
       FROM products p
       LEFT JOIN categories c ON c.id = p.category_id
@@ -79,22 +79,25 @@ export const ProductModel = {
 
   // Criar novo produto
   async create({ name, sku, barcode, description, price, cost, stock, stock_min, categoryId, imageUrl, isActive = true }) {
+    const priceNum = parseFloat(price) || 0;
+    const priceShopee = Math.round((priceNum * 1.19 + 4.71) * 100) / 100;
     const { rows } = await pool.query(
-      `INSERT INTO products (name, sku, barcode, description, price, cost, stock, stock_min, category_id, image_url, is_active)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+      `INSERT INTO products (name, sku, barcode, description, price, cost, stock, stock_min, category_id, image_url, is_active, price_shopee)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
        RETURNING *`,
       [
         name.trim(),
         sku ? sku.trim().toUpperCase() : null,
         barcode ? barcode.trim() : null,
         description ? description.trim() : null,
-        parseFloat(price) || 0,
+        priceNum,
         parseFloat(cost) || 0,
         parseInt(stock) || 0,
         parseInt(stock_min) || 0,
         categoryId ? parseInt(categoryId) : null,
         imageUrl || null,
         isActive,
+        priceShopee,
       ]
     );
     return rows[0];
@@ -110,7 +113,11 @@ export const ProductModel = {
     if (data.sku !== undefined) { fields.push(`sku = $${index++}`); params.push(data.sku ? data.sku.trim().toUpperCase() : null); }
     if (data.barcode !== undefined) { fields.push(`barcode = $${index++}`); params.push(data.barcode ? data.barcode.trim() : null); }
     if (data.description !== undefined) { fields.push(`description = $${index++}`); params.push(data.description ? data.description.trim() : null); }
-    if (data.price !== undefined) { fields.push(`price = $${index++}`); params.push(parseFloat(data.price) || 0); }
+    if (data.price !== undefined) {
+      fields.push(`price = $${index++}`); params.push(parseFloat(data.price) || 0);
+      const newPrice = parseFloat(data.price) || 0;
+      fields.push(`price_shopee = $${index++}`); params.push(Math.round((newPrice * 1.19 + 4.71) * 100) / 100);
+    }
     if (data.cost !== undefined) { fields.push(`cost = $${index++}`); params.push(parseFloat(data.cost) || 0); }
     if (data.stock !== undefined) { fields.push(`stock = $${index++}`); params.push(parseInt(data.stock) || 0); }
     if (data.stock_min !== undefined) { fields.push(`stock_min = $${index++}`); params.push(parseInt(data.stock_min) || 0); }

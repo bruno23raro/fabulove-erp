@@ -63,6 +63,7 @@
                 </div>
                 <div class="sr-right">
                   <span class="sr-price">{{ formatCurrency(p.price) }}</span>
+                  <span class="sr-shopee" v-if="p.price_shopee">Shopee: {{ formatCurrency(p.price_shopee) }}</span>
                   <span class="sr-stock" :class="{ 'stock-ok': p.stock > p.stock_min }">
                     Est: {{ p.stock }}
                   </span>
@@ -1090,6 +1091,7 @@ watch(selectedCustomerId, async (newVal) => {
 .sr-sku, .sr-barcode { font-size: 12px; color: var(--color-text-muted); }
 .sr-right { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
 .sr-price { font-weight: 600; font-size: 14px; }
+.sr-shopee { font-size: 11px; color: var(--color-success); }
 .sr-stock { font-size: 12px; }
 .stock-ok { color: var(--color-success); }
 
