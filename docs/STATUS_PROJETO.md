@@ -1,8 +1,8 @@
 # Status do Projeto — Fabulove AI Seller Agent ERP
 
-**Data:** 2026-10-15  
+**Data:** 2026-10-16  
 **Workspace:** C:\Users\brunow\fabulove-erp  
-**Status geral:** MÓDULOS DE NEGÓCIO TOTALMENTE IMPLEMENTADOS; frontend Vue 3 completo e BUILDADO (115 módulos, dist/ gerado); PostgreSQL CONFIRMADO (porta 5432 LISTENING); **14/14 migrations aplicadas e idempotentes**; **16/16 testes passando** (9 regressão + 7 integração); PDV completo com integração financeira (contas a receber/pagar auto-criadas); módulo financeiro backend novo com 11 endpoints; relatório de vendas unificado (orders + pos_sales).
+**Status geral:** MÓDULOS DE NEGÓCIO TOTALMENTE IMPLEMENTADOS; frontend Vue 3 completo e BUILDADO; PostgreSQL CONFIRMADO (porta 5432 LISTENING); **16/16 migrations aplicadas e idempotentes**; **16/16 testes passando** (9 regressão + 7 integração); PDV completo com integração financeira (contas a receber/pagar auto-criadas); módulo financeiro backend novo com 11 endpoints; relatório de vendas unificado (orders + pos_sales); **integração Shopee completa com sync de estoque automático + barcode scanner em ProductsView**.
 
 ---
 

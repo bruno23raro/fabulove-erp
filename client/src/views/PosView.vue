@@ -7,6 +7,9 @@
         🗃 Caixa #{{ activeRegister.id }} — {{ formatCurrency(activeRegister.opening_balance) }}
         <button class="btn btn-ghost btn-sm cash-close-btn" @click="openCloseRegisterModal">Fechar</button>
       </span>
+      <button v-if="!activeRegister" class="btn btn-primary btn-sm" @click="openCloseRegisterModal" style="margin-left:auto">
+        🔓 Abrir Caixa
+      </button>
       <span class="cash-operator">{{ auth.user?.name }}</span>
     </div>
 
