@@ -52,6 +52,21 @@ export const PosModel = {
     return rows;
   },
 
+  // ── Busca exata por barcode (scanner — usa índice) ─────────────────────────
+  async findByBarcodeExact(barcode) {
+    if (!barcode) return null;
+    const { rows } = await pool.query(
+      `SELECT p.id, p.name, p.sku, p.barcode, p.price, p.stock, p.stock_min,
+              p.is_active, c.name as category_name
+       FROM products p
+       LEFT JOIN categories c ON c.id = p.category_id
+       WHERE p.barcode = $1 AND p.is_active = TRUE
+       LIMIT 1`,
+      [barcode.trim()]
+    );
+    return rows[0] || null;
+  },
+
   // ── Carrinho / Pré-venda ──────────────────────────────────────────────────
   async createCart(sellerId, customerId = null, isPreSale = false) {
     const operationNumber = generateOperationNumber();

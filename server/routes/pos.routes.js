@@ -40,6 +40,7 @@ router.use(authenticateToken);
 
 // ── Busca de produtos ────────────────────────────────────────────────────────
 router.get('/products/search', posController.searchProducts);
+router.get('/products/by-barcode/:barcode', posController.findProductByBarcode);
 
 // ── Carrinhos ────────────────────────────────────────────────────────────────
 router.get('/carts', posController.listCarts);

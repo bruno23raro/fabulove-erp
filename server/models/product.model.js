@@ -14,7 +14,7 @@ export const ProductModel = {
   // Listar todos os produtos com categoria
   async findAll({ limit = 50, offset = 0, search = null, categoryId = null } = {}) {
     let query = `
-      SELECT p.id, p.name, p.sku, p.description, p.price, p.cost, p.stock, p.stock_min,
+      SELECT p.id, p.name, p.sku, p.barcode, p.description, p.price, p.cost, p.stock, p.stock_min,
              p.is_active, p.image_url, c.name as category_name, c.id as category_id,
              p.created_at, p.updated_at
       FROM products p
@@ -68,15 +68,25 @@ export const ProductModel = {
     return rows[0] || null;
   },
 
-  // Criar novo produto
-  async create({ name, sku, description, price, cost, stock, stock_min, categoryId, imageUrl, isActive = true }) {
+  // Buscar produto por barcode (match exato)
+  async findByBarcode(barcode) {
     const { rows } = await pool.query(
-      `INSERT INTO products (name, sku, description, price, cost, stock, stock_min, category_id, image_url, is_active)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+      'SELECT * FROM products WHERE barcode = $1 AND is_active = TRUE LIMIT 1',
+      [barcode.trim()]
+    );
+    return rows[0] || null;
+  },
+
+  // Criar novo produto
+  async create({ name, sku, barcode, description, price, cost, stock, stock_min, categoryId, imageUrl, isActive = true }) {
+    const { rows } = await pool.query(
+      `INSERT INTO products (name, sku, barcode, description, price, cost, stock, stock_min, category_id, image_url, is_active)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
        RETURNING *`,
       [
         name.trim(),
         sku ? sku.trim().toUpperCase() : null,
+        barcode ? barcode.trim() : null,
         description ? description.trim() : null,
         parseFloat(price) || 0,
         parseFloat(cost) || 0,
@@ -98,6 +108,7 @@ export const ProductModel = {
 
     if (data.name !== undefined) { fields.push(`name = $${index++}`); params.push(data.name.trim()); }
     if (data.sku !== undefined) { fields.push(`sku = $${index++}`); params.push(data.sku ? data.sku.trim().toUpperCase() : null); }
+    if (data.barcode !== undefined) { fields.push(`barcode = $${index++}`); params.push(data.barcode ? data.barcode.trim() : null); }
     if (data.description !== undefined) { fields.push(`description = $${index++}`); params.push(data.description ? data.description.trim() : null); }
     if (data.price !== undefined) { fields.push(`price = $${index++}`); params.push(parseFloat(data.price) || 0); }
     if (data.cost !== undefined) { fields.push(`cost = $${index++}`); params.push(parseFloat(data.cost) || 0); }

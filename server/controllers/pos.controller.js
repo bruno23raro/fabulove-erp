@@ -41,6 +41,22 @@ export const searchProducts = async (req, res, next) => {
   }
 };
 
+export const findProductByBarcode = async (req, res, next) => {
+  try {
+    const barcode = (req.params.barcode || '').trim();
+    if (!barcode) {
+      return res.status(400).json({ success: false, error: { message: 'Barcode é obrigatório.' } });
+    }
+    const product = await PosModel.findByBarcodeExact(barcode);
+    if (!product) {
+      return res.status(404).json({ success: false, error: { message: 'Produto não encontrado.' } });
+    }
+    return res.json({ success: true, data: product });
+  } catch (err) {
+    next(err);
+  }
+};
+
 // ── Carrinhos (carts) ─────────────────────────────────────────────────────────
 
 export const createCart = async (req, res, next) => {

@@ -25,7 +25,7 @@
                 class="form-control search-input"
                 placeholder="Buscar produto (nome, SKU, código, barcode) — F2"
                 @input="debouncedSearch"
-                @keydown.enter.prevent="selectFirstResult"
+                @keydown.enter.prevent="handleSearchEnter"
                 aria-label="Buscar produto"
               />
             </div>
@@ -33,6 +33,11 @@
               🆕 Nova
             </button>
             <button class="btn btn-ghost" @click="focusSearch" title="F2">F2</button>
+          </div>
+
+          <!-- Toast de feedback -->
+          <div v-if="toastMessage" :class="['search-toast', toastType]">
+            {{ toastMessage }}
           </div>
 
           <!-- Resultados da busca -->
@@ -46,7 +51,7 @@
                 v-for="p in searchResults"
                 :key="p.id"
                 class="search-result-item"
-                :class="{ 'low-stock': p.stock <= p.stock_min }"
+                :class="{ 'low-stock': p.stock <= p.stock_min, 'flash-add': p.id === lastAddedId }"
                 @click="addToCart(p)"
                 tabindex="0"
                 @keydown.enter.prevent="addToCart(p)"
@@ -65,7 +70,7 @@
               </div>
             </div>
           </div>
-          <div v-else-if="searchQuery && !loadingSearch" class="text-muted text-sm search-empty">
+          <div v-else-if="searchQuery && !loadingSearch && !toastMessage" class="text-muted text-sm search-empty">
             Nenhum produto encontrado para "{{ searchQuery }}"
           </div>
         </div>
@@ -444,6 +449,12 @@ const cashFinalBalance = ref(0)
 const lastAddTime = ref(0)
 const LAST_ADD_MS = 500
 
+// Barcode auto-add flash
+const lastAddedId = ref(null)
+const toastMessage = ref('')
+const toastType = ref('')
+let toastTimer = null
+
 // ── Totais ──────────────────────────────────────────────────────────────────
 const cartTotals = reactive({ subtotal: 0, discount: 0, total: 0 })
 
@@ -497,6 +508,59 @@ function selectFirstResult() {
     searchQuery.value = ''
     searchResults.value = []
   }
+}
+
+// Tenta busca exata por barcode; se não encontrar, retorna null
+async function exactBarcodeSearch(query) {
+  const q = (query || '').trim()
+  if (!q) return null
+  // Scanner gera strings curtas/digitais — se tiver espaço ou pontuação improvável para barcode, ignora
+  if (/\s/.test(q)) return null
+  try {
+    const { data } = await api.get(`/pos/products/by-barcode/${encodeURIComponent(q)}`)
+    return data.data || null
+  } catch (_) {
+    return null
+  }
+}
+
+// Mostra toast temporário (sucesso ou erro)
+function showToast(msg, type = 'error') {
+  clearTimeout(toastTimer)
+  toastMessage.value = msg
+  toastType.value = type
+  toastTimer = setTimeout(() => {
+    toastMessage.value = ''
+    toastType.value = ''
+  }, 2500)
+}
+
+// Enter no campo de busca: tenta barcode primeiro, depois fallback para resultados
+async function handleSearchEnter() {
+  const q = searchQuery.value.trim()
+  if (!q) return
+
+  // Prioridade 1: busca exata por barcode (scanner)
+  const product = await exactBarcodeSearch(q)
+  if (product) {
+    searchResults.value = []
+    searchQuery.value = ''
+    clearTimeout(searchTimeout.value)
+    showToast(`✓ ${product.name} adicionado`, 'success')
+    await addToCart(product)
+    return
+  }
+
+  // Prioridade 2: se há resultados visíveis, seleciona o primeiro
+  if (searchResults.value.length > 0) {
+    addToCart(searchResults.value[0])
+    searchQuery.value = ''
+    searchResults.value = []
+    return
+  }
+
+  // Prioridade 3: barcode não encontrado — mostra mensagem
+  showToast('Produto não encontrado', 'error')
 }
 
 function focusSearch() {
@@ -569,12 +633,9 @@ async function addToCart(product) {
     cartItems.value = data.data.items || []
     discountValue.value = data.data.discount || 0
     recalcTotals()
-    // Feedback visual rápido
-    const btn = event?.target?.closest('.search-result-item')
-    if (btn) {
-      btn.style.background = '#d1fae5'
-      setTimeout(() => { btn.style.background = '' }, 200)
-    }
+    // Flash visual no item adicionado
+    lastAddedId.value = product.id
+    setTimeout(() => { lastAddedId.value = null }, 800)
   } catch (err) {
     const msg = err?.response?.data?.error?.message || 'Erro ao adicionar item'
     alert(msg)
@@ -894,10 +955,10 @@ function handleKeydown(e) {
     startNewSale()
     return
   }
-  // Enter — adicionar primeiro resultado da busca (só se painel de busca visível)
-  if (e.key === 'Enter' && searchResults.value.length > 0 && document.activeElement === searchInput.value) {
+  // Enter — tente barcode exato primeiro, depois primeiro resultado da busca
+  if (e.key === 'Enter' && document.activeElement === searchInput.value) {
     e.preventDefault()
-    selectFirstResult()
+    handleSearchEnter()
   }
 }
 
@@ -1035,6 +1096,34 @@ watch(selectedCustomerId, async (newVal) => {
 .search-empty {
   padding: 12px;
   text-align: center;
+}
+
+/* Toast de feedback */
+.search-toast {
+  margin-top: 8px;
+  padding: 8px 12px;
+  border-radius: var(--radius);
+  font-size: 13px;
+  font-weight: 500;
+}
+.search-toast.toast-success {
+  background: #d1fae5;
+  color: #065f46;
+  border: 1px solid #6ee7b7;
+}
+.search-toast.toast-error {
+  background: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fca5a5;
+}
+
+/* Flash verde no item adicionado via barcode */
+.search-result-item.flash-add {
+  animation: flashGreen 0.7s ease-out;
+}
+@keyframes flashGreen {
+  0% { background: #86efac; }
+  100% { background: transparent; }
 }
 
 /* Carrinho */
