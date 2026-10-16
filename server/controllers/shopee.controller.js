@@ -11,6 +11,19 @@
 
 import { ShopeeService } from '../services/shopee.service.js';
 
+export const login = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({ success: false, error: { message: 'Email e senha são obrigatórios.' } });
+    }
+    const result = await ShopeeService.login(email.trim(), password);
+    return res.json({ success: true, data: result });
+  } catch (err) {
+    next(err);
+  }
+};
+
 export const saveConfig = async (req, res, next) => {
   try {
     const { apiKey, apiSecret, shopId, partnerId, syncEnabled } = req.body;

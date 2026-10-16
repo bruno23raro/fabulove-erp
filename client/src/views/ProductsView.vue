@@ -13,7 +13,7 @@
         />
       </div>
       <div class="toolbar-right">
-        <button class="btn btn-secondary" @click="openImportModal">📥 Importar CSV</button>
+        <button class="btn btn-secondary" @click="openImportModal">📥 Importar (CSV/ZIP)</button>
         <button class="btn btn-primary" @click="openCreate">+ Novo Produto</button>
       </div>
     </div>
@@ -172,24 +172,25 @@
     </div>
     <!-- Modal importar CSV -->
     <div v-if="showImportModal" class="modal-overlay" @click.self="showImportModal = false">
-      <div class="modal" role="dialog" aria-label="Importar produtos via CSV">
+      <div class="modal" role="dialog" aria-label="Importar produtos via CSV ou ZIP">
         <div class="modal-header">
-          <span class="modal-title">Importar Produtos (CSV)</span>
+          <span class="modal-title">Importar Produtos (CSV/ZIP)</span>
           <button class="btn btn-ghost" @click="showImportModal = false" aria-label="Fechar">✕</button>
         </div>
         <div class="modal-body">
           <p class="text-muted text-sm">
-            O CSV deve conter as colunas: <strong>barcode</strong>, <strong>nome</strong>, <strong>preço</strong>
-            (opcionais: estoque, categoria, sku). O arquivo pode usar vírgula ou ponto-e-vírgula como separador.
+            O arquivo deve conter as colunas: <strong>barcode</strong>, <strong>nome</strong>, <strong>preço</strong>
+            (opcionais: estoque, categoria, sku). Aceita .csv ou .zip (o ZIP deve conter um CSV com os produtos).
+            O CSV pode usar vírgula ou ponto-e-vírgula como separador.
           </p>
           <div class="import-upload-area" :class="{ dragging: isDragging }"
                @dragover.prevent="isDragging = true"
                @dragleave.prevent="isDragging = false"
                @drop.prevent="onDrop">
-            <input type="file" accept=".csv,text/csv" ref="fileInput" @change="onFileSelected" style="display:none" />
+            <input type="file" accept=".csv,.zip,text/csv,application/zip" ref="fileInput" @change="onFileSelected" style="display:none" />
             <div v-if="!importFileName" class="upload-placeholder" @click="$refs.fileInput.click()">
               <span class="upload-icon">📁</span>
-              <span class="upload-text">Clique ou arraste um arquivo CSV aqui</span>
+              <span class="upload-text">Clique ou arraste um arquivo CSV ou ZIP aqui</span>
             </div>
             <div v-else class="uploaded-file">
               <span class="file-name">📄 {{ importFileName }}</span>
@@ -228,7 +229,7 @@
           <button class="btn btn-secondary" @click="showImportModal = false">Fechar</button>
           <button class="btn btn-primary" :disabled="!importFile || uploadingImport" @click="uploadImport">
             <span v-if="uploadingImport" class="spinner"></span>
-            {{ uploadingImport ? 'Enviando…' : 'Importar' }}
+    {{ uploadingImport ? 'Enviando…' : 'Importar' }}
           </button>
         </div>
       </div>
@@ -365,8 +366,13 @@ function onFileSelected(e) {
 
 function onDrop(e) {
   const file = e.dataTransfer?.files?.[0]
-  if (!file || !file.name.toLowerCase().endsWith('.csv')) {
-    importError.value = 'Apenas arquivos CSV são aceitos.'
+  if (!file) {
+    importError.value = 'Nenhum arquivo detectado.'
+    return
+  }
+  const ext = file.name.toLowerCase().split('.').pop()
+  if (ext !== 'csv' && ext !== 'zip') {
+    importError.value = 'Apenas arquivos CSV ou ZIP são aceitos.'
     return
   }
   importFile.value = file
@@ -378,7 +384,7 @@ function onDrop(e) {
 
 async function uploadImport() {
   if (!importFile.value) {
-    importError.value = 'Selecione um arquivo CSV primeiro.'
+    importError.value = 'Selecione um arquivo CSV ou ZIP primeiro.'
     return
   }
   uploadingImport.value = true
@@ -386,14 +392,14 @@ async function uploadImport() {
   importResult.value = null
   try {
     const formData = new FormData()
-    formData.append('csv', importFile.value)
+    formData.append('file', importFile.value)
     const { data } = await api.post('/products/import', formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     })
     importResult.value = data.data
     importError.value = ''
   } catch (err) {
-    importError.value = err?.response?.data?.error?.message || 'Erro ao importar CSV.'
+    importError.value = err?.response?.data?.error?.message || 'Erro ao importar arquivo.'
   } finally {
     uploadingImport.value = false
   }

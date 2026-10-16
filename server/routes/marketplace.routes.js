@@ -18,6 +18,7 @@ const router = Router();
 router.use(authenticateToken);
 
 // ── Shopee ───────────────────────────────────────────────────────────────────
+router.post('/shopee/login', authorizeRole('admin', 'manager'), shopeeController.login);
 router.post('/shopee/config', authorizeRole('admin'), shopeeController.saveConfig);
 router.get('/shopee/status', shopeeController.getStatus);
 router.post('/shopee/sync', authorizeRole('admin', 'manager'), shopeeController.syncProducts);

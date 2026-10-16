@@ -6,41 +6,65 @@
         <div>
           <div class="text-muted text-sm" style="margin-bottom:4px">Status da integração</div>
           <div style="font-size:18px;font-weight:700">
-            <span :class="status.configured ? 'badge-success' : 'badge-gray'" class="badge">
-              {{ status.configured ? 'Conectado' : 'Não configurado' }}
+            <span :class="status.hasToken ? 'badge-success' : 'badge-gray'" class="badge">
+              {{ status.hasToken ? 'Conectado' : status.configured ? 'Logado' : 'Não configurado' }}
             </span>
-            <span v-if="status.configured && status.syncEnabled" class="badge-success badge" style="margin-left:4px">Sync ativo</span>
-            <span v-else-if="status.configured" class="badge-gray badge" style="margin-left:4px">Sync desativado</span>
+            <span v-if="status.syncEnabled && status.hasToken" class="badge-success badge" style="margin-left:4px">Sync ativo</span>
+            <span v-else-if="status.syncEnabled" class="badge-gray badge" style="margin-left:4px">Sync pendente</span>
+            <span v-if="status.email" class="text-muted text-sm" style="margin-left:8px">📧 {{ status.email }}</span>
+          </div>
+          <div v-if="status.tokenExpiresAt" class="text-muted text-sm" style="margin-top:4px">
+            Token expira: {{ formatDateTime(status.tokenExpiresAt) }}
+            <span v-if="!isTokenValid(status.tokenExpiresAt)" style="color:var(--color-warning)">⚠️ Expirado</span>
           </div>
         </div>
-        <div v-if="status.lastSyncAt" style="margin-left:auto">
+        <div v-if="status.lastSyncAt" style="margin-left:auto;text-align:right">
           <div class="text-muted text-sm">Última sincronia</div>
           <div style="font-size:14px;font-weight:600">{{ formatDateTime(status.lastSyncAt) }}</div>
-          <div :style="status.lastSyncStatus === 'error' ? 'color:var(--color-danger)' : 'color:var(--color-success)'">
+          <div :style="status.lastSyncStatus === 'error' ? 'color:var(--color-danger)' : status.lastSyncStatus === 'partial' ? 'color:var(--color-warning)' : 'color:var(--color-success)'">
             {{ status.lastSyncStatus === 'error' ? 'Erro' : status.lastSyncStatus === 'partial' ? 'Parcial' : 'OK' }}
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Config form -->
-    <div v-if="!status.configured || showConfigForm" class="card" style="margin-bottom:16px">
+    <!-- Login form (email + senha) -->
+    <div v-if="!status.hasToken" class="card" style="margin-bottom:16px">
+      <div class="card-header" style="cursor:pointer" @click="showLoginForm = !showLoginForm">
+        <span class="card-title">🔐 Login Shopee</span>
+        <span style="margin-left:auto;color:var(--color-text-muted)">{{ showLoginForm ? '▲' : '▼' }}</span>
+      </div>
+      <div v-if="showLoginForm" class="card-body">
+        <div v-if="loginError" class="alert alert-danger">{{ loginError }}</div>
+        <div v-if="loginInfo" class="alert alert-info">{{ loginInfo }}</div>
+        <div class="form-row" style="grid-template-columns:1fr 1fr">
+          <div class="form-group">
+            <label class="form-label">Email da conta Shopee *</label>
+            <input v-model="loginForm.email" class="form-control" type="email" placeholder="seuemail@exemplo.com" @keydown.enter="doLogin" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Senha da conta Shopee *</label>
+            <input v-model="loginForm.password" class="form-control" type="password" placeholder="Sua senha Shopee" @keydown.enter="doLogin" />
+          </div>
+        </div>
+        <div style="margin-top:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <button class="btn btn-primary" :disabled="loggingIn" @click="doLogin">
+            <span v-if="loggingIn" class="spinner"></span>
+            {{ loggingIn ? 'Conectando…' : '🔗 Conectar Shopee' }}
+          </button>
+          <span class="text-muted text-sm">Use o email e senha da sua conta Shopee para conectar automaticamente.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Config form (show after login — apenas para ajustes) -->
+    <div v-if="status.configured && showConfigForm" class="card" style="margin-bottom:16px">
       <div class="card-header" style="cursor:pointer" @click="showConfigForm = !showConfigForm">
-        <span class="card-title">⚙️ Configurar Shopee</span>
+        <span class="card-title">⚙️ Ajustes da Loja</span>
         <span style="margin-left:auto;color:var(--color-text-muted)">{{ showConfigForm ? '▲' : '▼' }}</span>
       </div>
       <div v-if="showConfigForm" class="card-body">
         <div v-if="configError" class="alert alert-danger">{{ configError }}</div>
-        <div class="form-row" style="grid-template-columns:1fr 1fr">
-          <div class="form-group">
-            <label class="form-label">API Key *</label>
-            <input v-model="config.apiKey" class="form-control" placeholder="Sua Shopee API Key" />
-          </div>
-          <div class="form-group">
-            <label class="form-label">API Secret *</label>
-            <input v-model="config.apiSecret" class="form-control" type="password" placeholder="Sua Shopee API Secret" />
-          </div>
-        </div>
         <div class="form-row" style="grid-template-columns:1fr 1fr">
           <div class="form-group">
             <label class="form-label">Shop ID</label>
@@ -60,20 +84,20 @@
         <div style="margin-top:12px;display:flex;gap:8px">
           <button class="btn btn-primary" :disabled="savingConfig" @click="saveConfig">
             <span v-if="savingConfig" class="spinner"></span>
-            {{ savingConfig ? 'Salvando…' : 'Salvar Credenciais' }}
+            {{ savingConfig ? 'Salvando…' : 'Salvar Ajustes' }}
           </button>
-          <button v-if="status.configured" class="btn btn-secondary" @click="status.configured=false;showConfigForm=false">Cancelar</button>
+          <button class="btn btn-danger" @click="logout">Desconectar</button>
         </div>
       </div>
     </div>
 
     <!-- Ações -->
     <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
-      <button class="btn btn-primary" :disabled="syncing" @click="syncProducts">
+      <button class="btn btn-primary" :disabled="syncing || !status.hasToken" @click="syncProducts">
         <span v-if="syncing" class="spinner"></span>
         🔄 Sincronizar Produtos da Shopee
       </button>
-      <button class="btn btn-secondary" :disabled="exporting" @click="exportCsv">
+      <button class="btn btn-secondary" :disabled="exporting || !status.hasToken" @click="exportCsv">
         <span v-if="exporting" class="spinner"></span>
         📥 Exportar CSV para Shopee
       </button>
@@ -90,7 +114,7 @@
           <span class="summary-label">Atualizados:</span>
           <span class="summary-value" style="color:var(--color-primary)">{{ syncResult.updated }}</span>
         </div>
-        <div v-if="syncResult.errors" class="summary-row">
+        <div v-if="syncResult.errors !== undefined" class="summary-row">
           <span class="summary-label">Erros:</span>
           <span class="summary-value" :style="syncResult.errors > 0 ? 'color:var(--color-danger)' : ''">{{ syncResult.errors }}</span>
         </div>
@@ -140,17 +164,38 @@
 import { ref, onMounted } from 'vue'
 import api from '@/utils/api.js'
 
-const status = ref({ configured: false, syncEnabled: false })
+// ── Estado ────────────────────────────────────────────────────────────────────
+const status = ref({ configured: false, hasToken: false, syncEnabled: false })
+const showLoginForm = ref(false)
 const showConfigForm = ref(false)
-const config = ref({ apiKey: '', apiSecret: '', shopId: '', partnerId: '', syncEnabled: false })
+
+const loginForm = ref({ email: '', password: '' })
+const loginError = ref('')
+const loginInfo = ref('')
+const loggingIn = ref(false)
+
+const config = ref({ shopId: '', partnerId: '', syncEnabled: true })
 const configError = ref('')
 const savingConfig = ref(false)
+
 const syncing = ref(false)
 const syncResult = ref(null)
 const exporting = ref(false)
 const logs = ref([])
 const loadingLogs = ref(true)
 
+// ── Helpers ───────────────────────────────────────────────────────────────────
+function isTokenValid(expiresAt) {
+  if (!expiresAt) return false
+  return new Date(expiresAt) > new Date()
+}
+
+function formatDateTime(val) {
+  if (!val) return '—'
+  return new Date(val).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })
+}
+
+// ── Carregar dados ─────────────────────────────────────────────────────────────
 async function loadStatus() {
   try {
     const { data } = await api.get('/marketplaces/shopee/status')
@@ -168,24 +213,74 @@ async function loadLogs() {
   }
 }
 
-async function saveConfig() {
-  if (!config.value.apiKey || !config.value.apiSecret) {
-    configError.value = 'API Key e API Secret são obrigatórios.'
+// ── Login email+senha ─────────────────────────────────────────────────────────
+async function doLogin() {
+  loginError.value = ''
+  loginInfo.value = ''
+  const { email, password } = loginForm.value
+
+  if (!email || !password) {
+    loginError.value = 'Email e senha são obrigatórios.'
     return
   }
+
+  loggingIn.value = true
+  try {
+    loginInfo.value = 'Conectando à Shopee… aguarde.'
+    const { data } = await api.post('/marketplaces/shopee/login', { email: email.trim(), password })
+
+    if (data.data?.shopId) {
+      config.value.shopId = data.data.shopId
+    }
+    config.value.syncEnabled = data.data?.syncEnabled ?? true
+
+    showLoginForm.value = false
+    await loadStatus()
+    await loadLogs()
+
+    loginInfo.value = '✅ Conectado com sucesso!'
+  } catch (err) {
+    loginError.value = err?.response?.data?.error?.message || err?.message || 'Erro ao conectar. Verifique email e senha.'
+    loginInfo.value = ''
+  } finally {
+    loggingIn.value = false
+  }
+}
+
+// ── Salvar ajustes da loja ────────────────────────────────────────────────────
+async function saveConfig() {
   savingConfig.value = true
   configError.value = ''
   try {
-    await api.post('/marketplaces/shopee/config', config.value)
+    await api.post('/marketplaces/shopee/config', {
+      shopId: config.value.shopId,
+      partnerId: config.value.partnerId,
+      syncEnabled: config.value.syncEnabled,
+    })
     showConfigForm.value = false
     await loadStatus()
   } catch (err) {
-    configError.value = err?.response?.data?.error?.message || 'Erro ao salvar credenciais.'
+    configError.value = err?.response?.data?.error?.message || 'Erro ao salvar ajustes.'
   } finally {
     savingConfig.value = false
   }
 }
 
+// ── Desconectar ───────────────────────────────────────────────────────────────
+async function logout() {
+  if (!confirm('Deseja desconectar a conta Shopee?')) return
+  try {
+    await api.post('/marketplaces/shopee/logout')
+    status.value = { configured: false, hasToken: false, syncEnabled: false }
+    showConfigForm.value = false
+  } catch (_) {
+    // Se não houver endpoint, apenas reseta localmente
+    status.value = { configured: false, hasToken: false, syncEnabled: false }
+    showConfigForm.value = false
+  }
+}
+
+// ── Sincronizar produtos ──────────────────────────────────────────────────────
 async function syncProducts() {
   syncing.value = true
   syncResult.value = null
@@ -202,6 +297,7 @@ async function syncProducts() {
   }
 }
 
+// ── Exportar CSV ───────────────────────────────────────────────────────────────
 async function exportCsv() {
   exporting.value = true
   try {
@@ -219,11 +315,7 @@ async function exportCsv() {
   }
 }
 
-function formatDateTime(val) {
-  if (!val) return '—'
-  return new Date(val).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })
-}
-
+// ── Mount ─────────────────────────────────────────────────────────────────────
 onMounted(() => { loadStatus(); loadLogs() })
 </script>
 

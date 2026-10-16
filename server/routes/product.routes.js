@@ -35,7 +35,7 @@ router.get('/', listProducts);
 router.get('/:id', getProduct);
 
 router.post('/', authorizeRole('admin', 'manager'), createProduct);
-router.post('/import', authorizeRole('admin', 'manager'), upload.single('csv'), importProducts);
+router.post('/import', authorizeRole('admin', 'manager'), upload.single('file'), importProducts);
 router.put('/:id', authorizeRole('admin', 'manager'), updateProduct);
 router.delete('/:id', authorizeRole('admin'), deleteProduct);
 router.patch('/:id/stock', authorizeRole('admin', 'manager', 'operator'), adjustStock);
