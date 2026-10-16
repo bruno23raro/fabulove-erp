@@ -80,6 +80,12 @@ const routes = [
         component: () => import('@/views/PosView.vue'),
       },
       {
+        path: 'marketplace',
+        name: 'Marketplace',
+        component: () => import('@/views/MarketplaceView.vue'),
+        meta: { role: 'admin' },
+      },
+      {
         path: 'financial',
         name: 'Financeiro',
         redirect: '/financial',

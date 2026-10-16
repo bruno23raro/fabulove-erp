@@ -64,8 +64,9 @@ const sidebarOpen = ref(false)
 
 const navItems = [
   { to: '/dashboard',  icon: '📊', label: 'Dashboard' },
-  { to: '/pos',        icon: '🖥️', label: 'PDV' },
-  { to: '/products',   icon: '📦', label: 'Produtos' },
+  { to: '/pos',         icon: '🖥️', label: 'PDV' },
+  { to: '/products',    icon: '📦', label: 'Produtos' },
+  { to: '/marketplace', icon: '🛍️', label: 'Shopee' },
   { to: '/categories', icon: '🏷️', label: 'Categorias' },
   { to: '/customers',  icon: '👥', label: 'Clientes' },
   { to: '/orders',     icon: '🛒', label: 'Pedidos' },
@@ -79,8 +80,9 @@ const navItems = [
 
 const titles = {
   '/dashboard':  'Dashboard',
-  '/pos':        'PDV',
-  '/products':   'Produtos',
+  '/pos':         'PDV',
+  '/products':    'Produtos',
+  '/marketplace': 'Shopee',
   '/categories': 'Categorias',
   '/customers':  'Clientes',
   '/orders':     'Pedidos',

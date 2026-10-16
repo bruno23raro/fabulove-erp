@@ -6,6 +6,7 @@
  */
 
 import pool from '../config/database.js';
+import { ShopeeService } from '../services/shopee.service.js';
 import { ProductModel } from './product.model.js';
 import logger from '../utils/logger.js';
 
@@ -286,6 +287,10 @@ export const PosModel = {
            VALUES ($1, $2, $3, $4, $5, $6, $7)`,
           [item.product_id, 'sale', -item.quantity, 0, 'pos_sale', saleId, `PDV ${sale.operation_number}`]
         );
+        // Tenta sincronizar estoque com Shopee (não bloqueia a venda se falhar)
+        try {
+          await ShopeeService.syncStock(item.product_id, item.quantity);
+        } catch (_) { /* ignora erro de sync — venda já foi registrada */ }
       }
 
       // Atualiza status da venda

@@ -97,7 +97,8 @@
               </div>
               <div class="form-group">
                 <label class="form-label">Código de Barras</label>
-                <input v-model="form.barcode" class="form-control" placeholder="Ex: 7891234567890" />
+                <input v-model="form.barcode" class="form-control" placeholder="Ex: 7891234567890" @keyup.enter="onBarcodeEnter" :class="{ 'barcode-flash': barcodeFlash }" />
+                <span v-if="barcodeFlash" class="text-muted text-sm" style="margin-top:4px;display:block">⬆️ Código lido pelo leitor — carregando produto…</span>
               </div>
             </div>
             <div class="form-row">
@@ -247,10 +248,12 @@ const search = ref('')
 const limit = 20
 const offset = ref(0)
 const currentPage = ref(1)
-const showModal = ref(false)
+const modalOpen = ref(false)
 const editing = ref(null)
 const deleteTarget = ref(null)
 const formError = ref('')
+const barcodeFlash = ref(false)
+const showModal = ref(false)
 
 // CSV import state
 const showImportModal = ref(false)
@@ -422,6 +425,29 @@ async function doDelete() {
 function prevPage() { offset.value = Math.max(0, offset.value - limit); currentPage.value--; loadProducts() }
 function nextPage() { offset.value += limit; currentPage.value++; loadProducts() }
 
+// ── Leitor de código de barras (teclado / leitor) ────────────────────────────
+async function onBarcodeEnter() {
+  const code = form.barcode?.trim()
+  if (!code) return
+  barcodeFlash.value = true
+  setTimeout(() => { barcodeFlash.value = false }, 600)
+  try {
+    const { data } = await api.get(`/pos/products/by-barcode/${encodeURIComponent(code)}`)
+    const product = data.data
+    if (product) {
+      // Produto existe → abre edição
+      openEdit(product)
+      return
+    }
+    // Produto não existe → pré-preenche campos para novo produto
+    Object.assign(form, { name: code, sku: '', barcode: code, description: '', price: '', cost: '', stock: 0, stock_min: 5, categoryId: '', isActive: true })
+    formError.value = ''
+    showModal.value = true
+  } catch (_) {
+    formError.value = 'Produto não encontrado pelo código de barras.'
+  }
+}
+
 onMounted(() => { loadProducts(); loadCategories() })
 </script>
 
@@ -457,4 +483,15 @@ onMounted(() => { loadProducts(); loadCategories() })
 .summary-label { color: var(--color-text-secondary); }
 .summary-value { font-weight: 600; }
 .import-errors details { font-size: 13px; }
+
+/* Barcode scanner flash */
+.barcode-flash {
+  animation: barcode-flash-anim 0.6s ease-out;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+}
+@keyframes barcode-flash-anim {
+  0%   { background: rgba(59, 130, 246, 0.2); }
+  100% { background: transparent; }
+}
 </style>
