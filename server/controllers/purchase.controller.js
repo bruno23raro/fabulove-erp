@@ -15,6 +15,10 @@ export async function createPurchase(req, res) {
       for (const item of items || []) {
         const quantity = Number(item.quantity);
         const cost = Number(item.cost);
+        if (!Number.isFinite(quantity) || !Number.isFinite(cost) || quantity <= 0 || cost < 0) {
+          await client.query('ROLLBACK');
+          return res.status(400).json({ error: `Item inválido: quantidade=${item.quantity}, custo=${item.cost}` });
+        }
         const subtotal = cost * quantity;
         totalAmount += subtotal;
         await client.query(

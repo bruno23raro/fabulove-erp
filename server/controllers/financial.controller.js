@@ -75,7 +75,7 @@ export async function payAccountReceivable(req, res, next) {
 
       await client.query(
         `UPDATE accounts_receivable
-         SET amount = amount - $1, paid_at = CURRENT_TIMESTAMP, payment_method = COALESCE($2, payment_method),
+         SET amount = amount - $1::numeric, paid_at = CURRENT_TIMESTAMP, payment_method = COALESCE($2, payment_method),
              status = $3, notes = COALESCE(notes, '') || E'\nQuitado: ' || $1 || (CASE WHEN $3='paid' THEN E'\nQuitada totalmente.' ELSE E'\nParcial.' END)
          WHERE id = $4`,
         [paidAmount, payment_method, newStatus, id]
@@ -208,7 +208,7 @@ export async function payAccountPayable(req, res, next) {
 
       await client.query(
         `UPDATE accounts_payable
-         SET amount = amount - $1, paid_at = CURRENT_TIMESTAMP, payment_method = COALESCE($2, payment_method),
+         SET amount = amount - $1::numeric, paid_at = CURRENT_TIMESTAMP, payment_method = COALESCE($2, payment_method),
              status = $3, notes = COALESCE(notes, '') || E'\nQuitado: ' || $1
          WHERE id = $4`,
         [paidAmount, payment_method, newStatus, id]
