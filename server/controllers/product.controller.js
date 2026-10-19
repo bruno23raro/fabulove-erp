@@ -194,7 +194,7 @@ async function importFromCsv(buffer) {
       errorList: [`Colunas obrigatórias não encontradas. Headers: ${headers.join(', ')}`] };
   }
 
-  const { rows: categories } = await pool.query('SELECT id, name FROM categories WHERE is_active = TRUE');
+  const { rows: categories } = await pool.query('SELECT id, name FROM categories');
   const catMap = {};
   for (const cat of categories) catMap[cat.name.toLowerCase()] = cat.id;
   catMap['sem categoria'] = null;
@@ -238,6 +238,29 @@ async function importFromCsv(buffer) {
   }
 
   return { created, updated, errors, totalLines: lines.length - 1, errorList };
+}
+
+// ── Parse ZIP (adm-zip) — extrai CSV da pasta produtos/ dentro do ZIP ────────
+async function importFromZip(buffer) {
+  try {
+    const zip = new AdmZip(Buffer.from(buffer));
+    const entries = zip.getEntries();
+
+    // Procura CSV dentro de subpasta "produtos/" (padrão Shopee export)
+    const csvEntries = entries.filter(e => !e.isDirectory && /\.(csv|txt)$/i.test(e.entryName));
+    if (!csvEntries.length) {
+      return { created: 0, updated: 0, errors: 1, totalLines: 0,
+        errorList: ['Nenhum arquivo CSV encontrado no ZIP. Esperado: produtos/*.csv'] };
+    }
+
+    // Prioriza arquivo dentro de pasta "produtos/"
+    const preferred = csvEntries.find(e => /\/produtos\//i.test(e.entryName)) ?? csvEntries[0];
+    const csvBuffer = preferred.getData();
+    return await importFromCsv(csvBuffer);
+  } catch (err) {
+    return { created: 0, updated: 0, errors: 1, totalLines: 0,
+      errorList: [`Erro ao extrair ZIP: ${err.message}`] };
+  }
 }
 
 // PATCH /api/products/:id/stock
