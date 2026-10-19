@@ -58,9 +58,11 @@ router.post('/carts/:id/cancel', authorizeRole('admin', 'manager'), posControlle
 router.post('/carts/:id/refund', authorizeRole('admin', 'manager'), posController.refundSale);
 
 // ── Histórico ────────────────────────────────────────────────────────────────
+// ATENÇÃO: '/sales/saved' deve vir ANTES de '/sales/:id' — senão Express
+// captura "saved" como :id e quebra com erro bigint.
+router.get('/sales/saved', posController.listSavedSales);
 router.get('/sales', posController.listSales);
 router.get('/sales/:id', posController.getSale);
-router.get('/sales/saved', posController.listSavedSales);
 router.get('/reports/daily', posController.getDailyReport);
 
 // ── Caixa ────────────────────────────────────────────────────────────────────

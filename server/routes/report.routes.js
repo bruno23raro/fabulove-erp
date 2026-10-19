@@ -59,7 +59,11 @@ router.get('/sales', async (req, res, next) => {
       merged[r.date].revenue = parseFloat(merged[r.date].revenue) + parseFloat(r.revenue);
       merged[r.date].sources[r.source] = true;
     }
-    const data = Object.values(merged).sort((a, b) => a.date.localeCompare(b.date));
+    const data = Object.values(merged).sort((a, b) => {
+      const da = a.date instanceof Date ? a.date.toISOString().slice(0, 10) : String(a.date);
+      const db = b.date instanceof Date ? b.date.toISOString().slice(0, 10) : String(b.date);
+      return da.localeCompare(db);
+    });
 
     // Totais
     const totalOrders = await pool.query(

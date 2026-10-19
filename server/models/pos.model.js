@@ -146,7 +146,7 @@ export const PosModel = {
         }
       }
 
-      const unitPrice = price !== null ? parseFloat(price) : parseFloat(product.price);
+      const unitPrice = price !== null ? parseFloat(price) : (parseFloat(product.price) || 0);
       const subtotal = unitPrice * quantity;
 
       const { rows: itemRows } = await client.query(
@@ -199,7 +199,7 @@ export const PosModel = {
           [quantity, itemId]
         );
         await client.query(
-          'UPDATE pos_sale_items SET subtotal = (SELECT quantity FROM pos_sale_items WHERE id = $1) * price WHERE id = $1',
+          'UPDATE pos_sale_items SET subtotal = (SELECT quantity FROM pos_sale_items WHERE id = $1) * COALESCE(price, 0) WHERE id = $1',
           [itemId]
         );
       }

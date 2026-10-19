@@ -190,7 +190,7 @@ async function submitPay() {
   if (!payTarget.value) return
   saving.value = true; formError.value = ''
   try {
-    const { data } = await api.put(`/financial/receivable/${payTarget.value.id}/pay`, payForm.value)
+    const { data } = await api.post(`/financial/receivable/${payTarget.value.id}/pay`, payForm.value)
     payTarget.value = null
     load()
   } catch (err) {
@@ -209,7 +209,7 @@ async function submitWriteOff() {
   if (!writeoffTarget.value) return
   saving.value = true; formError.value = ''
   try {
-    await api.put(`/financial/receivable/${writeoffTarget.value.id}/writeoff`, writeoffForm.value)
+    await api.post(`/financial/receivable/${writeoffTarget.value.id}/writeoff`, writeoffForm.value)
     writeoffTarget.value = null
     load()
   } catch (err) {

@@ -104,6 +104,15 @@ async function loginWithCredentials(email, password) {
 
     if (data.error || data.message) {
       const msg = (data.message || '').toLowerCase();
+      const errCode = (data.error || '').toLowerCase();
+      // Shopee descontinuou o endpoint web de login por email+senha
+      if (msg.includes('offline') || errCode === 'error_not_found' || errCode === 'error_auth') {
+        throw new Error(
+          'API Shopee descontinuada: o endpoint de login por email+senha foi desligado pela Shopee. ' +
+          'Para integrar sua loja, acesse https://open.shopee.com e solicite credenciais de API (Partner/API Key). ' +
+          'Após obter as credenciais, use a aba "Ajustes da Loja" para inseri-las.'
+        );
+      }
       if (msg.includes('senha') || msg.includes('email') || msg.includes('login')) {
         throw new Error('Email ou senha incorretos. Verifique suas credenciais Shopee.');
       }
@@ -162,6 +171,15 @@ async function loginWithMobileEndpoint(email, password) {
     }
 
     if (data.error || (data.status && data.status !== 0)) {
+      const msg = (data.message || '').toLowerCase();
+      const errCode = (data.error || '').toLowerCase();
+      if (msg.includes('offline') || errCode === 'error_not_found' || errCode === 'error_auth') {
+        throw new Error(
+          'API Shopee descontinuada: o endpoint de login por email+senha foi desligado pela Shopee. ' +
+          'Para integrar sua loja, acesse https://open.shopee.com e solicite credenciais de API (Partner/API Key). ' +
+          'Após obter as credenciais, use a aba "Ajustes da Loja" para inseri-las.'
+        );
+      }
       throw new Error(`Falha no login mobile: ${data.message ?? JSON.stringify(data).slice(0, 200)}`);
     }
 

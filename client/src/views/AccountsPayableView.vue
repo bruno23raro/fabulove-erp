@@ -164,7 +164,7 @@ async function submitPay() {
   saving.value = true; formError.value = ''
   try {
     const payload = { amount: payForm.value.amount, payment_method: payForm.value.payment_method }
-    await api.put(`/financial/payable/${payTarget.value.id}/pay`, payload)
+    await api.post(`/financial/payable/${payTarget.value.id}/pay`, payload)
     payTarget.value = null
     load()
   } catch (err) {
