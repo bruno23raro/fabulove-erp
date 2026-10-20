@@ -49,7 +49,7 @@ export async function getAccountReceivable(req, res, next) {
        LEFT JOIN orders o ON o.id = ar.order_id WHERE ar.id = $1`,
       [id]
     );
-    if (!rows[0]) return res.status(404).json({ error: 'Conta a receber não encontrada.' });
+    if (!rows[0]) return res.status(404).json({ success: false, error: { message: 'Conta a receber não encontrada.' } });
     return res.json({ success: true, data: rows[0] });
   } catch (e) {
     next(e);
@@ -66,9 +66,9 @@ export async function payAccountReceivable(req, res, next) {
       await client.query('BEGIN');
 
       const { rows: existing } = await client.query('SELECT * FROM accounts_receivable WHERE id = $1 FOR UPDATE', [id]);
-      if (!existing[0]) { await client.query('ROLLBACK'); return res.status(404).json({ error: 'Conta não encontrada.' }); }
-      if (existing[0].status === 'paid') { await client.query('ROLLBACK'); return res.status(400).json({ error: 'Conta já está quitada.' }); }
-      if (existing[0].status === 'written_off') { await client.query('ROLLBACK'); return res.status(400).json({ error: 'Conta foi dada como baixa.' }); }
+      if (!existing[0]) { await client.query('ROLLBACK'); return res.status(404).json({ success: false, error: { message: 'Conta não encontrada.' } }); }
+      if (existing[0].status === 'paid') { await client.query('ROLLBACK'); return res.status(400).json({ success: false, error: { message: 'Conta já está quitada.' } }); }
+      if (existing[0].status === 'written_off') { await client.query('ROLLBACK'); return res.status(400).json({ success: false, error: { message: 'Conta foi dada como baixa.' } }); }
 
       const paidAmount = parseFloat(amount) || existing[0].amount;
       const newStatus = paidAmount >= existing[0].amount ? 'paid' : 'partial';
@@ -104,8 +104,8 @@ export async function writeOffAccountReceivable(req, res, next) {
     try {
       await client.query('BEGIN');
       const { rows: existing } = await client.query('SELECT * FROM accounts_receivable WHERE id = $1 FOR UPDATE', [id]);
-      if (!existing[0]) { await client.query('ROLLBACK'); return res.status(404).json({ error: 'Conta não encontrada.' }); }
-      if (existing[0].status === 'paid') { await client.query('ROLLBACK'); return res.status(400).json({ error: 'Conta quitada não pode ser dada como baixa.' }); }
+      if (!existing[0]) { await client.query('ROLLBACK'); return res.status(404).json({ success: false, error: { message: 'Conta não encontrada.' } }); }
+      if (existing[0].status === 'paid') { await client.query('ROLLBACK'); return res.status(400).json({ success: false, error: { message: 'Conta quitada não pode ser dada como baixa.' } }); }
 
       await client.query(
         `UPDATE accounts_receivable SET status = 'written_off', notes = COALESCE(notes, '') || E'\nBaixa: ' || COALESCE($1, 'Sem motivo') WHERE id = $2`,
@@ -169,7 +169,7 @@ export async function getAccountPayable(req, res, next) {
        WHERE ap.id = $1`,
       [id]
     );
-    if (!rows[0]) return res.status(404).json({ error: 'Conta a pagar não encontrada.' });
+    if (!rows[0]) return res.status(404).json({ success: false, error: { message: 'Conta a pagar não encontrada.' } });
     return res.json({ success: true, data: rows[0] });
   } catch (e) {
     next(e);
@@ -200,8 +200,8 @@ export async function payAccountPayable(req, res, next) {
     try {
       await client.query('BEGIN');
       const { rows: existing } = await client.query('SELECT * FROM accounts_payable WHERE id = $1 FOR UPDATE', [id]);
-      if (!existing[0]) { await client.query('ROLLBACK'); return res.status(404).json({ error: 'Conta não encontrada.' }); }
-      if (existing[0].status === 'paid') { await client.query('ROLLBACK'); return res.status(400).json({ error: 'Conta já está quitada.' }); }
+      if (!existing[0]) { await client.query('ROLLBACK'); return res.status(404).json({ success: false, error: { message: 'Conta não encontrada.' } }); }
+      if (existing[0].status === 'paid') { await client.query('ROLLBACK'); return res.status(400).json({ success: false, error: { message: 'Conta já está quitada.' } }); }
 
       const paidAmount = parseFloat(amount) || existing[0].amount;
       const newStatus = paidAmount >= existing[0].amount ? 'paid' : 'partial';
@@ -257,7 +257,7 @@ export async function addCashTransaction(req, res, next) {
   try {
     const { register_id, type, amount, reference_type, reference_id, payment_method, notes } = req.body;
     if (!['sale', 'suprimento', 'sangria', 'entry', 'exit'].includes(type)) {
-      return res.status(400).json({ error: 'Tipo inválido. Use: sale, suprimento, sangria, entry, exit' });
+      return res.status(400).json({ success: false, error: { message: 'Tipo inválido. Use: sale, suprimento, sangria, entry, exit' } });
     }
 
     const client = await pool.connect();
@@ -265,7 +265,7 @@ export async function addCashTransaction(req, res, next) {
       await client.query('BEGIN');
 
       const reg = await client.query('SELECT id, status FROM cash_registers WHERE id = $1 AND status = \'open\'', [register_id]);
-      if (!reg.rows[0]) { await client.query('ROLLBACK'); return res.status(400).json({ error: 'Caixa não encontrado ou fechado.' }); }
+      if (!reg.rows[0]) { await client.query('ROLLBACK'); return res.status(400).json({ success: false, error: { message: 'Caixa não encontrado ou fechado.' } }); }
 
       const result = await client.query(
         `INSERT INTO cash_transactions (register_id, type, amount, reference_type, reference_id, payment_method, notes, created_at)

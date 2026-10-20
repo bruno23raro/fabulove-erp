@@ -406,6 +406,40 @@
         </div>
       </div>
     </div>
+
+    <!-- Modal criar cliente -->
+    <div v-if="showCustomerModal" class="modal-overlay" @click.self="showCustomerModal = false">
+      <div class="modal" style="max-width:480px" role="dialog" aria-label="Novo cliente">
+        <div class="modal-header">
+          <span class="modal-title">👤 Novo Cliente</span>
+          <button class="btn btn-ghost" @click="showCustomerModal = false" aria-label="Fechar">✕</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label">Nome *</label>
+            <input v-model="newCustomer.name" class="form-control" placeholder="Nome do cliente" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input v-model="newCustomer.email" class="form-control" type="email" placeholder="email@exemplo.com" />
+          </div>
+          <div class="form-row" style="grid-template-columns:1fr 1fr;margin-top:8px">
+            <div class="form-group">
+              <label class="form-label">Telefone</label>
+              <input v-model="newCustomer.phone" class="form-control" placeholder="(00) 00000-0000" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Documento</label>
+              <input v-model="newCustomer.document" class="form-control" placeholder="CPF/CNPJ" />
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" @click="showCustomerModal = false">Cancelar</button>
+          <button class="btn btn-primary" @click="submitCustomer">Criar Cliente</button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 

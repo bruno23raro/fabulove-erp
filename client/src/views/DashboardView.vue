@@ -96,10 +96,10 @@ const kpis = computed(() => {
   if (!data.value) return []
   const d = data.value
   return [
-    { icon: '🛒', label: 'Pedidos Pendentes', value: d.orders.pending, colorClass: 'kpi-warning' },
-    { icon: '💰', label: 'Receita Total', value: formatCurrency(d.orders.total_revenue), colorClass: 'kpi-success' },
-    { icon: '👥', label: 'Clientes', value: d.customers.total, colorClass: 'kpi-info' },
-    { icon: '📦', label: 'Estoque Baixo', value: d.inventory.low_stock_count, colorClass: d.inventory.low_stock_count > 0 ? 'kpi-danger' : 'kpi-success' },
+    { icon: '🛒', label: 'Pedidos Pendentes', value: d.orders?.pending ?? 0, colorClass: 'kpi-warning' },
+    { icon: '💰', label: 'Receita Total', value: formatCurrency(d.orders?.total_revenue ?? 0), colorClass: 'kpi-success' },
+    { icon: '👥', label: 'Clientes', value: d.customers?.total ?? 0, colorClass: 'kpi-info' },
+    { icon: '📦', label: 'Estoque Baixo', value: d.inventory?.low_stock_count ?? 0, colorClass: (d.inventory?.low_stock_count ?? 0) > 0 ? 'kpi-danger' : 'kpi-success' },
   ]
 })
 

@@ -276,9 +276,15 @@ async function submitForm() {
   formError.value = ''
   try {
     if (editing.value) {
+      const items = form.items.map(i => ({
+        product_id: parseInt(i.productId),
+        quantity: parseInt(i.quantity),
+        cost: parseFloat(i.cost),
+      }))
       await api.put('/purchases/' + editing.value.id, {
         supplier_id: parseInt(form.supplierId),
         status: form.status,
+        items,
       })
     } else {
       const items = form.items.map(i => ({

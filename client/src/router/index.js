@@ -132,7 +132,7 @@ router.beforeEach(async (to, _from, next) => {
     return next({ path: '/login', query: { redirect: to.fullPath } })
   }
 
-  if (to.meta.role && auth.user?.role !== to.meta.role && auth.user?.role !== 'admin') {
+  if (to.meta.role && auth.user?.role !== to.meta.role && auth.user?.role !== 'admin' && auth.user?.role !== 'manager') {
     return next('/dashboard')
   }
 

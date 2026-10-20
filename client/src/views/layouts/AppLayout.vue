@@ -89,9 +89,12 @@ const titles = {
   '/suppliers':  'Fornecedores',
   '/purchases':  'Compras',
   '/stock':      'Estoque',
-  '/reports':    'Relatórios',
-  '/financial':  'Financeiro',
-  '/config':     'Configurações',
+  '/reports':       'Relatórios',
+  '/financial':     'Financeiro',
+  '/financial/receivables': 'Contas a Receber',
+  '/financial/payable': 'Contas a Pagar',
+  '/financial/cash': 'Caixa',
+  '/config':        'Configurações',
 }
 
 const currentPageTitle = computed(() => titles[route.path] || 'Fabulove ERP')

@@ -24,7 +24,7 @@ import { sendPasswordResetEmail, generateResetToken, hashToken } from '../servic
 export async function forgotPassword(req, res) {
   const { email } = req.body || {};
   if (!email || typeof email !== 'string') {
-    return res.status(400).json({ error: 'Informe um e-mail válido.' });
+    return res.status(400).json({ success: false, error: { message: 'Informe um e-mail válido.' } });
   }
 
   const cleanEmail = email.trim().toLowerCase();
@@ -37,7 +37,7 @@ export async function forgotPassword(req, res) {
     user = rows[0];
   } catch (err) {
     console.error('[auth-forgot] query error (sem credenciais expostas):', err.code);
-    return res.status(500).json({ error: 'Erro no servidor. Tente novamente mais tarde.' });
+    return res.status(500).json({ success: false, error: { message: 'Erro no servidor. Tente novamente mais tarde.' } });
   }
 
   // SEMPRE retornar sucesso — nunca revelar se o email existe (anti-enumeration)
@@ -78,10 +78,10 @@ export async function forgotPassword(req, res) {
 export async function resetPassword(req, res) {
   const { token, password } = req.body || {};
   if (!token || typeof token !== 'string') {
-    return res.status(400).json({ error: 'Token é obrigatório.' });
+    return res.status(400).json({ success: false, error: { message: 'Token é obrigatório.' } });
   }
   if (!password || password.length < 8) {
-    return res.status(400).json({ error: 'A senha deve ter pelo menos 8 caracteres.' });
+    return res.status(400).json({ success: false, error: { message: 'A senha deve ter pelo menos 8 caracteres.' } });
   }
 
   const tokenHash = hashToken(token);
@@ -97,18 +97,18 @@ export async function resetPassword(req, res) {
     record = rows[0];
   } catch (err) {
     console.error('[auth-reset] query error (sem credenciais expostas):', err.code);
-    return res.status(500).json({ error: 'Erro no servidor.' });
+    return res.status(500).json({ success: false, error: { message: 'Erro no servidor.' } });
   }
 
   // Sem mensagem específica — se token não encontrado ou inválido, silently falha
   if (!record) {
-    return res.status(400).json({ error: 'Link inválido ou expirado.' });
+    return res.status(400).json({ success: false, error: { message: 'Link inválido ou expirado.' } });
   }
   if (record.used_at) {
-    return res.status(400).json({ error: 'Este link já foi utilizado.' });
+    return res.status(400).json({ success: false, error: { message: 'Este link já foi utilizado.' } });
   }
   if (record.expires_at < new Date()) {
-    return res.status(400).json({ error: 'Este link expirou.' });
+    return res.status(400).json({ success: false, error: { message: 'Este link expirou.' } });
   }
 
   let userId;
@@ -128,7 +128,7 @@ export async function resetPassword(req, res) {
     }
   } catch (err) {
     console.error('[auth-reset] transaction error (sem credenciais expostas):', err.code);
-    return res.status(500).json({ error: 'Erro ao atualizar a senha. Tente novamente.' });
+    return res.status(500).json({ success: false, error: { message: 'Erro ao atualizar a senha. Tente novamente.' } });
   }
 
   // Gera novos tokens de sessão (rotação)
@@ -158,7 +158,7 @@ import { authenticateToken } from '../utils/jwt.js';
 export async function login(req, res) {
   const { email, password } = req.body || {};
   if (!email || !password) {
-    return res.status(400).json({ error: 'Email e senha são obrigatórios.' });
+    return res.status(400).json({ success: false, error: { message: 'Email e senha são obrigatórios.' } });
   }
 
   try {
@@ -169,13 +169,13 @@ export async function login(req, res) {
     const user = rows[0];
 
     if (!user) {
-      return res.status(401).json({ error: 'Credenciais inválidas.' });
+      return res.status(401).json({ success: false, error: { message: 'Credenciais inválidas.' } });
     }
     if (!user.is_active) {
-      return res.status(403).json({ error: 'Usuário inativo.' });
+      return res.status(403).json({ success: false, error: { message: 'Usuário inativo.' } });
     }
     if (user.locked_until && user.locked_until > new Date()) {
-      return res.status(423).json({ error: 'Conta temporariamente bloqueada por muitas tentativas.' });
+      return res.status(423).json({ success: false, error: { message: 'Conta temporariamente bloqueada por muitas tentativas.' } });
     }
 
     const valid = await bcrypt.compare(password, user.password_hash);
@@ -186,7 +186,7 @@ export async function login(req, res) {
         'UPDATE users SET failed_login_attempts = $1, locked_until = $2 WHERE id = $3',
         [newAttempts, lockedUntil, user.id]
       );
-      return res.status(401).json({ error: 'Credenciais inválidas.' });
+      return res.status(401).json({ success: false, error: { message: 'Credenciais inválidas.' } });
     }
 
     // Reset attempts on success
@@ -216,17 +216,17 @@ export async function login(req, res) {
     });
   } catch (err) {
     console.error('[auth-login] error (sem credenciais expostas):', err.code);
-    return res.status(500).json({ error: 'Erro no servidor.' });
+    return res.status(500).json({ success: false, error: { message: 'Erro no servidor.' } });
   }
 }
 
 export async function register(req, res) {
   const { name, email, password, role } = req.body || {};
   if (!name || !email || !password) {
-    return res.status(400).json({ error: 'Nome, email e senha são obrigatórios.' });
+    return res.status(400).json({ success: false, error: { message: 'Nome, email e senha são obrigatórios.' } });
   }
   if (password.length < 8) {
-    return res.status(400).json({ error: 'A senha deve ter pelo menos 8 caracteres.' });
+    return res.status(400).json({ success: false, error: { message: 'A senha deve ter pelo menos 8 caracteres.' } });
   }
 
   try {
@@ -254,17 +254,17 @@ export async function register(req, res) {
     });
   } catch (err) {
     if (err.code === '23505') { // unique violation
-      return res.status(409).json({ error: 'E-mail já cadastrado.' });
+      return res.status(409).json({ success: false, error: { message: 'E-mail já cadastrado.' } });
     }
     console.error('[auth-register] error (sem credenciais expostas):', err.code);
-    return res.status(500).json({ error: 'Erro no servidor.' });
+    return res.status(500).json({ success: false, error: { message: 'Erro no servidor.' } });
   }
 }
 
 export async function refreshToken(req, res) {
   const { refresh_token } = req.body || {};
   if (!refresh_token) {
-    return res.status(400).json({ error: 'Refresh token é obrigatório.' });
+    return res.status(400).json({ success: false, error: { message: 'Refresh token é obrigatório.' } });
   }
 
   const tokenHash = hashToken(refresh_token);
@@ -279,7 +279,7 @@ export async function refreshToken(req, res) {
     const rt = rows[0];
 
     if (!rt || rt.revoked_at || rt.expires_at < new Date()) {
-      return res.status(401).json({ error: 'Refresh token inválido ou expirado.' });
+      return res.status(401).json({ success: false, error: { message: 'Refresh token inválido ou expirado.' } });
     }
 
     // Rotação: revoga antigo, emite novo
@@ -305,7 +305,7 @@ export async function refreshToken(req, res) {
     }
   } catch (err) {
     console.error('[auth-refresh] error (sem credenciais expostas):', err.code);
-    return res.status(500).json({ error: 'Erro no servidor.' });
+    return res.status(500).json({ success: false, error: { message: 'Erro no servidor.' } });
   }
 }
 

@@ -175,17 +175,20 @@
     <!-- Resultado da sincronização -->
     <div v-if="syncResult" class="card" style="margin-bottom:16px">
       <div class="card-body">
-        <div class="summary-row">
+        <div v-if="syncResult?.failed" class="summary-row">
+          <span class="summary-label" style="color:var(--color-danger)">❌ Erro na sincronização</span>
+        </div>
+        <div v-else-if="syncResult?.created !== undefined || syncResult?.updated !== undefined" class="summary-row">
           <span class="summary-label">Criados:</span>
           <span class="summary-value" style="color:var(--color-success)">{{ syncResult.created }}</span>
         </div>
-        <div class="summary-row">
+        <div v-if="syncResult?.updated !== undefined" class="summary-row">
           <span class="summary-label">Atualizados:</span>
           <span class="summary-value" style="color:var(--color-primary)">{{ syncResult.updated }}</span>
         </div>
-        <div v-if="syncResult.errors !== undefined" class="summary-row">
+        <div v-if="syncResult?.errors !== undefined && syncResult.errors > 0" class="summary-row">
           <span class="summary-label">Erros:</span>
-          <span class="summary-value" :style="syncResult.errors > 0 ? 'color:var(--color-danger)' : ''">{{ syncResult.errors }}</span>
+          <span class="summary-value" style="color:var(--color-danger)">{{ syncResult.errors }}</span>
         </div>
       </div>
     </div>
@@ -413,7 +416,7 @@ async function syncProducts() {
     await loadStatus()
     await loadLogs()
   } catch (err) {
-    syncResult.value = { created: 0, updated: 0, errors: -1 }
+    syncResult.value = { created: 0, updated: 0, errors: 0, failed: true }
     alert('Erro na sincronização: ' + (err?.response?.data?.error?.message || err.message))
   } finally {
     syncing.value = false
