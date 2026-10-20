@@ -17,7 +17,7 @@ export async function createPurchase(req, res) {
         const cost = Number(item.cost);
         if (!Number.isFinite(quantity) || !Number.isFinite(cost) || quantity <= 0 || cost < 0) {
           await client.query('ROLLBACK');
-          return res.status(400).json({ error: `Item inválido: quantidade=${item.quantity}, custo=${item.cost}` });
+          return res.status(400).json({ success: false, error: { message: `Item inválido: quantidade=${item.quantity}, custo=${item.cost}` } });
         }
         const subtotal = cost * quantity;
         totalAmount += subtotal;
@@ -55,7 +55,7 @@ export async function createPurchase(req, res) {
       client.release();
     }
   } catch (e) {
-    return res.status(500).json({ error: 'Erro ao criar compra.', detail: e.message });
+    return res.status(500).json({ success: false, error: { message: 'Erro ao criar compra.' } });
   }
 }
 
@@ -64,7 +64,7 @@ export async function listPurchases(req, res) {
     const result = await pool.query('SELECT * FROM purchases ORDER BY created_at DESC LIMIT 50');
     return res.json({ success: true, data: result.rows });
   } catch (e) {
-    return res.status(500).json({ error: 'Erro ao listar compras.', detail: e.message });
+    return res.status(500).json({ success: false, error: { message: 'Erro ao listar compras.' } });
   }
 }
 
@@ -72,7 +72,7 @@ export async function getPurchase(req, res) {
   try {
     const { id } = req.params;
     const purchase = await pool.query('SELECT * FROM purchases WHERE id = $1', [id]);
-    if (!purchase.rows[0]) return res.status(404).json({ error: 'Compra não encontrada.' });
+    if (!purchase.rows[0]) return res.status(404).json({ success: false, error: { message: 'Compra não encontrada.' } });
     const items = await pool.query(
       `SELECT pi.*, p.name as product_name FROM purchase_items pi
        JOIN products p ON p.id = pi.product_id WHERE pi.purchase_id = $1`,
@@ -80,7 +80,7 @@ export async function getPurchase(req, res) {
     );
     return res.json({ success: true, data: { ...purchase.rows[0], items: items.rows } });
   } catch (e) {
-    return res.status(500).json({ error: 'Erro ao buscar compra.', detail: e.message });
+    return res.status(500).json({ success: false, error: { message: 'Erro ao buscar compra.' } });
   }
 }
 
@@ -88,9 +88,9 @@ export async function updatePurchase(req, res) {
   try {
     const { id } = req.params;
     const existing = await pool.query('SELECT * FROM purchases WHERE id = $1', [id]);
-    if (!existing.rows[0]) return res.status(404).json({ error: 'Compra não encontrada.' });
+    if (!existing.rows[0]) return res.status(404).json({ success: false, error: { message: 'Compra não encontrada.' } });
     if (['completed', 'cancelled'].includes(existing.rows[0].status)) {
-      return res.status(400).json({ error: 'Compra finalizada não pode ser editada.' });
+      return res.status(400).json({ success: false, error: { message: 'Compra finalizada não pode ser editada.' } });
     }
     const { supplier_id, status } = req.body;
     const fields = [];
@@ -105,7 +105,7 @@ export async function updatePurchase(req, res) {
     const updated = await pool.query('SELECT * FROM purchases WHERE id = $1', [id]);
     return res.json({ success: true, data: updated.rows[0] });
   } catch (e) {
-    return res.status(500).json({ error: 'Erro ao atualizar compra.', detail: e.message });
+    return res.status(500).json({ success: false, error: { message: 'Erro ao atualizar compra.' } });
   }
 }
 
@@ -113,9 +113,9 @@ export async function deletePurchase(req, res) {
   try {
     const { id } = req.params;
     const existing = await pool.query('SELECT * FROM purchases WHERE id = $1', [id]);
-    if (!existing.rows[0]) return res.status(404).json({ error: 'Compra não encontrada.' });
+    if (!existing.rows[0]) return res.status(404).json({ success: false, error: { message: 'Compra não encontrada.' } });
     if (existing.rows[0].status === 'completed') {
-      return res.status(400).json({ error: 'Compra concluída não pode ser excluída.' });
+      return res.status(400).json({ success: false, error: { message: 'Compra concluída não pode ser excluída.' } });
     }
     await pool.query('BEGIN');
     try {
@@ -128,6 +128,6 @@ export async function deletePurchase(req, res) {
       throw e;
     }
   } catch (e) {
-    return res.status(500).json({ error: 'Erro ao excluir compra.', detail: e.message });
+    return res.status(500).json({ success: false, error: { message: 'Erro ao excluir compra.' } });
   }
 }

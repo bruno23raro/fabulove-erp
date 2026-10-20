@@ -249,6 +249,9 @@ describe('StockController', () => {
     await adjustStock(req, res);
 
     expect(res.status).toHaveBeenCalledWith(400);
-    expect(res.json).toHaveBeenCalledWith(expect.objectContaining({ error: expect.stringContaining('type deve ser') }));
+    expect(res.json).toHaveBeenCalledWith(expect.objectContaining({
+      success: false,
+      error: expect.objectContaining({ message: expect.stringContaining('type deve ser') })
+    }));
   });
 });

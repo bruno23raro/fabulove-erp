@@ -463,7 +463,7 @@ let toastTimer = null
 const cartTotals = reactive({ subtotal: 0, discount: 0, total: 0 })
 
 const canComplete = computed(() =>
-  cartItems.value.length > 0 && cartTotals.total > 0 && paymentMethod.value !== ''
+  cartItems.value.length > 0 && cartTotals.total > 0
 )
 
 const canSavePreSale = computed(() =>

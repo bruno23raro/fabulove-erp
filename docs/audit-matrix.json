@@ -20,9 +20,11 @@
         "client/src/views/FinancialDashboardView.vue",
         "client/src/views/CashView.vue",
         "client/src/views/layouts/AppLayout.vue",
-        "client/src/views/PosView.vue"
+        "client/src/views/PosView.vue",
+        "client/src/views/AccountsReceivableView.vue",
+        "client/src/views/AccountsPayableView.vue"
       ],
-      "evidence": "All routes/rendering tested via E2E and unit tests"
+      "evidence": "All routes/rendering tested via E2E and unit tests; PDV payment button bug fixed (canComplete no longer requires paymentMethod)"
     },
     {
       "id": "controllers",
@@ -43,7 +45,7 @@
         "server/controllers/purchase.controller.js",
         "server/controllers/config.controller.js"
       ],
-      "evidence": "Unit and integration tests pass; E2E covers all endpoints"
+      "evidence": "Unit and integration tests pass; E2E covers all endpoints; error response format normalized across all controllers"
     },
     {
       "id": "routes",

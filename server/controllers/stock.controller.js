@@ -4,12 +4,12 @@ export async function adjustStock(req, res) {
   try {
     const { product_id, quantity, type, notes, reference_type, reference_id } = req.body;
     if (!product_id || !quantity || !type) {
-      return res.status(400).json({ error: 'product_id, quantity e type são obrigatórios.' });
+      return res.status(400).json({ success: false, error: { message: 'product_id, quantity e type são obrigatórios.' } });
     }
 
     const allowed = ['in', 'out', 'adjust'];
     if (!allowed.includes(type)) {
-      return res.status(400).json({ error: 'type deve ser in, out ou adjust.' });
+      return res.status(400).json({ success: false, error: { message: 'type deve ser in, out ou adjust.' } });
     }
 
     const client = await pool.connect();
@@ -57,7 +57,7 @@ export async function adjustStock(req, res) {
       client.release();
     }
   } catch (e) {
-    return res.status(500).json({ error: 'Erro ao ajustar estoque.', detail: e.message });
+    return res.status(500).json({ success: false, error: { message: 'Erro ao ajustar estoque.' } });
   }
 }
 
@@ -68,6 +68,6 @@ export async function listMovements(req, res) {
     );
     return res.json({ success: true, data: result.rows });
   } catch (e) {
-    return res.status(500).json({ error: 'Erro ao listar movimentações.', detail: e.message });
+    return res.status(500).json({ success: false, error: { message: 'Erro ao listar movimentações.' } });
   }
 }
