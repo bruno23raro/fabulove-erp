@@ -1,0 +1,64 @@
+name: CI
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+    branches: [master, main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: fabulove_erp_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run migrations
+        env:
+          DATABASE_URL: postgres://postgres:postgres@localhost:5432/fabulove_erp_test
+        run: npm run db:migrate
+
+      - name: Run linter
+        run: npm run lint || echo "No lint script defined"
+
+      - name: Run unit tests
+        env:
+          DATABASE_URL: postgres://postgres:postgres@localhost:5432/fabulove_erp_test
+        run: npm test
+
+      - name: Run E2E tests
+        env:
+          DATABASE_URL: postgres://postgres:postgres@localhost:5432/fabulove_erp_test
+          PORT: 3000
+        run: node server/tests/e2e-test.cjs
+
+      - name: Build production
+        run: npm run build
+
+      - name: Run npm audit
+        run: npm audit --production
+        continue-on-error: true

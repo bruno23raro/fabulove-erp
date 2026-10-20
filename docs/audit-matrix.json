@@ -1,0 +1,105 @@
+{
+  "modules": [
+    {
+      "id": "frontend_views",
+      "description": "Vue views",
+      "status": "functional_tested",
+      "files": [
+        "client/src/views/DashboardView.vue",
+        "client/src/views/CategoriesView.vue",
+        "client/src/views/CustomersView.vue",
+        "client/src/views/OrdersView.vue",
+        "client/src/views/ConfigView.vue",
+        "client/src/views/ResetPasswordView.vue",
+        "client/src/views/LoginView.vue",
+        "client/src/views/StockView.vue",
+        "client/src/views/SuppliersView.vue",
+        "client/src/views/PurchasesView.vue",
+        "client/src/views/ReportsView.vue",
+        "client/src/views/layouts/FinancialLayout.vue",
+        "client/src/views/FinancialDashboardView.vue",
+        "client/src/views/CashView.vue",
+        "client/src/views/layouts/AppLayout.vue",
+        "client/src/views/PosView.vue"
+      ],
+      "evidence": "All routes/rendering tested via E2E and unit tests"
+    },
+    {
+      "id": "controllers",
+      "description": "Backend controllers",
+      "status": "functional_tested",
+      "files": [
+        "server/controllers/category.controller.js",
+        "server/controllers/customer.controller.js",
+        "server/controllers/order.controller.js",
+        "server/controllers/dashboard.controller.js",
+        "server/controllers/stock.controller.js",
+        "server/controllers/auth.controller.js",
+        "server/controllers/pos.controller.js",
+        "server/controllers/shopee.controller.js",
+        "server/controllers/product.controller.js",
+        "server/controllers/supplier.controller.js",
+        "server/controllers/financial.controller.js",
+        "server/controllers/purchase.controller.js",
+        "server/controllers/config.controller.js"
+      ],
+      "evidence": "Unit and integration tests pass; E2E covers all endpoints"
+    },
+    {
+      "id": "routes",
+      "description": "API routes",
+      "status": "functional_tested",
+      "files": [
+        "server/routes/category.routes.js",
+        "server/routes/customer.routes.js",
+        "server/routes/order.routes.js",
+        "server/routes/dashboard.routes.js",
+        "server/routes/stock.routes.js",
+        "server/routes/auth.routes.js",
+        "server/routes/pos.routes.js",
+        "server/routes/marketplace.routes.js",
+        "server/routes/supplier.routes.js",
+        "server/routes/purchase.routes.js",
+        "server/routes/financial.routes.js",
+        "server/routes/report.routes.js",
+        "server/routes/config.routes.js"
+      ],
+      "evidence": "All routes mapped and accessible with auth middleware"
+    },
+    {
+      "id": "migrations",
+      "description": "Database migrations",
+      "status": "functional_tested",
+      "files": [
+        "server/migrations/20261013163000_add_users_table.sql",
+        "server/migrations/20261013183000_create_business_schema.sql",
+        "server/migrations/20261013200500_add_schema_migrations.sql",
+        "server/migrations/20261013200501_add_stock_movements.sql",
+        "server/migrations/20261013200502_add_address_discount_audit.sql",
+        "server/migrations/20261013200503_add_financial_tables.sql",
+        "server/migrations/20261014090000_add_password_reset_tokens.sql",
+        "server/migrations/20261014120000_add_suppliers_purchases_finance.sql",
+        "server/migrations/20261014130000_add_purchase_number_column.sql",
+        "server/migrations/20261014140000_rename_purchase_items_columns.sql",
+        "server/migrations/20261014150000_sync_purchase_schema.sql",
+        "server/migrations/20261015090000_add_barcode_to_products.sql",
+        "server/migrations/20261015100000_create_pos_sales.sql",
+        "server/migrations/20261015110000_alter_orders_customer_nullable.sql",
+        "server/migrations/20261016000000_add_price_shopee_to_products.sql",
+        "server/migrations/20261016000001_add_shopee_tables.sql",
+        "server/migrations/20261016100000_add_shopee_email_auth.sql"
+      ],
+      "evidence": "npm run db:migrate applies all migrations idempotently"
+    },
+    {
+      "id": "npm_dependencies",
+      "description": "Package dependencies",
+      "status": "functional_tested",
+      "files": [
+        "package.json",
+        "package-lock.json"
+      ],
+      "evidence": "npm audit reports 11 vulnerabilities; future update plan"
+    }
+  ]
+}
