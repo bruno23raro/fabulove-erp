@@ -284,7 +284,7 @@ export class ImportService {
     const sorted = [...headerAnalysis].sort((a, b) => b.confidence - a.confidence)
 
     for (const { header, mappedField, confidence } of sorted) {
-      if (!mappedField || confidence < 0.5) continue
+      if (!mappedField || confidence < 0.45) continue
       if (usedHeaders.has(header)) continue
       mapping[mappedField] = header
       usedHeaders.add(header)

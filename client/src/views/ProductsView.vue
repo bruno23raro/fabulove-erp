@@ -345,6 +345,40 @@
                 </div>
               </div>
 
+              <!-- Image recovery panel -->
+              <div v-if="importResult?.success && pendingImages.length > 0" class="image-recovery-section">
+                <h4 style="margin:16px 0 8px;font-size:14px">
+                  🖼️ {{ pendingImages.length }} imagem(ns) encontrada(s) no arquivo — associe aos produtos
+                </h4>
+                <div class="image-gallery">
+                  <div v-for="img in pendingImages" :key="img.id"
+                       class="image-tile"
+                       :class="{ selected: selectedImageIds.includes(img.id) }"
+                       @click="toggleImage(img.id)">
+                    <div class="image-thumb" :style="{ backgroundImage: `url(${img.url})` }"></div>
+                    <div class="image-info">
+                      <span class="image-name">{{ img.filename }}</span>
+                      <span v-if="img.product_id" class="image-linked">✓ {{ img.product_id }}</span>
+                      <button class="btn btn-ghost btn-xs" @click.stop="discardImage(img.id)" title="Descartar">✕</button>
+                    </div>
+                  </div>
+                </div>
+                <div v-if="pendingImages.length > 0" class="image-associate-bar">
+                  <select v-model="imageProductFilter" class="form-control" style="max-width:200px;display:inline-block">
+                    <option value="">— selecionar produto —</option>
+                    <option v-for="p in products" :key="p.id" :value="p.id">
+                      {{ p.name }} ({{ p.sku || p.id }})
+                    </option>
+                  </select>
+                  <button class="btn btn-primary btn-sm" :disabled="!imageProductFilter || selectedImageIds.length === 0"
+                          @click="associateImages">
+                    Associar {{ selectedImageIds.length }} imagem(ns)
+                  </button>
+                  <button class="btn btn-ghost btn-sm" @click="discardAllImages">Descartar todas</button>
+                </div>
+                <div v-if="imageError" class="alert alert-danger" style="margin-top:8px">{{ imageError }}</div>
+              </div>
+
               <div v-if="importResult.data?.errorList?.length" class="errors-section">
                 <details>
                   <summary style="cursor:pointer;font-size:13px;color:var(--color-danger);font-weight:500">
@@ -416,6 +450,13 @@ const analyzeLoading = ref(false)
 const analyzeError = ref('')
 const analysis = ref(null)
 const savedProfiles = ref([])
+
+// ── Image Recovery State ─────────────────────────────────────────────────────
+const pendingImages = ref([])
+const imageLoading = ref(false)
+const imageError = ref('')
+const selectedImageIds = ref([])
+const imageProductFilter = ref('')
 
 // Column mappings: { headerName: { mapping, confidence } }
 const columnMappings = ref([])
@@ -649,6 +690,7 @@ async function runImport() {
       await loadProfiles()
     }
     loadProducts()
+    await loadPendingImages()
   } catch (err) {
     importError.value = err?.response?.data?.error?.message || 'Erro ao importar arquivo.'
     importResult.value = { success: false }
@@ -678,6 +720,59 @@ async function loadProfiles() {
   } catch (_) {}
 }
 
+// ── Image Recovery Actions ────────────────────────────────────────────────────
+async function loadPendingImages() {
+  imageLoading.value = true
+  imageError.value = ''
+  try {
+    const { data } = await api.get('/products/import/images/pending')
+    pendingImages.value = data.data || []
+  } catch (err) {
+    imageError.value = err?.response?.data?.error?.message || 'Erro ao carregar imagens.'
+  } finally {
+    imageLoading.value = false
+  }
+}
+
+function toggleImage(id) {
+  const idx = selectedImageIds.value.indexOf(id)
+  if (idx >= 0) selectedImageIds.value.splice(idx, 1)
+  else selectedImageIds.value.push(id)
+}
+
+async function associateImages() {
+  if (!imageProductFilter.value || selectedImageIds.value.length === 0) return
+  try {
+    await api.post('/products/import/images/associate', {
+      imageIds: selectedImageIds.value,
+      productId: parseInt(imageProductFilter.value),
+    })
+    selectedImageIds.value = []
+    await loadPendingImages()
+    loadProducts()
+  } catch (err) {
+    imageError.value = err?.response?.data?.error?.message || 'Erro ao associar imagens.'
+  }
+}
+
+async function discardImage(id) {
+  try {
+    await api.delete(`/products/import/images/${id}`)
+    selectedImageIds.value = selectedImageIds.value.filter(i => i !== id)
+    await loadPendingImages()
+  } catch (_) {}
+}
+
+async function discardAllImages() {
+  if (pendingImages.value.length === 0) return
+  const ids = pendingImages.value.map(i => i.id)
+  for (const id of ids) {
+    try { await api.delete(`/products/import/images/${id}`) } catch (_) {}
+  }
+  pendingImages.value = []
+  selectedImageIds.value = []
+}
+
 function loadProfile(profile) {
   if (profile.mapping) {
     try {
@@ -698,6 +793,10 @@ function clearFile() {
   columnMappings.value = []
   analyzeError.value = ''
   importResult.value = null
+  pendingImages.value = []
+  selectedImageIds.value = []
+  imageProductFilter.value = ''
+  imageError.value = ''
   if (fileInput.value) fileInput.value.value = ''
 }
 
@@ -959,4 +1058,63 @@ onMounted(() => { loadProducts(); loadCategories() })
 .stat-value { font-size: 24px; font-weight: 700; }
 .stat-label { font-size: 12px; color: var(--color-text-muted); }
 .errors-section { margin-top: 16px; text-align: left; }
+
+/* Image recovery */
+.image-recovery-section {
+  border-top: 1px solid var(--color-border);
+  padding-top: 16px;
+  margin-top: 16px;
+}
+.image-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 8px;
+  max-height: 240px;
+  overflow-y: auto;
+  padding: 4px;
+}
+.image-tile {
+  border: 2px solid transparent;
+  border-radius: 6px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color 0.15s;
+  background: var(--color-surface-2);
+}
+.image-tile:hover { border-color: var(--color-primary-light, #93c5fd); }
+.image-tile.selected { border-color: var(--color-primary); background: rgba(59,130,246,0.08); }
+.image-thumb {
+  width: 100%;
+  height: 80px;
+  background-size: cover;
+  background-position: center;
+  background-color: var(--color-border);
+}
+.image-info {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 6px;
+  font-size: 11px;
+  overflow: hidden;
+}
+.image-name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--color-text-secondary);
+}
+.image-linked { color: var(--color-success); font-weight: 500; }
+.image-associate-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--color-border);
+  font-size: 13px;
+}
+.btn-xs { padding: 2px 6px; font-size: 11px; }
 </style>

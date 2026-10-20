@@ -11,7 +11,7 @@ const ENCODINGS = ['utf-8', 'latin1', 'cp1252', 'iso-8859-1']
 function tryParseWithEncoding(buffer, encoding) {
   const text = iconv.decode(buffer, encoding)
   const lines = text.split(/\r?\n/).map(l => l.trim()).filter(Boolean)
-  if (lines.length < 2) return null
+  if (lines.length < 1) return null
 
   // Auto-detect delimiter by checking which gives most consistent column counts
   const delimiters = ['\t', ';', ',', '|']
@@ -89,7 +89,7 @@ export const csvFormat = {
       comments: options.commentChar || '',
     })
 
-    if (parseResult.errors.length > 0 && parseResult.data.length < 2) {
+    if (parseResult.errors.length > 0 && parseResult.data.length < 1) {
       throw new Error(`Erro ao processar CSV: ${parseResult.errors[0].message}`)
     }
 

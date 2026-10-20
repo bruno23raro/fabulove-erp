@@ -6,11 +6,15 @@
  * GET  /api/products/import/profiles — list saved import profiles
  * POST /api/products/import/profiles — save an import profile
  * DELETE /api/products/import/profiles/:id — delete an import profile
+ * GET  /api/products/import/images/pending — list pending images from ZIP imports
+ * POST /api/products/import/images/associate — associate images with products
+ * DELETE /api/products/import/images/:id — discard a pending image
  */
 import { Router } from 'express'
 import multer from 'multer'
-import { authenticateToken, authorizeRole } from '../../utils/jwt.js'
+import { authenticateToken, authorizeRole } from '../utils/jwt.js'
 import { analyzeFile, ImportService } from '../services/import/index.js'
+import { imageService } from '../services/import/image.service.js'
 import pool from '../config/database.js'
 import logger from '../utils/logger.js'
 
@@ -25,7 +29,9 @@ const upload = multer({
     const allowed = ['.csv', '.tsv', '.txt', '.xlsx', '.xls', '.json', '.jsonl', '.ndjson', '.xml', '.zip']
     const ext = '.' + file.originalname.split('.').pop().toLowerCase()
     if (allowed.includes(ext)) return cb(null, true)
-    cb(new Error(`Extensão não permitida: ${ext}`))
+    const err = new Error(`Extensão não permitida: ${ext}`)
+    err.statusCode = 400
+    cb(err)
   },
 })
 
@@ -150,5 +156,43 @@ router.delete('/import/profiles/:id', async (req, res, next) => {
 // ── Legacy single-file CSV/ZIP import (backward compat) ───────────────────────
 // Kept on /api/products/import for existing E2E tests and simple use cases
 // The new multi-format flow uses /api/products/import/analyze + /api/products/import
+
+// ── Image endpoints ────────────────────────────────────────────────────────────
+router.get('/import/images/pending', async (req, res, next) => {
+  try {
+    const images = await imageService.getPendingImages(200)
+    const count = await imageService.countPending()
+    return res.json({ success: true, data: images, total: count })
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.post('/import/images/associate', async (req, res, next) => {
+  try {
+    const { imageIds, productId } = req.body
+    if (!imageIds || !Array.isArray(imageIds) || !productId) {
+      return res.status(400).json({ success: false, error: { message: 'imageIds e productId são obrigatórios.' } })
+    }
+    for (const id of imageIds) {
+      await pool.query(
+        `UPDATE product_images SET product_id = $1, status = 'linked' WHERE id = $2 AND status = 'pending'`,
+        [productId, id]
+      )
+    }
+    return res.json({ success: true, data: { associated: imageIds.length } })
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.delete('/import/images/:id', async (req, res, next) => {
+  try {
+    await imageService.discardImages([parseInt(req.params.id)])
+    return res.json({ success: true, data: { message: 'Imagem descartada.' } })
+  } catch (err) {
+    next(err)
+  }
+})
 
 export default router

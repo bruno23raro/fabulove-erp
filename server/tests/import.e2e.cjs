@@ -129,8 +129,8 @@ async function main() {
   }
 
   // ── Test: Analyze unsupported format ──────────────────────────────────
-  fs.writeFileSync(path.join(tmpDir, 'fake.csv'), 'NOT ACTUALLY CSV ' + Date.now())
-  const fakeAnalyze = await multipartUpload('POST', '/api/products/import/analyze', path.join(tmpDir, 'fake.csv'), token)
+  fs.writeFileSync(path.join(tmpDir, 'fake.xyz'), 'NOT SUPPORTED ' + Date.now())
+  const fakeAnalyze = await multipartUpload('POST', '/api/products/import/analyze', path.join(tmpDir, 'fake.xyz'), token)
   if (fakeAnalyze.s === 400 && !fakeAnalyze.j?.success) {
     PASS++; console.log('PASS  ' + fakeAnalyze.s + '  POST /api/products/import/analyze (unsupported) correctly rejected ✓')
   } else {

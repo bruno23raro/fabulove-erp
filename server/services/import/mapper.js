@@ -36,7 +36,7 @@ function similarity(a, b) {
 const FIELD_DEFINITIONS = {
   name: {
     aliases: ['nome', 'name', 'produto', 'product', 'titulo', 'title', 'item name',
-              'nome_produto', 'product_name', 'article'],
+              'nome_produto', 'product_name', 'article', 'razao_social'],
     required: true,
   },
   sku: {
@@ -46,18 +46,19 @@ const FIELD_DEFINITIONS = {
   },
   barcode: {
     aliases: ['barcode', 'codigo_barras', 'cod_barras', 'ean', 'gtin', 'isbn',
-              'cod_barra', 'barcode_seller', 'seller_barcode', 'upc', 'codigo_barras'],
+              'cod_barra', 'barcode_seller', 'seller_barcode', 'upc', 'codigo_barras',
+              'ean13', 'gtin13'],
     required: false,
   },
   description: {
     aliases: ['description', 'descricao', 'desc', 'detail', 'details', 'resumo',
-              'product_description', 'about', 'complemento'],
+              'product_description', 'about', 'complemento', 'detalhes'],
     required: false,
   },
   price: {
     aliases: ['price', 'preco', 'preço', 'precio', 'valor', 'sale_price', 'selling_price',
               'price_sale', 'venda', 'preco_venda', 'preco_final', 'list_price',
-              'retail_price', 'customer_price'],
+              'retail_price', 'customer_price', 'vlr_unitario', 'custo_unitario', 'pvp', 'preco_publico'],
     required: false,
   },
   cost: {
@@ -67,7 +68,8 @@ const FIELD_DEFINITIONS = {
   },
   stock: {
     aliases: ['stock', 'qty', 'quantity', 'quantidade', 'estoque', 'inventory',
-              'available', 'disponivel', 'avail', 'qtd', 'units', 'quantity_available'],
+              'available', 'disponivel', 'avail', 'qtd', 'units', 'quantity_available',
+              'disponibilidade'],
     required: false,
   },
   stockMin: {
@@ -77,7 +79,7 @@ const FIELD_DEFINITIONS = {
   },
   category: {
     aliases: ['category', 'categoria', 'cat', 'type', 'section', 'department',
-              'family', 'grupo', ' classe', 'niche'],
+              'family', 'grupo', ' classe', 'niche', 'familia', 'subcategoria', 'linha'],
     required: false,
   },
   brand: {
@@ -95,6 +97,14 @@ const FIELD_DEFINITIONS = {
   },
   ncm: {
     aliases: ['ncm', 'ncc', 'sh', 'hs_code', 'codigo_ncm', 'tributacao'],
+    required: false,
+  },
+  pricePromotional: {
+    aliases: ['preco_promocional', 'preco_promo', 'promo_price', 'sale_price', 'preco_offerta', 'desconto'],
+    required: false,
+  },
+  availability: {
+    aliases: ['disponibilidade', 'stock_status', 'situacao', 'estado'],
     required: false,
   },
 }
@@ -241,6 +251,12 @@ export function normalizeRow(rawRow, fieldMapping) {
         break
       case 'ncm':
         product.ncm = normalizeString(val)
+        break
+      case 'pricePromotional':
+        product.price_promotional = normalizePrice(val)
+        break
+      case 'availability':
+        product.availability = normalizeString(val)
         break
       default:
         break

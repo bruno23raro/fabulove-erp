@@ -499,7 +499,8 @@ describe('Import Edge Cases', () => {
     const buffer = makeCsv('barcode,name,price')
     const service = new ImportService({ batchSize: 100 })
     const result = await service.import(buffer, 'test.csv', null, { duplicatePolicy: 'skip' })
-    // CSV parser requires at least 2 lines (header + data row)
-    expect(result.success).toBe(false)
+    // Header-only CSV is valid — returns empty rows, not an error
+    expect(result.success).toBe(true)
+    expect(result.stats.totalRows).toBe(0)
   })
 })

@@ -45,35 +45,7 @@ router.put('/:id', authorizeRole('admin', 'manager'), updateProduct);
 router.delete('/:id', authorizeRole('admin'), deleteProduct);
 router.patch('/:id/stock', authorizeRole('admin', 'manager', 'operator'), adjustStock);
 
-// Legacy single-file import (CSV/ZIP only) — backward compat for E2E tests
-router.post('/import', authorizeRole('admin', 'manager'), upload.single('file'), async (req, res, next) => {
-  if (!req.file) {
-    return res.status(400).json({ success: false, error: { message: 'Arquivo é obrigatório.' } })
-  }
-  // Delegate to the universal import service
-  const { ImportService } = await import('../services/import/index.js')
-  const service = new ImportService({ duplicatePolicy: 'skip' })
-  try {
-    const result = await service.import(req.file.buffer, req.file.originalname, null, {
-      duplicatePolicy: 'skip',
-      batchSize: 500,
-    })
-    if (!result.success) {
-      return res.status(400).json({ success: false, error: { message: result.error } })
-    }
-    return res.json({ success: true, data: {
-      created: result.stats.created,
-      updated: result.stats.updated,
-      errors: result.stats.errors,
-      totalLines: result.stats.totalRows,
-      errorList: result.errorList?.slice(0, 20) || [],
-    }})
-  } catch (err) {
-    next(err)
-  }
-})
-
-// Universal import routes (analyze, full import, profiles)
-router.use('/import', importController)
+// Universal import routes (analyze, profiles) — mounted at root since controller has /import prefix internally
+router.use('/', importController)
 
 export default router;

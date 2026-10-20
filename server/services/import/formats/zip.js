@@ -7,6 +7,8 @@ import { registerFormat } from './base.js'
 // Dangerous file types to skip
 const DANGEROUS_EXTS = new Set(['exe', 'bat', 'cmd', 'sh', 'js', 'py', 'vbs', 'msi', 'dll', 'scr'])
 
+const IMAGE_EXTS = new Set(['jpg', 'jpeg', 'png', 'webp'])
+
 export const zipFormat = {
   type: 'zip',
   label: 'ZIP Archive',
@@ -32,8 +34,8 @@ export const zipFormat = {
 
     const entries = zip.getEntries()
     const maxDepth = options.maxDepth ?? 5
-    const maxSizeTotal = (options.maxSizeTotal ?? 50) * 1024 * 1024 // 50 MB default
-    const maxFiles = options.maxFiles ?? 50
+    const maxSizeTotal = (options.maxSizeTotal ?? 500) * 1024 * 1024 // 500 MB default
+    const maxFiles = options.maxFiles ?? 5000
 
     // Validate ZIP safety
     let totalSize = 0
@@ -60,22 +62,25 @@ export const zipFormat = {
       throw new Error('ZIP não contém arquivos válidos para importação.')
     }
 
-    // Limit to maxFiles
-    const limitedEntries = validEntries.slice(0, maxFiles)
-
-    // For ZIP, we expect CSV/XLSX/JSON/XML inside
-    // Parse the first suitable file, or combine all
-    const importable = limitedEntries.filter(e => {
+    const importable = validEntries.filter(e => {
       const ext = e.entryName.split('.').pop()?.toLowerCase() || ''
       return ['csv', 'tsv', 'txt', 'xlsx', 'xls', 'json', 'jsonl', 'xml'].includes(ext)
     })
 
-    if (importable.length === 0) {
+    const imageEntries = validEntries.filter(e => {
+      const ext = e.entryName.split('.').pop()?.toLowerCase() || ''
+      return IMAGE_EXTS.has(ext)
+    })
+
+    // Limit importable files (not images) to maxFiles
+    const limitedImportable = importable.slice(0, maxFiles)
+
+    if (limitedImportable.length === 0) {
       throw new Error('ZIP não contém arquivos CSV, XLSX, JSON ou XML.')
     }
 
     // Prefer a file in a "produtos" folder (common Shopee export pattern)
-    const preferred = importable.find(e => /\/produtos\//i.test(e.entryName)) ?? importable[0]
+    const preferred = limitedImportable.find(e => /\/produtos\//i.test(e.entryName)) ?? limitedImportable[0]
     const content = preferred.getData().toString('utf-8')
 
     // Reconstruct buffer for format detection
@@ -88,11 +93,25 @@ export const zipFormat = {
     if (!fmt) throw new Error('Nenhum formato reconhecido encontrado no ZIP.')
 
     const result = await fmt.parse(fakeBuffer, options)
+    const imageEntryList = imageEntries.map(e => ({ name: e.entryName, size: e.header.size }))
+
     result.metadata.zipFile = preferred.entryName
     result.metadata.totalEntries = validEntries.length
-    result.metadata.importableFiles = importable.map(e => e.entryName)
+    result.metadata.importableFiles = limitedImportable.map(e => e.entryName)
+    result.metadata.imageCount = imageEntryList.length
+    result.metadata.imageEntries = imageEntryList
 
-    return result
+    // Collect image buffers for on-demand extraction
+    const imageBuffers = new Map()
+    for (const img of imageEntries) {
+      imageBuffers.set(img.entryName, img.getData())
+    }
+
+    return Object.assign(result, {
+      getImages() {
+        return imageBuffers
+      },
+    })
   },
 }
 
