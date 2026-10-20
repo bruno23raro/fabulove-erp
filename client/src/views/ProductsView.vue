@@ -13,7 +13,7 @@
         />
       </div>
       <div class="toolbar-right">
-        <button class="btn btn-secondary" @click="openImportModal">📥 Importar (CSV/ZIP)</button>
+        <button class="btn btn-secondary" @click="openImportModal">📥 Importar Produtos</button>
         <button class="btn btn-primary" @click="openCreate">+ Novo Produto</button>
       </div>
     </div>
@@ -170,66 +170,210 @@
         </div>
       </div>
     </div>
-    <!-- Modal importar CSV -->
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- WIZARD DE IMPORTAÇÃO — 4 etapas                                -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
     <div v-if="showImportModal" class="modal-overlay" @click.self="showImportModal = false">
-      <div class="modal" role="dialog" aria-label="Importar produtos via CSV ou ZIP">
+      <div class="modal import-wizard" role="dialog" aria-label="Importador universal de produtos">
+        <!-- Header -->
         <div class="modal-header">
-          <span class="modal-title">Importar Produtos (CSV/ZIP)</span>
+          <span class="modal-title">📥 Importar Produtos</span>
           <button class="btn btn-ghost" @click="showImportModal = false" aria-label="Fechar">✕</button>
         </div>
-        <div class="modal-body">
-          <p class="text-muted text-sm">
-            O arquivo deve conter as colunas: <strong>barcode</strong>, <strong>nome</strong>, <strong>preço</strong>
-            (opcionais: estoque, categoria, sku). Aceita .csv ou .zip (o ZIP deve conter um CSV com os produtos).
-            O CSV pode usar vírgula ou ponto-e-vírgula como separador.
-          </p>
-          <div class="import-upload-area" :class="{ dragging: isDragging }"
-               @dragover.prevent="isDragging = true"
-               @dragleave.prevent="isDragging = false"
-               @drop.prevent="onDrop">
-            <input type="file" accept=".csv,.zip,text/csv,application/zip" ref="fileInput" @change="onFileSelected" style="display:none" />
-            <div v-if="!importFileName" class="upload-placeholder" @click="$refs.fileInput.click()">
-              <span class="upload-icon">📁</span>
-              <span class="upload-text">Clique ou arraste um arquivo CSV ou ZIP aqui</span>
+
+        <!-- Step indicators -->
+        <div class="wizard-steps">
+          <div v-for="(s, i) in steps" :key="i"
+               class="step-indicator"
+               :class="{ active: importStep === i, done: importStep > i }">
+            <span class="step-num">{{ i + 1 }}</span>
+            <span class="step-label">{{ s }}</span>
+          </div>
+          <div class="step-progress" :style="{ width: ((importStep) / (steps.length - 1)) * 100 + '%' }"></div>
+        </div>
+
+        <div class="modal-body wizard-body">
+          <!-- STEP 0: Upload -->
+          <div v-if="importStep === 0">
+            <p class="text-muted text-sm" style="margin-bottom:16px">
+              Suporta <strong>CSV, XLSX, JSON, XML e ZIP</strong>. O sistema detecta automaticamente o formato e reconhece as colunas.
+            </p>
+            <div class="import-upload-area" :class="{ dragging: isDragging }"
+                 @dragover.prevent="isDragging = true"
+                 @dragleave.prevent="isDragging = false"
+                 @drop.prevent="onDrop">
+              <input type="file"
+                     accept=".csv,.tsv,.txt,.xlsx,.xls,.json,.jsonl,.ndjson,.xml,.zip"
+                     ref="fileInput"
+                     @change="onFileSelected"
+                     style="display:none" />
+              <div v-if="!importFile" class="upload-placeholder" @click="$refs.fileInput.click()">
+                <span class="upload-icon">📁</span>
+                <span class="upload-text">Clique ou arraste um arquivo aqui</span>
+                <span class="upload-hint">CSV, XLSX, JSON, XML ou ZIP</span>
+              </div>
+              <div v-else class="uploaded-file-info">
+                <div class="uploaded-file-main">
+                  <span class="file-icon">📄</span>
+                  <span class="file-name">{{ importFileName }}</span>
+                  <span class="file-size">{{ formatFileSize(importFileRaw?.size) }}</span>
+                </div>
+                <button class="btn btn-ghost btn-sm" @click="clearFile">✕</button>
+              </div>
             </div>
-            <div v-else class="uploaded-file">
-              <span class="file-name">📄 {{ importFileName }}</span>
-              <button class="btn btn-ghost btn-sm" @click="clearFile">✕</button>
+            <div v-if="analyzeLoading" class="analyze-loading" style="margin-top:12px;text-align:center">
+              <span class="spinner" style="width:16px;height:16px"></span>
+              <span class="text-muted text-sm" style="margin-left:8px">Analisando arquivo…</span>
+            </div>
+            <div v-if="analyzeError" class="alert alert-danger" style="margin-top:12px">{{ analyzeError }}</div>
+          </div>
+
+          <!-- STEP 1: Preview & Mapping -->
+          <div v-if="importStep === 1">
+            <div class="mapping-header">
+              <span class="text-sm text-muted">Formato detectado: <strong>{{ analysis?.formatLabel }}</strong> · {{ analysis?.totalRows }} linhas</span>
+              <button class="btn btn-ghost btn-sm" @click="importStep = 0">← Trocar arquivo</button>
+            </div>
+
+            <!-- Column mapping table -->
+            <div class="mapping-section">
+              <h4 class="mapping-section-title">Mapeamento de Colunas</h4>
+              <div class="mapping-table">
+                <div class="mapping-row header">
+                  <span>Coluna no arquivo</span>
+                  <span>Mapear para</span>
+                  <span>Confiança</span>
+                </div>
+                <div v-for="col in columnMappings" :key="col.header" class="mapping-row">
+                  <span class="col-source">{{ col.header }}</span>
+                  <span>
+                    <select v-model="col.mapping" class="mapping-select" :class="{ 'mapping-high': col.confidence >= 0.7 }">
+                      <option value="">— não mapeado —</option>
+                      <option v-for="f in targetFields" :key="f" :value="f">
+                        {{ fieldLabel(f) }}
+                      </option>
+                    </select>
+                  </span>
+                  <span>
+                    <span v-if="col.confidence >= 0.7" class="confidence-badge confidence-high">✓ alto</span>
+                    <span v-else-if="col.confidence >= 0.45" class="confidence-badge confidence-mid">~ médio</span>
+                    <span v-else class="confidence-badge confidence-low">? baixo</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Preview -->
+            <div class="preview-section" style="margin-top:16px">
+              <h4 class="mapping-section-title">Pré-visualização (até 5 linhas)</h4>
+              <div class="table-wrapper" style="max-height:200px;overflow-y:auto">
+                <table class="preview-table">
+                  <thead>
+                    <tr>
+                      <th v-for="h in analysis?.headers" :key="h">{{ h }}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="(row, ri) in (analysis?.preview || []).slice(0,5)" :key="ri">
+                      <td v-for="h in analysis?.headers" :key="h" class="text-muted text-sm">{{ row[h] || '—' }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
-          <div v-if="importError" class="alert alert-danger" style="margin-top:12px">{{ importError }}</div>
-          <div v-if="importResult" class="import-summary" style="margin-top:12px">
-            <div class="summary-row">
-              <span class="summary-label">Total de linhas:</span>
-              <span class="summary-value">{{ importResult.totalLines }}</span>
+
+          <!-- STEP 2: Options -->
+          <div v-if="importStep === 2">
+            <div class="options-section">
+              <div class="form-group">
+                <label class="form-label">Política de duplicatas</label>
+                <select v-model="importOptions.duplicatePolicy" class="form-control">
+                  <option value="skip">⏭️ Ignorar duplicatas (padrão)</option>
+                  <option value="create">➕ Criar mesmo com duplicata</option>
+                  <option value="update">🔄 Atualizar produto existente</option>
+                  <option value="review">⚠️ Revisar duplicatas (flag)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Tamanho do lote</label>
+                <input v-model.number="importOptions.batchSize" type="number" min="10" max="5000" class="form-control" style="max-width:160px" />
+                <span class="text-muted text-sm">Registros por transação (10–5000)</span>
+              </div>
+              <div class="form-group">
+                <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+                  <input type="checkbox" v-model="importOptions.saveProfile" />
+                  <span class="form-label" style="margin:0">Salvar este mapeamento como perfil</span>
+                </label>
+              </div>
+              <div v-if="importOptions.saveProfile" class="form-group" style="margin-left:24px">
+                <input v-model="importOptions.profileName" placeholder="Nome do perfil (ex: Fornecedor ABC)" class="form-control" style="max-width:280px" />
+              </div>
+              <div v-if="savedProfiles.length" class="form-group" style="margin-top:12px">
+                <label class="form-label">Perfis salvos</label>
+                <div v-for="p in savedProfiles" :key="p.id" class="profile-chip" @click="loadProfile(p)">
+                  <span class="profile-name">{{ p.name }}</span>
+                  <span class="text-muted text-sm">{{ p.mapping ? Object.keys(p.mapping).length + ' colunas' : 'sem mapeamento' }}</span>
+                </div>
+              </div>
             </div>
-            <div class="summary-row">
-              <span class="summary-label" style="color:var(--color-success)">✓ Criados:</span>
-              <span class="summary-value" style="color:var(--color-success)">{{ importResult.created }}</span>
+          </div>
+
+          <!-- STEP 3: Results -->
+          <div v-if="importStep === 3">
+            <div v-if="importResult" class="result-summary">
+              <div class="result-icon">{{ importResult.success ? '✅' : '❌' }}</div>
+              <h3 style="margin:8px 0">{{ importResult.success ? 'Importação concluída!' : 'Erros na importação' }}</h3>
+
+              <div v-if="importResult.success" class="stats-grid">
+                <div class="stat-card">
+                  <span class="stat-value" style="color:var(--color-success)">{{ importResult.data?.created ?? 0 }}</span>
+                  <span class="stat-label">Criados</span>
+                </div>
+                <div class="stat-card">
+                  <span class="stat-value" style="color:var(--color-info)">{{ importResult.data?.updated ?? 0 }}</span>
+                  <span class="stat-label">Atualizados</span>
+                </div>
+                <div class="stat-card">
+                  <span class="stat-value" style="color:var(--color-warning)">{{ importResult.data?.skipped ?? 0 }}</span>
+                  <span class="stat-label">Ignorados</span>
+                </div>
+                <div class="stat-card">
+                  <span class="stat-value">{{ importResult.data?.totalLines ?? 0 }}</span>
+                  <span class="stat-label">Total de linhas</span>
+                </div>
+              </div>
+
+              <div v-if="importResult.data?.errorList?.length" class="errors-section">
+                <details>
+                  <summary style="cursor:pointer;font-size:13px;color:var(--color-danger);font-weight:500">
+                    {{ importResult.data.errorList.length }} erro(s) encontrado(s)
+                  </summary>
+                  <ul style="margin-top:8px;padding-left:20px;font-size:12px;color:var(--color-text-secondary)">
+                    <li v-for="(err, i) in importResult.data.errorList" :key="i">{{ err }}</li>
+                  </ul>
+                </details>
+              </div>
             </div>
-            <div class="summary-row">
-              <span class="summary-label" style="color:var(--color-primary)">↻ Atualizados:</span>
-              <span class="summary-value" style="color:var(--color-primary)">{{ importResult.updated }}</span>
-            </div>
-            <div v-if="importResult.errors && importResult.errors.length" class="summary-row">
-              <span class="summary-label" style="color:var(--color-danger)">✕ Erros:</span>
-              <span class="summary-value" style="color:var(--color-danger)">{{ importResult.errors.length }}</span>
-            </div>
-            <div v-if="importResult.errors && importResult.errors.length" class="import-errors" style="margin-top:8px">
-              <details>
-                <summary style="cursor:pointer;font-size:13px;color:var(--color-danger)">Ver detalhes dos erros</summary>
-                <ul style="margin-top:8px;padding-left:20px;font-size:12px;color:var(--color-text-secondary)">
-                  <li v-for="(err, i) in importResult.errors" :key="i">{{ err }}</li>
-                </ul>
-              </details>
-            </div>
+            <div v-else-if="importError" class="alert alert-danger">{{ importError }}</div>
           </div>
         </div>
+
+        <!-- Footer -->
         <div class="modal-footer">
-          <button class="btn btn-secondary" @click="showImportModal = false">Fechar</button>
-          <button class="btn btn-primary" :disabled="!importFile || uploadingImport" @click="uploadImport">
-            <span v-if="uploadingImport" class="spinner"></span>
-    {{ uploadingImport ? 'Enviando…' : 'Importar' }}
+          <button v-if="importStep > 0" class="btn btn-secondary" @click="importStep--">← Voltar</button>
+          <button v-if="importStep === 0" class="btn btn-secondary" @click="showImportModal = false">Cancelar</button>
+          <button v-if="importStep < 3"
+                  class="btn btn-primary"
+                  :disabled="!canProceed"
+                  @click="nextStep">
+            {{ importStep === 2 ? '🚀 Iniciar Importação' : 'Próximo →' }}
+          </button>
+          <button v-if="importStep === 3 && importResult?.success"
+                  class="btn btn-primary"
+                  @click="showImportModal = false">
+            ✓ Concluir
           </button>
         </div>
       </div>
@@ -256,15 +400,40 @@ const formError = ref('')
 const barcodeFlash = ref(false)
 const showModal = ref(false)
 
-// CSV import state
+// ── Import Wizard State ───────────────────────────────────────────────
 const showImportModal = ref(false)
-const importFile = ref(null)
+const importStep = ref(0)
+const steps = ['Upload', 'Mapeamento', 'Opções', 'Resultado']
+
+const importFileRaw = ref(null)
 const importFileName = ref('')
 const uploadingImport = ref(false)
 const importError = ref('')
 const importResult = ref(null)
 const isDragging = ref(false)
 const fileInput = ref(null)
+const analyzeLoading = ref(false)
+const analyzeError = ref('')
+const analysis = ref(null)
+const savedProfiles = ref([])
+
+// Column mappings: { headerName: { mapping, confidence } }
+const columnMappings = ref([])
+const targetFields = ref(['name','sku','barcode','description','price','cost','stock','stockMin','category','brand','weight','image','ncm'])
+
+const importOptions = reactive({
+  duplicatePolicy: 'skip',
+  batchSize: 500,
+  saveProfile: false,
+  profileName: '',
+})
+
+const canProceed = computed(() => {
+  if (importStep.value === 0) return !!importFileRaw.value
+  if (importStep.value === 1) return true // mapping optional
+  if (importStep.value === 2) return true
+  return false
+})
 
 const form = reactive({
   name: '', sku: '', barcode: '', description: '', price: '', cost: '',
@@ -346,68 +515,188 @@ async function submitForm() {
   }
 }
 
-// ── CSV Import ───────────────────────────────────────────────────────────────
+function fieldLabel(field) {
+  const labels = {
+    name: 'Nome', sku: 'SKU', barcode: 'Código de Barras', description: 'Descrição',
+    price: 'Preço', cost: 'Custo', stock: 'Estoque', stockMin: 'Estoque Mínimo',
+    category: 'Categoria', brand: 'Marca', weight: 'Peso', image: 'Imagem', ncm: 'NCM',
+  }
+  return labels[field] || field
+}
+
+function formatFileSize(bytes) {
+  if (!bytes) return ''
+  if (bytes < 1024) return bytes + ' B'
+  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB'
+  return (bytes / (1024 * 1024)).toFixed(1) + ' MB'
+}
+
+// ── Wizard Actions ────────────────────────────────────────────────────
 function openImportModal() {
-  showImportModal.value = true
-  importFile.value = null
+  importStep.value = 0
+  importFileRaw.value = null
   importFileName.value = ''
   importError.value = ''
   importResult.value = null
+  analysis.value = null
+  columnMappings.value = []
+  analyzeError.value = ''
+  analyzeLoading.value = false
+  importOptions.duplicatePolicy = 'skip'
+  importOptions.batchSize = 500
+  importOptions.saveProfile = false
+  importOptions.profileName = ''
+  showImportModal.value = true
+  loadProfiles()
 }
 
 function onFileSelected(e) {
   const file = e.target.files?.[0]
   if (!file) return
-  importFile.value = file
-  importFileName.value = file.name
-  importError.value = ''
-  importResult.value = null
+  analyzeFile(file)
 }
 
 function onDrop(e) {
   const file = e.dataTransfer?.files?.[0]
   if (!file) {
-    importError.value = 'Nenhum arquivo detectado.'
+    analyzeError.value = 'Nenhum arquivo detectado.'
     return
   }
-  const ext = file.name.toLowerCase().split('.').pop()
-  if (ext !== 'csv' && ext !== 'zip') {
-    importError.value = 'Apenas arquivos CSV ou ZIP são aceitos.'
-    return
-  }
-  importFile.value = file
-  importFileName.value = file.name
-  importError.value = ''
-  importResult.value = null
+  analyzeFile(file)
   isDragging.value = false
 }
 
-async function uploadImport() {
-  if (!importFile.value) {
-    importError.value = 'Selecione um arquivo CSV ou ZIP primeiro.'
-    return
+async function analyzeFile(file) {
+  importFileRaw.value = file
+  importFileName.value = file.name
+  importError.value = ''
+  analyzeError.value = ''
+  analysis.value = null
+  analyzeLoading.value = true
+  try {
+    const formData = new FormData()
+    formData.append('file', file)
+    const { data } = await api.post('/products/import/analyze', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    })
+    analysis.value = data.data
+    buildColumnMappings(analysis.value)
+    // Auto-advance to step 1 after brief delay
+    setTimeout(() => { if (importStep.value === 0) importStep.value = 1 }, 400)
+  } catch (err) {
+    analyzeError.value = err?.response?.data?.error?.message || 'Erro ao analisar arquivo.'
+  } finally {
+    analyzeLoading.value = false
   }
+}
+
+function buildColumnMappings(analysisData) {
+  const mappings = []
+  for (const col of (analysisData.headerAnalysis || [])) {
+    mappings.push({
+      header: col.header,
+      mapping: col.mappedField || '',
+      confidence: col.confidence,
+    })
+  }
+  columnMappings.value = mappings
+}
+
+function nextStep() {
+  if (importStep.value === 0) {
+    // Re-analyze if needed
+    if (importFileRaw.value && !analysis.value) {
+      analyzeFile(importFileRaw.value)
+      return
+    }
+    importStep.value = 1
+  } else if (importStep.value === 1) {
+    importStep.value = 2
+  } else if (importStep.value === 2) {
+    runImport()
+  }
+}
+
+async function runImport() {
   uploadingImport.value = true
   importError.value = ''
   importResult.value = null
   try {
+    // Build mapping from columnMappings
+    const mapping = {}
+    for (const col of columnMappings.value) {
+      if (col.mapping) {
+        mapping[col.mapping] = col.header
+      }
+    }
+
     const formData = new FormData()
-    formData.append('file', importFile.value)
+    formData.append('file', importFileRaw.value)
+    formData.append('mapping', JSON.stringify(mapping))
+    formData.append('duplicatePolicy', importOptions.duplicatePolicy)
+    formData.append('batchSize', importOptions.batchSize)
+    if (importOptions.saveProfile && importOptions.profileName) {
+      formData.append('profileName', importOptions.profileName)
+    }
+
     const { data } = await api.post('/products/import', formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     })
-    importResult.value = data.data
-    importError.value = ''
+    importResult.value = data
+    importStep.value = 3
+    if (importOptions.saveProfile && importOptions.profileName) {
+      await saveProfile()
+      await loadProfiles()
+    }
+    loadProducts()
   } catch (err) {
     importError.value = err?.response?.data?.error?.message || 'Erro ao importar arquivo.'
+    importResult.value = { success: false }
+    importStep.value = 3
   } finally {
     uploadingImport.value = false
   }
 }
 
+async function saveProfile() {
+  const mapping = {}
+  for (const col of columnMappings.value) {
+    if (col.mapping) mapping[col.mapping] = col.header
+  }
+  try {
+    await api.post('/products/import/profiles', {
+      name: importOptions.profileName,
+      mapping,
+    })
+  } catch (_) {}
+}
+
+async function loadProfiles() {
+  try {
+    const { data } = await api.get('/products/import/profiles')
+    savedProfiles.value = data.data || []
+  } catch (_) {}
+}
+
+function loadProfile(profile) {
+  if (profile.mapping) {
+    try {
+      const m = typeof profile.mapping === 'string' ? JSON.parse(profile.mapping) : profile.mapping
+      columnMappings.value = (analysis.value?.headerAnalysis || []).map(col => ({
+        header: col.header,
+        mapping: m[col.header] || col.mappedField || '',
+        confidence: col.confidence,
+      }))
+    } catch (_) {}
+  }
+}
+
 function clearFile() {
-  importFile.value = null
+  importFileRaw.value = null
   importFileName.value = ''
+  analysis.value = null
+  columnMappings.value = []
+  analyzeError.value = ''
   importResult.value = null
   if (fileInput.value) fileInput.value.value = ''
 }
@@ -441,11 +730,9 @@ async function onBarcodeEnter() {
     const { data } = await api.get(`/pos/products/by-barcode/${encodeURIComponent(code)}`)
     const product = data.data
     if (product) {
-      // Produto existe → abre edição
       openEdit(product)
       return
     }
-    // Produto não existe → pré-preenche campos para novo produto
     Object.assign(form, { name: code, sku: '', barcode: code, description: '', price: '', cost: '', stock: 0, stock_min: 5, categoryId: '', isActive: true })
     formError.value = ''
     showModal.value = true
@@ -467,29 +754,6 @@ onMounted(() => { loadProducts(); loadCategories() })
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .btn-sm { padding: 4px 10px; font-size: 13px; }
 
-/* CSV Import */
-.import-upload-area {
-  border: 2px dashed var(--color-border);
-  border-radius: var(--radius);
-  padding: 24px;
-  text-align: center;
-  transition: border-color 0.15s, background 0.15s;
-  cursor: pointer;
-}
-.import-upload-area.dragging {
-  border-color: var(--color-primary);
-  background: rgba(59, 130, 246, 0.05);
-}
-.upload-placeholder { display: flex; flex-direction: column; align-items: center; gap: 8px; color: var(--color-text-muted); }
-.upload-icon { font-size: 28px; }
-.uploaded-file { display: flex; align-items: center; justify-content: center; gap: 8px; }
-.file-name { font-size: 14px; color: var(--color-text); }
-.import-summary { background: var(--color-surface-2); border: 1px solid var(--color-border); border-radius: var(--radius); padding: 12px 16px; }
-.summary-row { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; font-size: 14px; }
-.summary-label { color: var(--color-text-secondary); }
-.summary-value { font-weight: 600; }
-.import-errors details { font-size: 13px; }
-
 /* Barcode scanner flash */
 .barcode-flash {
   animation: barcode-flash-anim 0.6s ease-out;
@@ -500,4 +764,199 @@ onMounted(() => { loadProducts(); loadCategories() })
   0%   { background: rgba(59, 130, 246, 0.2); }
   100% { background: transparent; }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════ */
+/* IMPORT WIZARD                                                          */
+/* ═══════════════════════════════════════════════════════════════════════ */
+.import-wizard {
+  max-width: 720px;
+}
+
+.wizard-steps {
+  display: flex;
+  align-items: flex-start;
+  padding: 16px 20px 0;
+  gap: 0;
+  position: relative;
+}
+
+.step-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+  position: relative;
+  z-index: 1;
+  cursor: default;
+}
+
+.step-num {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 600;
+  border: 2px solid var(--color-border);
+  color: var(--color-text-muted);
+  background: var(--color-surface);
+  transition: all 0.2s;
+}
+
+.step-label {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  text-align: center;
+  white-space: nowrap;
+}
+
+.step-indicator.active .step-num {
+  border-color: var(--color-primary);
+  background: var(--color-primary);
+  color: #fff;
+}
+.step-indicator.active .step-label {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.step-indicator.done .step-num {
+  border-color: var(--color-success);
+  background: var(--color-success);
+  color: #fff;
+}
+
+.step-progress {
+  position: absolute;
+  top: 33px;
+  left: 12.5%;
+  height: 2px;
+  background: var(--color-success);
+  z-index: 0;
+  transition: width 0.3s;
+  border-radius: 1px;
+}
+
+.wizard-body {
+  min-height: 200px;
+}
+
+/* Upload area */
+.import-upload-area {
+  border: 2px dashed var(--color-border);
+  border-radius: var(--radius);
+  padding: 32px;
+  text-align: center;
+  transition: border-color 0.15s, background 0.15s;
+  cursor: pointer;
+}
+.import-upload-area.dragging {
+  border-color: var(--color-primary);
+  background: rgba(124, 58, 237, 0.05);
+}
+.upload-placeholder { display: flex; flex-direction: column; align-items: center; gap: 6px; color: var(--color-text-muted); }
+.upload-icon { font-size: 32px; }
+.upload-text { font-size: 15px; font-weight: 500; color: var(--color-text); }
+.upload-hint { font-size: 12px; }
+.uploaded-file-info { display: flex; align-items: center; justify-content: center; gap: 12px; }
+.uploaded-file-main { display: flex; align-items: center; gap: 8px; }
+.file-icon { font-size: 20px; }
+.file-name { font-size: 14px; font-weight: 500; }
+.file-size { font-size: 12px; color: var(--color-text-muted); }
+.analyze-loading { display: flex; align-items: center; justify-content: center; }
+
+/* Mapping */
+.mapping-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--color-border);
+}
+.mapping-section { margin-bottom: 16px; }
+.mapping-section-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+}
+.mapping-table { border: 1px solid var(--color-border); border-radius: var(--radius); overflow: hidden; }
+.mapping-row { display: grid; grid-template-columns: 1fr 1fr 80px; padding: 8px 12px; border-bottom: 1px solid var(--color-border); font-size: 13px; align-items: center; }
+.mapping-row:last-child { border-bottom: none; }
+.mapping-row.header { background: #fafafa; font-weight: 600; font-size: 12px; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+.mapping-select {
+  padding: 4px 8px;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  font-size: 13px;
+  width: 100%;
+  background: var(--color-surface);
+}
+.mapping-select:focus { outline: none; border-color: var(--color-primary); }
+.mapping-high { border-color: var(--color-success); background: #f0fdf4; }
+.col-source { font-family: monospace; font-size: 13px; }
+
+/* Confidence badges */
+.confidence-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 99px;
+  font-size: 11px;
+  font-weight: 600;
+}
+.confidence-high { background: #d1fae5; color: #065f46; }
+.confidence-mid  { background: #fef3c7; color: #92400e; }
+.confidence-low  { background: #fee2e2; color: #991b1b; }
+
+/* Preview table */
+.preview-table { width: 100%; font-size: 12px; }
+.preview-table th { padding: 6px 10px; text-align: left; font-size: 11px; background: #fafafa; border-bottom: 1px solid var(--color-border); color: var(--color-text-muted); font-weight: 600; text-transform: uppercase; }
+.preview-table td { padding: 5px 10px; border-bottom: 1px solid var(--color-border); max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Options */
+.options-section .form-group { margin-bottom: 16px; }
+.profile-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  margin-right: 8px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: border-color 0.15s;
+  font-size: 13px;
+}
+.profile-chip:hover { border-color: var(--color-primary); }
+.profile-name { font-weight: 500; }
+
+/* Results */
+.result-summary { text-align: center; padding: 16px 0; }
+.result-icon { font-size: 48px; }
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin: 20px 0;
+}
+.stat-card {
+  background: var(--color-surface-2, #f9fafb);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.stat-value { font-size: 24px; font-weight: 700; }
+.stat-label { font-size: 12px; color: var(--color-text-muted); }
+.errors-section { margin-top: 16px; text-align: left; }
 </style>
