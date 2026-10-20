@@ -25,19 +25,29 @@ All 17 Vue views, 13 controllers, 13 route files, 18 migrations: `functional_tes
 ## Bugs Fixed in This Audit
 
 ### 1. 🔴 CRITICAL — PDV Payment Button Always Disabled
+
 **File**: `client/src/views/PosView.vue:465-467`
+
 **Issue**: `canComplete` computed required `paymentMethod.value !== ''`, but paymentMethod is only set inside the payment modal (opened by clicking the button). Button was always disabled.
+
 **Fix**: Removed `paymentMethod.value !== ''` from canComplete condition.
 
 ### 2. 🟡 MEDIUM — Error Response Format Inconsistency
+
 **Files**: `stock.controller.js`, `purchase.controller.js`, `supplier.controller.js`
+
 **Issue**: These controllers returned `{error: 'msg'}` instead of the consistent `{success: false, error: {message: 'msg'}}` pattern used by all other controllers.
+
 **Fix**: Normalized all 17 error responses across 3 controllers to use the standard format.
+
 **Test updated**: `server/tests/integration.test.js:252` to match new format.
 
 ### 3. 🟡 MEDIUM — Shopee Integration: Old Email/Password Flow Deprecated
+
 **Files**: `shopee.service.js`, `shopee.controller.js`, `marketplace.routes.js`, `MarketplaceView.vue`
+
 **Issue**: Old login flow used email+password (deprecated by Shopee). No OAuth support.
+
 **Fix**: Complete rewrite to official OAuth 2.0 Partner flow:
 - `getAuthUrl()` — generates signed Partner URL with CSRF state
 - `handleCallback()` — validates state, exchanges code for tokens, stores them
