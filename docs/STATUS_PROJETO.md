@@ -1,10 +1,10 @@
 # Fabulove ERP Status Report
 
-- **Date**: 2026-10-20 (auditoria completa)
-- **DB migration**: 17/17 applied successfully (all idempotent).
-- **Unit tests**: 16/16 passing (vitest v5.0.5).
+- **Date**: 2026-10-20 (auditoria + refatoração Shopee OAuth)
+- **DB migration**: 18/18 applied successfully (all idempotent).
+- **Unit tests**: 32/32 passing (vitest v5.0.5) — +16 Shopee OAuth tests.
 - **E2E tests**: 28/28 passing (supertest + verify-site).
-- **Build**: Successful (vite v8.3.4, 785ms).
+- **Build**: Successful (vite v8.3.4, 1.33s).
 - **NPM audit**: 0 vulnerabilities in production; 3 high in dev-only chain (nodemon→chokidar→braces, not fixable without breaking nodemon).
 - **Security fixes applied**:
   - Critical tinypool RCE (GHSA-5gmw-xhrv-c9v3) → vitest upgraded to v5.0.5
@@ -17,9 +17,10 @@
 ## Database State
 - Tables: 24 (products, orders, customers, suppliers, purchases, stock_movements, pos_sales, financial tables, shopee tables, etc.)
 - Products: 1,045 | Orders: 40 | Users: 4
+- Migration 18 (`20261020000000_add_shopee_oauth_columns.sql`): adds OAuth columns (access_token, refresh_token, token_expires_at, token_type, auth_state) — idempotent.
 
 ## Modules Status
-All 17 Vue views, 13 controllers, 13 route files, 17 migrations: `functional_tested`.
+All 17 Vue views, 13 controllers, 13 route files, 18 migrations: `functional_tested`.
 
 ## Bugs Fixed in This Audit
 
@@ -27,22 +28,24 @@ All 17 Vue views, 13 controllers, 13 route files, 17 migrations: `functional_tes
 **File**: `client/src/views/PosView.vue:465-467`
 **Issue**: `canComplete` computed required `paymentMethod.value !== ''`, but paymentMethod is only set inside the payment modal (opened by clicking the button). Button was always disabled.
 **Fix**: Removed `paymentMethod.value !== ''` from canComplete condition.
-```js
-// Before
-const canComplete = computed(() =>
-  cartItems.value.length > 0 && cartTotals.total > 0 && paymentMethod.value !== ''
-)
-// After
-const canComplete = computed(() =>
-  cartItems.value.length > 0 && cartTotals.total > 0
-)
-```
 
 ### 2. 🟡 MEDIUM — Error Response Format Inconsistency
 **Files**: `stock.controller.js`, `purchase.controller.js`, `supplier.controller.js`
 **Issue**: These controllers returned `{error: 'msg'}` instead of the consistent `{success: false, error: {message: 'msg'}}` pattern used by all other controllers.
 **Fix**: Normalized all 17 error responses across 3 controllers to use the standard format.
 **Test updated**: `server/tests/integration.test.js:252` to match new format.
+
+### 3. 🟡 MEDIUM — Shopee Integration: Old Email/Password Flow Deprecated
+**Files**: `shopee.service.js`, `shopee.controller.js`, `marketplace.routes.js`, `MarketplaceView.vue`
+**Issue**: Old login flow used email+password (deprecated by Shopee). No OAuth support.
+**Fix**: Complete rewrite to official OAuth 2.0 Partner flow:
+- `getAuthUrl()` — generates signed Partner URL with CSRF state
+- `handleCallback()` — validates state, exchanges code for tokens, stores them
+- `refreshToken()` — auto-renews expired tokens
+- `disconnect()` — clears all tokens securely
+- Frontend: OAuth section + manual API Key fallback section
+- Database migration adds OAuth columns to `shopee_config`
+- 16 new unit tests covering all OAuth paths
 
 ## Known Limitations
 - 3 high-severity dev-only vulnerabilities in braces/chokidar/nodemon chain (cannot be fixed without nodemon downgrade to v1.x which breaks Node.js 20 compatibility).

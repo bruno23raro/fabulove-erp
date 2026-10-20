@@ -11,7 +11,12 @@
             </span>
             <span v-if="status.syncEnabled && status.hasToken" class="badge-success badge" style="margin-left:4px">Sync ativo</span>
             <span v-else-if="status.syncEnabled" class="badge-gray badge" style="margin-left:4px">Sync pendente</span>
-            <span v-if="status.email" class="text-muted text-sm" style="margin-left:8px">📧 {{ status.email }}</span>
+            <span v-if="status.authMethod" class="text-muted text-sm" style="margin-left:8px">
+              {{ status.authMethod === 'oauth' ? '🔐 OAuth' : '🔑 API Key' }}
+            </span>
+            <span v-if="status.partnerIdShort" class="text-muted text-sm" style="margin-left:8px">
+              Parceiro: {{ status.partnerIdShort }}
+            </span>
           </div>
           <div v-if="status.tokenExpiresAt" class="text-muted text-sm" style="margin-top:4px">
             Token expira: {{ formatDateTime(status.tokenExpiresAt) }}
@@ -28,65 +33,126 @@
       </div>
     </div>
 
-    <!-- Login form (email + senha) -->
-    <div v-if="!status.hasToken" class="card" style="margin-bottom:16px">
-      <div class="card-header" style="cursor:pointer" @click="showLoginForm = !showLoginForm">
-        <span class="card-title">🔐 Login Shopee</span>
-        <span style="margin-left:auto;color:var(--color-text-muted)">{{ showLoginForm ? '▲' : '▼' }}</span>
+    <!-- Seção 1: Configuração OAuth (Partner ID + Partner Key) -->
+    <div class="card" style="margin-bottom:16px">
+      <div class="card-header" style="cursor:pointer" @click="showAuthSection = !showAuthSection">
+        <span class="card-title">🔗 Conectar com Shopee (OAuth)</span>
+        <span style="margin-left:auto;color:var(--color-text-muted)">{{ showAuthSection ? '▲' : '▼' }}</span>
       </div>
-      <div v-if="showLoginForm" class="card-body">
-        <div v-if="loginError" class="alert alert-danger">{{ loginError }}</div>
-        <div v-if="loginInfo" class="alert alert-info">{{ loginInfo }}</div>
+      <div v-if="showAuthSection" class="card-body">
+        <div v-if="authError" class="alert alert-danger">{{ authError }}</div>
+        <div v-if="authInfo" class="alert alert-info">{{ authInfo }}</div>
+
+        <p class="text-muted text-sm" style="margin-bottom:16px">
+          Para conectar, você precisa de credenciais de parceiro da Shopee.
+          Obtenha em <a href="https://open.shopee.com/console/app" target="_blank" rel="noopener">open.shopee.com/console/app</a>.
+        </p>
+
         <div class="form-row" style="grid-template-columns:1fr 1fr">
           <div class="form-group">
-            <label class="form-label">Email da conta Shopee *</label>
-            <input v-model="loginForm.email" class="form-control" type="email" placeholder="seuemail@exemplo.com" @keydown.enter="doLogin" />
+            <label class="form-label">Partner ID *</label>
+            <input v-model="authForm.partnerId" class="form-control" placeholder="Ex: 123456" />
           </div>
           <div class="form-group">
-            <label class="form-label">Senha da conta Shopee *</label>
-            <input v-model="loginForm.password" class="form-control" type="password" placeholder="Sua senha Shopee" @keydown.enter="doLogin" />
+            <label class="form-label">Partner Key *</label>
+            <input v-model="authForm.partnerKey" class="form-control" type="password" placeholder="Sua Partner Key" />
           </div>
         </div>
-        <div style="margin-top:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-          <button class="btn btn-primary" :disabled="loggingIn" @click="doLogin">
-            <span v-if="loggingIn" class="spinner"></span>
-            {{ loggingIn ? 'Conectando…' : '🔗 Conectar Shopee' }}
+
+        <div class="form-row" style="grid-template-columns:1fr 1fr;margin-top:12px">
+          <div class="form-group">
+            <label class="form-label">Shop ID (opcional)</label>
+            <input v-model="authForm.shopId" class="form-control" placeholder="ID da loja Shopee" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Locale</label>
+            <select v-model="authForm.locale" class="form-control">
+              <option value="pt_BR">Português (Brasil)</option>
+              <option value="th_TH">ไทย (Tailândia)</option>
+              <option value="ms_MY">Melayu (Malásia)</option>
+              <option value="en_MY">English (Malásia)</option>
+              <option value="id_ID">Bahasa (Indonésia)</option>
+              <option value="vi_VN">Tiếng Việt (Vietnã)</option>
+              <option value="fil_PH">Filipino (Filipinas)</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn btn-primary" :disabled="authing" @click="doAuth">
+            <span v-if="authing" class="spinner"></span>
+            {{ authing ? 'Gerando URL…' : '🔗 Conectar com Shopee' }}
           </button>
-          <span class="text-muted text-sm">Use o email e senha da sua conta Shopee para conectar automaticamente.</span>
+          <span class="text-muted text-sm" style="align-self:center">
+            Você será redirecionado para a Shopee autorizar a conexão.
+          </span>
+        </div>
+
+        <!-- URL de autorização exibida para cópia (caso o popup seja bloqueado) -->
+        <div v-if="authUrl" class="alert alert-info" style="margin-top:12px;word-break:break-all">
+          <div class="text-muted text-sm" style="margin-bottom:4px">URL de autorização:</div>
+          <code style="font-size:11px">{{ authUrl }}</code>
+          <button class="btn btn-ghost btn-sm" style="margin-top:8px" @click="copyAuthUrl">📋 Copiar URL</button>
+        </div>
+
+        <!-- Formulário de callback manual -->
+        <div v-if="status.configured && !status.hasToken" style="margin-top:16px;border-top:1px solid var(--color-border);padding-top:16px">
+          <div class="form-label">Callback manual</div>
+          <p class="text-muted text-sm">Se o redirecionamento não funcionar automaticamente, cole o código abaixo:</p>
+          <div class="form-row" style="grid-template-columns:2fr 1fr">
+            <div class="form-group">
+              <input v-model="callbackCode" class="form-control" placeholder="authorization_code da Shopee" />
+            </div>
+            <div class="form-group">
+              <button class="btn btn-secondary" :disabled="processingCallback" @click="submitCallback">
+                {{ processingCallback ? '…' : 'Confirmar' }}
+              </button>
+            </div>
+          </div>
+          <div v-if="callbackError" class="alert alert-danger" style="margin-top:8px">{{ callbackError }}</div>
         </div>
       </div>
     </div>
 
-    <!-- Config form (show after login — apenas para ajustes) -->
-    <div v-if="status.configured && showConfigForm" class="card" style="margin-bottom:16px">
-      <div class="card-header" style="cursor:pointer" @click="showConfigForm = !showConfigForm">
-        <span class="card-title">⚙️ Ajustes da Loja</span>
-        <span style="margin-left:auto;color:var(--color-text-muted)">{{ showConfigForm ? '▲' : '▼' }}</span>
+    <!-- Seção 2: API Key direta (alternativa) -->
+    <div class="card" style="margin-bottom:16px">
+      <div class="card-header" style="cursor:pointer" @click="showApiKeySection = !showApiKeySection">
+        <span class="card-title">🔑 Conectar com API Key (sem OAuth)</span>
+        <span style="margin-left:auto;color:var(--color-text-muted)">{{ showApiKeySection ? '▲' : '▼' }}</span>
       </div>
-      <div v-if="showConfigForm" class="card-body">
-        <div v-if="configError" class="alert alert-danger">{{ configError }}</div>
+      <div v-if="showApiKeySection" class="card-body">
+        <p class="text-muted text-sm" style="margin-bottom:12px">
+          Use este método se já possui API Key e API Secret diretos da Shopee.
+          Requer credenciais de parceiro com permissões HMAC.
+        </p>
+        <div v-if="apiKeyError" class="alert alert-danger">{{ apiKeyError }}</div>
         <div class="form-row" style="grid-template-columns:1fr 1fr">
           <div class="form-group">
-            <label class="form-label">Shop ID</label>
-            <input v-model="config.shopId" class="form-control" placeholder="ID da loja (opcional)" />
+            <label class="form-label">API Key *</label>
+            <input v-model="apiKeyForm.apiKey" class="form-control" type="password" />
           </div>
           <div class="form-group">
-            <label class="form-label">Partner ID</label>
-            <input v-model="config.partnerId" class="form-control" placeholder="Partner ID (opcional)" />
+            <label class="form-label">API Secret *</label>
+            <input v-model="apiKeyForm.apiSecret" class="form-control" type="password" />
           </div>
         </div>
-        <div class="form-group" style="margin-top:8px">
-          <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
-            <input type="checkbox" v-model="config.syncEnabled" />
-            <span class="form-label" style="margin:0">Sincronizar estoque automaticamente após vendas</span>
-          </label>
+        <div class="form-row" style="grid-template-columns:1fr 1fr;margin-top:12px">
+          <div class="form-group">
+            <label class="form-label">Shop ID</label>
+            <input v-model="apiKeyForm.shopId" class="form-control" />
+          </div>
+          <div class="form-group">
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+              <input type="checkbox" v-model="apiKeyForm.syncEnabled" />
+              <span class="form-label" style="margin:0">Sincronizar estoque após vendas</span>
+            </label>
+          </div>
         </div>
-        <div style="margin-top:12px;display:flex;gap:8px">
-          <button class="btn btn-primary" :disabled="savingConfig" @click="saveConfig">
-            <span v-if="savingConfig" class="spinner"></span>
-            {{ savingConfig ? 'Salvando…' : 'Salvar Ajustes' }}
+        <div style="margin-top:12px">
+          <button class="btn btn-primary" :disabled="savingApiKey" @click="saveApiKey">
+            <span v-if="savingApiKey" class="spinner"></span>
+            {{ savingApiKey ? 'Salvando…' : 'Salvar Credenciais' }}
           </button>
-          <button class="btn btn-danger" @click="logout">Desconectar</button>
         </div>
       </div>
     </div>
@@ -100,6 +166,9 @@
       <button class="btn btn-secondary" :disabled="exporting || !status.hasToken" @click="exportCsv">
         <span v-if="exporting" class="spinner"></span>
         📥 Exportar CSV para Shopee
+      </button>
+      <button v-if="status.hasToken" class="btn btn-danger" @click="doDisconnect">
+        🔌 Desconectar
       </button>
     </div>
 
@@ -164,30 +233,37 @@
 import { ref, onMounted } from 'vue'
 import api from '@/utils/api.js'
 
-// ── Estado ────────────────────────────────────────────────────────────────────
+// ── Estado principal ──────────────────────────────────────────────────────────
 const status = ref({ configured: false, hasToken: false, syncEnabled: false })
-const showLoginForm = ref(false)
-const showConfigForm = ref(false)
+const showAuthSection = ref(true)
+const showApiKeySection = ref(false)
+const loadingLogs = ref(true)
 
-const loginForm = ref({ email: '', password: '' })
-const loginError = ref('')
-const loginInfo = ref('')
-const loggingIn = ref(false)
+// ── OAuth form ────────────────────────────────────────────────────────────────
+const authForm = ref({ partnerId: '', partnerKey: '', shopId: '', locale: 'pt_BR' })
+const authError = ref('')
+const authInfo = ref('')
+const authing = ref(false)
+const authUrl = ref('')
+const callbackCode = ref('')
+const processingCallback = ref(false)
+const callbackError = ref('')
 
-const config = ref({ shopId: '', partnerId: '', syncEnabled: true })
-const configError = ref('')
-const savingConfig = ref(false)
+// ── API Key form ──────────────────────────────────────────────────────────────
+const apiKeyForm = ref({ apiKey: '', apiSecret: '', shopId: '', syncEnabled: true })
+const apiKeyError = ref('')
+const savingApiKey = ref(false)
 
+// ── Ações ─────────────────────────────────────────────────────────────────────
 const syncing = ref(false)
 const syncResult = ref(null)
 const exporting = ref(false)
 const logs = ref([])
-const loadingLogs = ref(true)
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 function isTokenValid(expiresAt) {
   if (!expiresAt) return false
-  return new Date(expiresAt) > new Date()
+  return new Date(expiresAt) > new Date(Date.now() - 60_000)
 }
 
 function formatDateTime(val) {
@@ -213,70 +289,117 @@ async function loadLogs() {
   }
 }
 
-// ── Login email+senha ─────────────────────────────────────────────────────────
-async function doLogin() {
-  loginError.value = ''
-  loginInfo.value = ''
-  const { email, password } = loginForm.value
+// ── OAuth: gerar URL e redirecionar ───────────────────────────────────────────
+async function doAuth() {
+  authError.value = ''
+  authInfo.value = ''
+  authUrl.value = ''
 
-  if (!email || !password) {
-    loginError.value = 'Email e senha são obrigatórios.'
+  const { partnerId, partnerKey } = authForm.value
+  if (!partnerId || !partnerKey) {
+    authError.value = 'Partner ID e Partner Key são obrigatórios.'
     return
   }
 
-  loggingIn.value = true
+  authing.value = true
   try {
-    loginInfo.value = 'Conectando à Shopee… aguarde.'
-    const { data } = await api.post('/marketplaces/shopee/login', { email: email.trim(), password })
+    const { data } = await api.post('/marketplaces/shopee/auth-url', {
+      partnerId,
+      partnerKey,
+      shopId: authForm.value.shopId || undefined,
+      locale: authForm.value.locale,
+      callbackUrl: `${window.location.origin}/api/marketplaces/shopee/oauth/callback`,
+    })
 
-    if (data.data?.shopId) {
-      config.value.shopId = data.data.shopId
+    authUrl.value = data.data.authUrl
+
+    // Abre em nova aba
+    const win = window.open(authUrl.value, '_blank')
+    if (!win || win.closed || typeof win.closed === 'undefined') {
+      authInfo.value = 'O redirecionamento foi bloqueado pelo navegador. Copie a URL acima e cole no navegador.'
+    } else {
+      authInfo.value = '✅ Autorize a conexão na aba da Shopee. Aguarde o redirecionamento de volta.'
     }
-    config.value.syncEnabled = data.data?.syncEnabled ?? true
 
-    showLoginForm.value = false
     await loadStatus()
     await loadLogs()
-
-    loginInfo.value = '✅ Conectado com sucesso!'
   } catch (err) {
-    loginError.value = err?.response?.data?.error?.message || err?.message || 'Erro ao conectar. Verifique email e senha.'
-    loginInfo.value = ''
+    authError.value = err?.response?.data?.error?.message || err?.message || 'Erro ao gerar URL de autorização.'
   } finally {
-    loggingIn.value = false
+    authing.value = false
   }
 }
 
-// ── Salvar ajustes da loja ────────────────────────────────────────────────────
-async function saveConfig() {
-  savingConfig.value = true
-  configError.value = ''
+function copyAuthUrl() {
+  navigator.clipboard.writeText(authUrl.value).then(() => {
+    authInfo.value = '✅ URL copiada para a área de transferência.'
+  }).catch(() => {
+    authInfo.value = 'Não foi possível copiar. Selecione e copie manualmente.'
+  })
+}
+
+// ── Callback manual ───────────────────────────────────────────────────────────
+async function submitCallback() {
+  callbackError.value = ''
+  const code = callbackCode.value.trim()
+  if (!code) {
+    callbackError.value = 'Código de autorização é obrigatório.'
+    return
+  }
+
+  processingCallback.value = true
+  try {
+    const { data } = await api.post('/marketplaces/shopee/oauth/callback', {
+      code,
+      state: '', // backend valida state interno
+    })
+    callbackCode.value = ''
+    authInfo.value = '✅ Conexão estabelecida com sucesso!'
+    await loadStatus()
+    await loadLogs()
+  } catch (err) {
+    callbackError.value = err?.response?.data?.error?.message || err?.message || 'Erro ao processar callback.'
+  } finally {
+    processingCallback.value = false
+  }
+}
+
+// ── API Key direta ─────────────────────────────────────────────────────────────
+async function saveApiKey() {
+  apiKeyError.value = ''
+  const { apiKey, apiSecret } = apiKeyForm.value
+  if (!apiKey || !apiSecret) {
+    apiKeyError.value = 'API Key e API Secret são obrigatórios.'
+    return
+  }
+
+  savingApiKey.value = true
   try {
     await api.post('/marketplaces/shopee/config', {
-      shopId: config.value.shopId,
-      partnerId: config.value.partnerId,
-      syncEnabled: config.value.syncEnabled,
+      apiKey,
+      apiSecret,
+      shopId: apiKeyForm.value.shopId || undefined,
+      syncEnabled: apiKeyForm.value.syncEnabled,
     })
-    showConfigForm.value = false
+    showApiKeySection.value = false
     await loadStatus()
+    await loadLogs()
   } catch (err) {
-    configError.value = err?.response?.data?.error?.message || 'Erro ao salvar ajustes.'
+    apiKeyError.value = err?.response?.data?.error?.message || 'Erro ao salvar credenciais.'
   } finally {
-    savingConfig.value = false
+    savingApiKey.value = false
   }
 }
 
 // ── Desconectar ───────────────────────────────────────────────────────────────
-async function logout() {
-  if (!confirm('Deseja desconectar a conta Shopee?')) return
+async function doDisconnect() {
+  if (!confirm('Deseja desconectar a conta Shopee? Todos os tokens serão removidos.')) return
   try {
-    await api.post('/marketplaces/shopee/logout')
+    await api.post('/marketplaces/shopee/disconnect')
     status.value = { configured: false, hasToken: false, syncEnabled: false }
-    showConfigForm.value = false
+    await loadLogs()
   } catch (_) {
-    // Se não houver endpoint, apenas reseta localmente
     status.value = { configured: false, hasToken: false, syncEnabled: false }
-    showConfigForm.value = false
   }
 }
 

@@ -1,21 +1,30 @@
 /**
- * Shopee Service — integração com marketplace
+ * Shopee Service — integração oficial com marketplace
  *
- * Suporta dois modos de autenticação:
- *   1. Email + Senha (web login) — modo padrão do usuário final
- *   2. API Key + API Secret (HMAC) — modo parceiro
+ * Modos de autenticação:
+ *   1. OAuth Partner (recomendado): Partner ID + Partner Key → URL de autorização → callback → tokens
+ *   2. API Key direto (fallback): API Key + API Secret com assinatura HMAC-SHA256
  *
- * shopeeRequest() prioriza Bearer token; se não houver, usa HMAC.
- * Se o token expirar, tenta renová-lo automaticamente.
+ * O fluxo OAuth segue a documentação oficial:
+ *   https://open.shopee.com/developer-guide/736
  */
 
 import crypto from 'node:crypto';
 import pool from '../config/database.js';
+import dotenv from 'dotenv';
+dotenv.config();
 
-const BASE_URL = 'https://partner.shopeemobile.com';
+const PARTNER_BASE_URL = 'https://partner.shopeemobile.com';
+const SHOP_API_BASE = 'https://partner.shopeemobile.com';
 const API_VERSION = 'api';
 
-// ── Helpers internos ─────────────────────────────────────────────────────────
+// URLs de callback — devem ser configuradas no console da Shopee (open.shopee.com)
+// Em desenvolvimento local, o usuário informa a URL manualmente na interface
+const DEFAULT_CALLBACK_URL = process.env.SHOPEE_CALLBACK_URL || 'http://localhost:3000/api/marketplaces/shopee/oauth/callback';
+const DEFAULT_PARTNER_ID = process.env.SHOPEE_PARTNER_ID || '';
+const DEFAULT_PARTNER_KEY = process.env.SHOPEE_PARTNER_KEY || '';
+
+// ── Helpers internos ──────────────────────────────────────────────────────────
 
 async function getConfig() {
   const { rows } = await pool.query(
@@ -30,8 +39,8 @@ async function setConfig(fields) {
     await pool.query(
       `UPDATE shopee_config SET ${Object.entries(fields)
         .map(([k, v], i) => `${k} = $${i + 1}`)
-        .join(', ')}, updated_at = CURRENT_TIMESTAMP`,
-      Object.values(fields)
+        .join(', ')} WHERE id = $${Object.keys(fields).length + 1}`,
+      [...Object.values(fields), existing.id]
     );
   } else {
     const cols = Object.keys(fields).join(', ');
@@ -54,7 +63,28 @@ async function logAction(action, productId, shopeeItemId, status, message) {
 function isTokenValid(config) {
   if (!config || !config.access_token) return false;
   if (!config.token_expires_at) return true;
-  return new Date(config.token_expires_at) > new Date();
+  return new Date(config.token_expires_at) > new Date(Date.now() - 60_000); // margem de 1 min
+}
+
+function generateState() {
+  return crypto.randomBytes(32).toString('hex');
+}
+
+/**
+ * Assinatura HMAC-SHA256 para URLs e requests da API Shopee
+ *
+ * @param {string} method  GET / POST / PUT / PATCH / DELETE
+ * @param {string} path    Path da API (ex: '/mapi/vapi/item/get')
+ * @param {string} timestamp Timestamp Unix em segundos
+ * @param {string} apiKey  Partner ID
+ * @param {string} apiSecret Partner Key (secret)
+ * @param {string} body    Body JSON stringificado (vazio se GET)
+ * @returns {string} Base64 signature
+ */
+function signUrl(path, timestamp, apiKey, apiSecret) {
+  // Para URL de autorização: HMAC do path + timestamp + apiKey + apiSecret
+  const message = `${path}${timestamp}${apiKey}${apiSecret}`;
+  return crypto.createHmac('sha256', apiSecret).update(message).digest('base64');
 }
 
 function signRequest(method, path, timestamp, apiKey, apiSecret, body = '') {
@@ -65,262 +95,355 @@ function signRequest(method, path, timestamp, apiKey, apiSecret, body = '') {
     .digest('base64');
 }
 
-/**
- * Login Shopee com email + senha (endpoint web do Partner API)
- */
-async function loginWithCredentials(email, password) {
-  const timestamp = Math.floor(Date.now() / 1000).toString();
-  const body = JSON.stringify({
-    email,
-    password,
-    locale: 'pt_BR',
-    device_type: 'desktop',
-    platform: 'web',
-  });
-
-  try {
-    const url = `${BASE_URL}/api/v${API_VERSION}/auth/login`;
-    const signature = signRequest('POST', `/api/v${API_VERSION}/auth/login`, timestamp, '', '', body);
-
-    const res = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json; charset=UTF-8',
-        'X-Signature': signature,
-        'X-Timestamp': timestamp,
-        'X-Source': 'Partner',
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-      },
-      body,
-    });
-
-    const text = await res.text();
-    let data;
-    try {
-      data = JSON.parse(text);
-    } catch {
-      throw new Error(`Resposta não-JSON do login Shopee: ${text.slice(0, 300)}`);
-    }
-
-    if (data.error || data.message) {
-      const msg = (data.message || '').toLowerCase();
-      const errCode = (data.error || '').toLowerCase();
-      // Shopee descontinuou o endpoint web de login por email+senha
-      if (msg.includes('offline') || errCode === 'error_not_found' || errCode === 'error_auth') {
-        throw new Error(
-          'API Shopee descontinuada: o endpoint de login por email+senha foi desligado pela Shopee. ' +
-          'Para integrar sua loja, acesse https://open.shopee.com e solicite credenciais de API (Partner/API Key). ' +
-          'Após obter as credenciais, use a aba "Ajustes da Loja" para inseri-las.'
-        );
-      }
-      if (msg.includes('senha') || msg.includes('email') || msg.includes('login')) {
-        throw new Error('Email ou senha incorretos. Verifique suas credenciais Shopee.');
-      }
-      throw new Error(`Erro no login Shopee: ${data.message ?? JSON.stringify(data)}`);
-    }
-
-    const token = data.data?.access_token || data.data?.token || data.access_token || data.token;
-    const expiresIn = data.data?.expires_in || data.expires_in || 86400;
-
-    if (!token) {
-      throw new Error('Login passou mas não recebeu token. Resposta: ' + JSON.stringify(data).slice(0, 300));
-    }
-
-    const tokenExpiresAt = new Date(Date.now() + expiresIn * 1000).toISOString();
-
-    await setConfig({
-      email,
-      password,
-      access_token: token,
-      token_expires_at: tokenExpiresAt,
-      sync_enabled: true,
-    });
-
-    await logAction('auth_login', null, null, 'ok', `Login realizado com sucesso para ${email}`);
-    return { token, expiresAt: tokenExpiresAt, email };
-  } catch (err) {
-    if (err.message.includes('não configurado')) throw err;
-    // Falhou com HMAC — tenta fallback mobile
-    return await loginWithMobileEndpoint(email, password);
-  }
-}
-
-/**
- * Fallback: endpoint mobile da Shopee
- */
-async function loginWithMobileEndpoint(email, password) {
-  try {
-    const url = `${BASE_URL}/api/v${API_VERSION}/auth/login`;
-    const body = JSON.stringify({ account: email, password });
-
-    const res = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json; charset=UTF-8',
-        'User-Agent': 'ShopeeMobile/2.5.0 (Android; 13)',
-      },
-      body,
-    });
-
-    const text = await res.text();
-    let data;
-    try {
-      data = JSON.parse(text);
-    } catch {
-      throw new Error(`Resposta não-JSON do login mobile: ${text.slice(0, 300)}`);
-    }
-
-    if (data.error || (data.status && data.status !== 0)) {
-      const msg = (data.message || '').toLowerCase();
-      const errCode = (data.error || '').toLowerCase();
-      if (msg.includes('offline') || errCode === 'error_not_found' || errCode === 'error_auth') {
-        throw new Error(
-          'API Shopee descontinuada: o endpoint de login por email+senha foi desligado pela Shopee. ' +
-          'Para integrar sua loja, acesse https://open.shopee.com e solicite credenciais de API (Partner/API Key). ' +
-          'Após obter as credenciais, use a aba "Ajustes da Loja" para inseri-las.'
-        );
-      }
-      throw new Error(`Falha no login mobile: ${data.message ?? JSON.stringify(data).slice(0, 200)}`);
-    }
-
-    const token = data.data?.token || data.data?.access_token || data.token;
-    if (!token) throw new Error('Token não encontrado na resposta do login mobile.');
-
-    const tokenExpiresAt = new Date(Date.now() + 86400 * 1000).toISOString();
-    await setConfig({
-      email,
-      password,
-      access_token: token,
-      token_expires_at: tokenExpiresAt,
-      sync_enabled: true,
-    });
-    await logAction('auth_login_mobile', null, null, 'ok', `Login mobile realizado para ${email}`);
-    return { token, expiresAt: tokenExpiresAt, email };
-  } catch (err) {
-    throw new Error('Falha no login email+senha: ' + err.message);
-  }
-}
-
-/**
- * Fazer chamada HTTP para a API Shopee
- * Prioriza Bearer token (email+senha); fallback para HMAC-SHA256 (API Key)
- */
-async function shopeeRequest(method, path, body = null) {
-  const config = await getConfig();
-  if (!config) throw new Error('Shopee não configurado. Faça login primeiro.');
-
-  // Verifica se precisa renovar token
-  if (!isTokenValid(config) && config.email && config.password) {
-    try {
-      await loginWithCredentials(config.email, config.password);
-    } catch (_) {
-      // Falha na renovação — continua com config atual
-    }
-  }
-
-  // Rebusca config após possível renovação
-  const currentConfig = await getConfig();
-  if (!currentConfig) throw new Error('Shopee não configurado após renovação de token.');
-
-  const timestamp = Math.floor(Date.now() / 1000).toString();
-  const bodyStr = body ? JSON.stringify(body) : '';
-  const apiPath = path.startsWith('/') ? path : `/${path}`;
-
-  let headers;
-  if (currentConfig.access_token) {
-    // Modo token (OAuth)
-    headers = {
-      'Content-Type': 'application/json; charset=UTF-8',
-      'Authorization': `Bearer ${currentConfig.access_token}`,
-      'X-Timestamp': timestamp,
-      'X-Source': 'Partner',
-    };
-  } else if (currentConfig.api_key && currentConfig.api_secret) {
-    // Modo HMAC (API Key)
-    const signature = signRequest(method, apiPath, timestamp, currentConfig.api_key, currentConfig.api_secret, bodyStr);
-    headers = {
-      'Content-Type': 'application/json; charset=UTF-8',
-      'Authorization': `HmacSHA256 ${currentConfig.api_key}`,
-      'X-Signature': signature,
-      'X-Timestamp': timestamp,
-      'X-Source': 'Partner',
-    };
-  } else {
-    throw new Error('Shopee não configurado. Faça login com email+senha ou configure API Key.');
-  }
-
-  if (currentConfig.shop_id) headers['X-ShopeeShop-Id'] = currentConfig.shop_id;
-
-  const res = await fetch(`${BASE_URL}/${API_VERSION}${apiPath}`, {
-    method,
-    headers,
-    body: bodyStr || undefined,
-  });
-
-  const text = await res.text();
-  let data;
-  try {
-    data = JSON.parse(text);
-  } catch {
-    throw new Error(`Shopee API retornou texto não-JSON: ${text.slice(0, 200)}`);
-  }
-
-  // Token expirado? Tenta renovar e retry
-  if ((data.error || data.message) && data.message && data.message.toLowerCase().includes('token')) {
-    if (currentConfig.email && currentConfig.password) {
-      try {
-        await loginWithCredentials(currentConfig.email, currentConfig.password);
-        const renewed = await getConfig();
-        if (renewed?.access_token) {
-          const retryRes = await fetch(`${BASE_URL}/${API_VERSION}${apiPath}`, {
-            method,
-            headers: {
-              'Content-Type': 'application/json; charset=UTF-8',
-              'Authorization': `Bearer ${renewed.access_token}`,
-              'X-Timestamp': timestamp,
-              'X-Source': 'Partner',
-              ...(renewed.shop_id ? { 'X-ShopeeShop-Id': renewed.shop_id } : {}),
-            },
-            body: bodyStr || undefined,
-          });
-          const retryText = await retryRes.text();
-          try {
-            data = JSON.parse(retryText);
-          } catch {
-            throw new Error(`Shopee API error (retry): ${retryText.slice(0, 200)}`);
-          }
-        }
-      } catch (_) {
-        // Ignora falha no retry
-      }
-    }
-  }
-
-  if (!data || data.error || data.message) {
-    throw new Error(`Shopee API error: ${data?.message ?? data?.error ?? JSON.stringify(data)}`);
-  }
-  return data;
-}
-
-// ── Exportados ────────────────────────────────────────────────────────────────
+// ── Serviço principal ────────────────────────────────────────────────────────
 
 export const ShopeeService = {
   /**
-   * Login com email + senha da conta Shopee
-   * Retorna { token, expiresAt, shopId, syncEnabled, email }
+   * Gerar URL de autorização OAuth.
+   *
+   * Redireciona o usuário para a Shopee para consentir a integração.
+   * O estado (state) é gerado aleatoriamente e armazenado em sessão/temporariamente
+   * para proteção CSRF no callback.
+   *
+   * @param {object} opts
+   * @param {string} opts.partnerId   Partner ID (obrigatório se não houver no env)
+   * @param {string} opts.partnerKey  Partner Key (obrigatório se não houver no env)
+   * @param {string} opts.shopId      Shop ID (opcional — redireciona direto para a loja)
+   * @param {string} opts.callbackUrl URL de callback (padrão: SHOPEE_CALLBACK_URL do env)
+   * @param {string} opts.locale      Locale (padrão: 'pt_BR')
+   * @returns {string} URL completa para redirecionamento
+   * @throws {Error} Se partnerId ou partnerKey não forem fornecidos
    */
-  async login(email, password) {
-    const result = await loginWithCredentials(email, password);
+  async getAuthUrl({ partnerId, partnerKey, shopId, callbackUrl, locale = 'pt_BR' } = {}) {
+    const pid = partnerId || DEFAULT_PARTNER_ID;
+    const pkey = partnerKey || DEFAULT_PARTNER_KEY;
+    const cb = callbackUrl || DEFAULT_CALLBACK_URL;
+
+    if (!pid || !pkey) {
+      throw new Error(
+        'Partner ID e Partner Key não configurados. ' +
+        'Configure-os no painel Ajustes da Loja ou nas variáveis de ambiente SHOPEE_PARTNER_ID / SHOPEE_PARTNER_KEY. ' +
+        'Obtenha as credenciais em https://open.shopee.com/console/app'
+      );
+    }
+
+    const state = generateState();
+    const timestamp = Math.floor(Date.now() / 1000).toString();
+
+    // Caminho: /oauth/authorization
+    const authPath = '/oauth/authorization';
+    const signature = signUrl(authPath, timestamp, pid, pkey);
+
+    const params = new URLSearchParams({
+      partner_id: pid,
+      shop_id: shopId || '',
+      locale,
+      redirect_uri: cb,
+      state,
+      timestamp,
+      signature,
+    });
+
+    const url = `${PARTNER_BASE_URL}?${params.toString()}`;
+
+    // Armazena o state temporariamente na config (sobrescreve anterior)
+    await setConfig({ auth_state: state });
+
+    return url;
+  },
+
+  /**
+   * Processar callback OAuth após autorização do usuário.
+   *
+   * Recebe o authorization_code e state da Shopee, troca por tokens,
+   * armazena no banco e marca a loja como conectada.
+   *
+   * @param {string} code Authorization code recebido da Shopee
+   * @param {string} state State enviado na requisição de autorização (validação CSRF)
+   * @param {string} partnerKey Partner Key para assinar a troca de token
+   * @returns {object} Resultado da conexão com shopId, token, etc.
+   */
+  async handleCallback(code, state, partnerKey) {
     const config = await getConfig();
+
+    // Valida CSRF: state deve bater com o armazenado
+    if (!state || state !== (config?.auth_state || '')) {
+      throw new Error('Estado de segurança (state) inválido. Tente novamente.');
+    }
+
+    const pid = config?.partner_id || DEFAULT_PARTNER_ID;
+    const pkey = partnerKey || config?.api_secret || DEFAULT_PARTNER_KEY;
+
+    if (!pid || !pkey) {
+      throw new Error('Partner ID ou Partner Key ausentes. Configure no painel da loja.');
+    }
+
+    const timestamp = Math.floor(Date.now() / 1000).toString();
+    const body = JSON.stringify({
+      partner_id: pid,
+      partner_key: pkey,
+      authorization_code: code,
+      grant_type: 'authorization_code',
+    });
+
+    const exchangePath = '/oauth/token';
+    const signature = signRequest('POST', exchangePath, timestamp, pid, pkey, body);
+
+    let res;
+    try {
+      res = await fetch(`${PARTNER_BASE_URL}${exchangePath}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'X-Signature': signature,
+          'X-Timestamp': timestamp,
+          'X-Source': 'Partner',
+          'User-Agent': 'FabuloveERP/1.0',
+        },
+        body,
+      });
+    } catch (err) {
+      throw new Error(`Falha na comunicação com a Shopee ao trocar o código por token: ${err.message}`);
+    }
+
+    let data;
+    try {
+      data = await res.json();
+    } catch {
+      throw new Error(`Resposta inválida da Shopee ao trocar token: ${await res.text()}`);
+    }
+
+    if (data.error || data.status === 1) {
+      const msg = data.message || 'Erro desconhecido';
+      // Mensagens claras para erros comuns
+      if (msg.toLowerCase().includes('code') || msg.toLowerCase().includes('expired')) {
+        throw new Error('Código de autorização expirado ou inválido. Solicite nova conexão.');
+      }
+      if (msg.toLowerCase().includes('signature') || msg.toLowerCase().includes('invalid')) {
+        throw new Error('Parcer key inválida. Verifique as credenciais no painel da Shopee.');
+      }
+      throw new Error(`Erro na autorização Shopee: ${msg}`);
+    }
+
+    const tokenData = data.data || data;
+    const accessToken = tokenData.access_token;
+    const refreshToken = tokenData.refresh_token || null;
+    const expiresIn = tokenData.expires_in || 86400; // padrão 24h
+    const tokenExpiresAt = new Date(Date.now() + expiresIn * 1000).toISOString();
+
+    // Armazena tudo na config
+    await setConfig({
+      api_key: pid,           // partner_id funciona como "api_key"
+      api_secret: pkey,       // partner_key funciona como "api_secret"
+      access_token: accessToken,
+      refresh_token: refreshToken,
+      token_expires_at: tokenExpiresAt,
+      token_type: tokenData.token_type || 'Bearer',
+      partner_id: pid,
+      auth_state: null,       // limpa o state usado
+      sync_enabled: true,
+    });
+
+    await logAction('auth_oauth_callback', null, null, 'ok', `OAuth autorizado com sucesso`);
+
     return {
-      ...result,
-      shopId: config?.shop_id || null,
-      syncEnabled: config?.sync_enabled || false,
+      shopId: tokenData.shop_id || null,
+      token: accessToken,
+      expiresAt: tokenExpiresAt,
+      syncEnabled: true,
     };
   },
 
   /**
-   * Salvar credenciais de API Key/Secret (modo parceiro)
+   * Renovar token de acesso usando refresh_token.
+   *
+   * @returns {object} Novo token e data de expiração
+   */
+  async refreshToken() {
+    const config = await getConfig();
+    if (!config?.refresh_token) {
+      throw new Error('Nenhum refresh_token disponível. Reconecte sua conta Shopee.');
+    }
+
+    const pid = config.partner_id || DEFAULT_PARTNER_ID;
+    const pkey = config.api_secret || DEFAULT_PARTNER_KEY;
+
+    if (!pid || !pkey) {
+      throw new Error('Partner ID ou Partner Key ausentes. Reconecte sua conta.');
+    }
+
+    const timestamp = Math.floor(Date.now() / 1000).toString();
+    const body = JSON.stringify({
+      partner_id: pid,
+      partner_key: pkey,
+      grant_type: 'refresh_token',
+      refresh_token: config.refresh_token,
+    });
+
+    const exchangePath = '/oauth/token';
+    const signature = signRequest('POST', exchangePath, timestamp, pid, pkey, body);
+
+    let res;
+    try {
+      res = await fetch(`${PARTNER_BASE_URL}${exchangePath}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'X-Signature': signature,
+          'X-Timestamp': timestamp,
+          'X-Source': 'Partner',
+          'User-Agent': 'FabuloveERP/1.0',
+        },
+        body,
+      });
+    } catch (err) {
+      throw new Error(`Falha ao renovar token: ${err.message}`);
+    }
+
+    let data;
+    try { data = await res.json(); } catch {
+      throw new Error(`Resposta inválida ao renovar token`);
+    }
+
+    if (data.error || data.status === 1) {
+      // Refresh token também expirou — precisa reconectar via OAuth
+      await setConfig({ access_token: null, refresh_token: null, token_expires_at: null, auth_state: null });
+      throw new Error('Token de refresh expirado. É necessário reconectar via OAuth.');
+    }
+
+    const tokenData = data.data || data;
+    const tokenExpiresAt = new Date(Date.now() + (tokenData.expires_in || 86400) * 1000).toISOString();
+
+    await setConfig({
+      access_token: tokenData.access_token,
+      refresh_token: tokenData.refresh_token || config.refresh_token,
+      token_expires_at: tokenExpiresAt,
+    });
+
+    await logAction('auth_token_refresh', null, null, 'ok', 'Token renovado com sucesso');
+    return { token: tokenData.access_token, expiresAt: tokenExpiresAt };
+  },
+
+  /**
+   * Fazer chamada HTTP para a API Shopee.
+   * Prioriza Bearer token (OAuth); fallback para HMAC (API Key direta).
+   *
+   * @param {string} method  HTTP method
+   * @param {string} path    API path
+   * @param {object|null} body Request body (GET = null)
+   * @returns {object} Resposta da API Shopee
+   */
+  async shopeeRequest(method, path, body = null) {
+    let config = await getConfig();
+
+    // Renova token se expirado e houver refresh_token
+    if (!isTokenValid(config) && config?.refresh_token) {
+      try {
+        await this.refreshToken();
+        config = await getConfig();
+      } catch (err) {
+        throw new Error(`Falha na renovação do token: ${err.message}`);
+      }
+    }
+
+    if (!config) throw new Error('Shopee não configurado. Conecte sua conta na aba Marketplace.');
+
+    const timestamp = Math.floor(Date.now() / 1000).toString();
+    const bodyStr = body ? JSON.stringify(body) : '';
+    const apiPath = path.startsWith('/') ? path : `/${path}`;
+
+    let headers;
+
+    if (config.access_token) {
+      // Modo OAuth Bearer
+      headers = {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': `Bearer ${config.access_token}`,
+        'X-Timestamp': timestamp,
+        'X-Source': 'Partner',
+      };
+    } else if (config.api_key && config.api_secret) {
+      // Modo HMAC direto (API Key)
+      const signature = signRequest(method, apiPath, timestamp, config.api_key, config.api_secret, bodyStr);
+      headers = {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': `HmacSHA256 ${config.api_key}`,
+        'X-Signature': signature,
+        'X-Timestamp': timestamp,
+        'X-Source': 'Partner',
+      };
+    } else {
+      throw new Error('Shopee não configurado. Conecte sua conta na aba Marketplace.');
+    }
+
+    if (config.shop_id) headers['X-ShopeeShop-Id'] = config.shop_id;
+
+    try {
+      const res = await fetch(`${SHOP_API_BASE}/${API_VERSION}${apiPath}`, {
+        method,
+        headers,
+        body: bodyStr || undefined,
+      });
+
+      const text = await res.text();
+      let data;
+      try { data = JSON.parse(text); } catch {
+        throw new Error(`Shopee API retornou resposta não-JSON: ${text.slice(0, 200)}`);
+      }
+
+      // Token expirado? Tenta renovar e retry
+      if ((data.error || (data.status === 1)) && data.message) {
+        const msg = (data.message || '').toLowerCase();
+        if (msg.includes('token') || msg.includes('expired') || msg.includes('unauthorized')) {
+          if (config.refresh_token) {
+            try {
+              await this.refreshToken();
+              config = await getConfig();
+              const retryHeaders = {
+                'Content-Type': 'application/json; charset=UTF-8',
+                'Authorization': `Bearer ${config.access_token}`,
+                'X-Timestamp': timestamp,
+                'X-Source': 'Partner',
+                ...(config.shop_id ? { 'X-ShopeeShop-Id': config.shop_id } : {}),
+              };
+              const retryRes = await fetch(`${SHOP_API_BASE}/${API_VERSION}${apiPath}`, {
+                method, headers: retryHeaders, body: bodyStr || undefined,
+              });
+              const retryText = await retryRes.text();
+              try { data = JSON.parse(retryText); } catch {
+                throw new Error(`Shopee API error (retry): ${retryText.slice(0, 200)}`);
+              }
+            } catch (_) { /* ignora falha no retry */ }
+          }
+        }
+      }
+
+      if (data.error || data.status === 1) {
+        throw new Error(`Shopee API error: ${data.message ?? JSON.stringify(data)}`);
+      }
+      return data;
+    } catch (err) {
+      // Erros de rede já são propagados
+      throw err;
+    }
+  },
+
+  /**
+   * Desconectar conta Shopee — limpa tokens e credenciais.
+   */
+  async disconnect() {
+    await setConfig({
+      access_token: null,
+      refresh_token: null,
+      token_expires_at: null,
+      auth_state: null,
+      sync_enabled: false,
+    });
+    await logAction('auth_disconnect', null, null, 'ok', 'Conta desconectada');
+  },
+
+  /**
+   * Salvar credenciais de API Key/Secret (modo parceiro direto, sem OAuth)
    */
   async saveConfig({ apiKey, apiSecret, shopId, partnerId, syncEnabled }) {
     await setConfig({
@@ -341,31 +464,37 @@ export const ShopeeService = {
     if (!config) {
       return {
         configured: false,
+        hasToken: false,
         syncEnabled: false,
         shopId: null,
+        partnerId: null,
+        tokenExpiresAt: null,
         lastSyncAt: null,
         lastSyncStatus: null,
-        hasToken: false,
+        authMethod: null,
       };
     }
     return {
       configured: true,
+      hasToken: isTokenValid(config),
       syncEnabled: config.sync_enabled,
-      shopId: config.shop_id,
-      partnerId: config.partner_id,
-      email: config.email ? `${config.email.slice(0, 3)}***` : null,
-      hasToken: !!config.access_token && isTokenValid(config),
+      shopId: config.shop_id || null,
+      partnerId: config.partner_id || null,
+      // Mostra apenas os 3 primeiros chars do partner_id para identificação
+      partnerIdShort: config.partner_id ? `${config.partner_id.slice(0, 3)}...` : null,
       tokenExpiresAt: config.token_expires_at || null,
-      lastSyncAt: config.last_sync_at,
-      lastSyncStatus: config.last_sync_status,
+      lastSyncAt: config.last_sync_at || null,
+      lastSyncStatus: config.last_sync_status || null,
+      // Indica o método de autenticação atual
+      authMethod: config.access_token ? 'oauth' : (config.api_key ? 'api_key' : null),
     };
   },
 
   /**
-   * Listar produtos paginados da loja Shopee
+   * Listar produtos paginados da loja Shopee (via API item/get)
    */
   async listProducts(fromIndex = 0, limit = 50) {
-    const data = await shopeeRequest('GET', `/mapi/v${API_VERSION}/item/get?from=${fromIndex}&limit=${limit}`);
+    const data = await this.shopeeRequest('GET', `/mapi/v${API_VERSION}/item/get?from=${fromIndex}&limit=${limit}`);
     const items = data.items || [];
     return items.map((item) => ({
       item_id: item.item_id,
@@ -391,11 +520,11 @@ export const ShopeeService = {
   },
 
   /**
-   * Sincronizar todos os produtos Shopee para o ERP
+   * Sincronizar todos os produtos Shopee para o ERP (paginação automática)
    */
   async syncProductsFromShopee() {
     const config = await getConfig();
-    if (!config) throw new Error('Shopee não configurado');
+    if (!config) throw new Error('Shopee não configurado. Conecte sua conta primeiro.');
 
     let totalCreated = 0;
     let totalUpdated = 0;
@@ -510,7 +639,7 @@ export const ShopeeService = {
 
     if (shopeeItemId) {
       try {
-        await shopeeRequest('POST', `/mapi/v${API_VERSION}/item/update`, {
+        await this.shopeeRequest('POST', `/mapi/v${API_VERSION}/item/update`, {
           item_id: shopeeItemId,
           stock: newStock,
         });

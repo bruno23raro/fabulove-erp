@@ -2,23 +2,46 @@
  * Controller Shopee — integração com marketplace
  *
  * Rotas:
- *   POST /api/marketplaces/shopee/config     — salvar credenciais
- *   GET  /api/marketplaces/shopee/status     — status configuração
- *   POST /api/marketplaces/shopee/sync       — sincronizar produtos
- *   GET  /api/marketplaces/shopee/export     — exportar CSV
- *   GET  /api/marketplaces/shopee/logs       — logs de sincronização
+ *   GET    /api/marketplaces/shopee/auth-url    — gerar URL de autorização OAuth
+ *   POST   /api/marketplaces/shopee/oauth/callback — processar callback OAuth
+ *   POST   /api/marketplaces/shopee/config      — salvar credenciais API Key
+ *   GET    /api/marketplaces/shopee/status      — status configuração
+ *   POST   /api/marketplaces/shopee/disconnect  — desconectar conta
+ *   POST   /api/marketplaces/shopee/sync        — sincronizar produtos
+ *   GET    /api/marketplaces/shopee/export      — exportar CSV
+ *   GET    /api/marketplaces/shopee/logs        — logs de sincronização
+ *   POST   /api/marketplaces/shopee/sync-stock  — sincronizar estoque após venda
  */
 
 import { ShopeeService } from '../services/shopee.service.js';
 
-export const login = async (req, res, next) => {
+export const getAuthUrl = async (req, res, next) => {
   try {
-    const { email, password } = req.body;
-    if (!email || !password) {
-      return res.status(400).json({ success: false, error: { message: 'Email e senha são obrigatórios.' } });
+    const { partnerId, partnerKey, shopId, callbackUrl, locale } = req.body || {};
+    const url = await ShopeeService.getAuthUrl({ partnerId, partnerKey, shopId, callbackUrl, locale });
+    return res.json({ success: true, data: { authUrl: url } });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const handleCallback = async (req, res, next) => {
+  try {
+    const { code, state, partnerKey } = req.body;
+    if (!code) {
+      return res.status(400).json({ success: false, error: { message: 'Authorization code é obrigatório.' } });
     }
-    const result = await ShopeeService.login(email.trim(), password);
+    const result = await ShopeeService.handleCallback(code, state, partnerKey);
     return res.json({ success: true, data: result });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const disconnect = async (req, res, next) => {
+  try {
+    await ShopeeService.disconnect();
+    return res.json({ success: true, data: { message: 'Conta Shopee desconectada.' } });
   } catch (err) {
     next(err);
   }
