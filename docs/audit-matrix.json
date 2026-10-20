@@ -99,7 +99,7 @@
         "package.json",
         "package-lock.json"
       ],
-      "evidence": "npm audit reports 11 vulnerabilities; future update plan"
+      "evidence": "npm audit --production: 0 vulnerabilities. Dev chain (nodemon→chokidar→braces) has 3 high, non-fixable without breaking nodemon. Fix attempted; v5.0.5 vitest eliminated critical tinypool RCE."
     }
   ]
 }
