@@ -18,7 +18,14 @@ function similarity(a, b) {
   })
   const na = norm(a), nb = norm(b)
   if (na === nb) return 1.0
-  if (na.includes(nb) || nb.includes(na)) return 0.85
+  if (na.includes(nb) || nb.includes(na)) {
+    // Substring match: require minimum length to avoid false positives
+    // e.g. "cod" (3 chars) matching "codigo de barras" (16 chars) should NOT score 0.85
+    const minLen = Math.max(na.length, nb.length)
+    const maxLen = Math.min(na.length, nb.length)
+    if (maxLen < 4) return 0.3 // too short to be a meaningful substring match
+    return 0.85
+  }
   // Levenshtein-like: simple ratio
   const maxLen = Math.max(na.length, nb.length)
   if (maxLen === 0) return 1.0
@@ -32,33 +39,41 @@ function similarity(a, b) {
   return matches / maxLen
 }
 
+// Check if a header looks like a pure numeric ID (should not be auto-mapped)
+function isNumericId(header) {
+  const clean = header.trim().toLowerCase()
+  // If the header is just "id" or "index" or purely numeric, skip auto-map
+  if (/^id$|^index$|^#\s*$/.test(clean)) return true
+  return false
+}
+
 // Target field definitions with aliases
 const FIELD_DEFINITIONS = {
   name: {
     aliases: ['nome', 'name', 'produto', 'product', 'titulo', 'title', 'item name',
-              'nome_produto', 'product_name', 'article', 'razao_social'],
+              'nome_produto', 'product_name', 'article', 'razao_social', 'descricao_curta'],
     required: true,
   },
   sku: {
     aliases: ['sku', 'reference', 'ref', 'codigo_interno', 'internal_code',
-              'seller_sku', 'sku_vendedor', 'cod_interno', 'code', 'referencia'],
+              'seller_sku', 'sku_vendedor', 'cod_interno', 'code', 'referencia', 'cod'],
     required: false,
   },
   barcode: {
     aliases: ['barcode', 'codigo_barras', 'cod_barras', 'ean', 'gtin', 'isbn',
               'cod_barra', 'barcode_seller', 'seller_barcode', 'upc', 'codigo_barras',
-              'ean13', 'gtin13'],
+              'ean13', 'gtin13', 'ncm'],
     required: false,
   },
   description: {
     aliases: ['description', 'descricao', 'desc', 'detail', 'details', 'resumo',
-              'product_description', 'about', 'complemento', 'detalhes'],
+              'product_description', 'about', 'complemento', 'detalhes', 'descricao_longa'],
     required: false,
   },
   price: {
     aliases: ['price', 'preco', 'preço', 'precio', 'valor', 'sale_price', 'selling_price',
               'price_sale', 'venda', 'preco_venda', 'preco_final', 'list_price',
-              'retail_price', 'customer_price', 'vlr_unitario', 'custo_unitario', 'pvp', 'preco_publico'],
+              'retail_price', 'customer_price', 'vlr_unitario', 'preco_publico', 'preco_venda'],
     required: false,
   },
   cost: {
@@ -69,12 +84,12 @@ const FIELD_DEFINITIONS = {
   stock: {
     aliases: ['stock', 'qty', 'quantity', 'quantidade', 'estoque', 'inventory',
               'available', 'disponivel', 'avail', 'qtd', 'units', 'quantity_available',
-              'disponibilidade'],
+              'estoque_atual', 'qtd_disponivel'],
     required: false,
   },
   stockMin: {
     aliases: ['stock_min', 'min_stock', 'minimum_stock', 'estoque_minimo',
-              'reorder_point', 'minimo', 'threshold', 'stock_minimo'],
+              'reorder_point', 'minimo', 'threshold', 'stock_minimo', 'estoque_seguranca'],
     required: false,
   },
   category: {
@@ -87,12 +102,22 @@ const FIELD_DEFINITIONS = {
     required: false,
   },
   weight: {
-    aliases: ['weight', 'peso', 'weight_kg', 'peso_kg', 'gross_weight', 'lb'],
+    aliases: ['weight', 'peso', 'weight_kg', 'peso_kg', 'gross_weight', 'lb', 'peso_bruto'],
     required: false,
   },
   image: {
     aliases: ['image', 'imagem', 'picture', 'photo', 'img', 'url_image',
-              'image_url', 'foto', 'thumbnail', 'main_image'],
+              'image_url', 'foto', 'thumbnail', 'main_image', 'foto_principal'],
+    required: false,
+  },
+  images: {
+    aliases: ['images', 'imagens', 'photos', 'fotos', 'gallery', 'galeria',
+              'fotos_adicionais', 'image_list', 'imagens_adicionais'],
+    required: false,
+  },
+  video: {
+    aliases: ['video', 'videos', 'video_url', 'videos_url', 'filme',
+              'video_do_produto', 'url_video', 'youtube', 'vimeo'],
     required: false,
   },
   ncm: {
@@ -100,11 +125,11 @@ const FIELD_DEFINITIONS = {
     required: false,
   },
   pricePromotional: {
-    aliases: ['preco_promocional', 'preco_promo', 'promo_price', 'sale_price', 'preco_offerta', 'desconto'],
+    aliases: ['preco_promocional', 'preco_promo', 'promo_price', 'sale_price', 'preco_offerta', 'desconto', 'promocional'],
     required: false,
   },
   availability: {
-    aliases: ['disponibilidade', 'stock_status', 'situacao', 'estado'],
+    aliases: ['disponibilidade', 'stock_status', 'situacao', 'estado', 'condition'],
     required: false,
   },
 }
@@ -130,6 +155,12 @@ export function analyzeHeaders(headers) {
   for (const rawHeader of headers) {
     const header = normalizeString(rawHeader) || ''
     if (!header) continue
+
+    // Skip pure ID columns — they are not meaningful for mapping
+    if (isNumericId(header)) {
+      results.push({ header, mappedField: null, confidence: 0, isRequired: false })
+      continue
+    }
 
     let bestMatch = null
     let bestScore = 0
@@ -162,6 +193,7 @@ export function analyzeHeaders(headers) {
       confidence: bestScore,
       isRequired: bestMatch ? FIELD_DEFINITIONS[bestMatch]?.required : false,
     })
+    if (bestMatch) usedFields.add(bestMatch)
   }
 
   return results
@@ -248,6 +280,13 @@ export function normalizeRow(rawRow, fieldMapping) {
         break
       case 'image':
         product.image = normalizeString(val)
+        break
+      case 'images':
+        // Store as delimited string for later parsing
+        product.images = normalizeString(val)
+        break
+      case 'video':
+        product.videoUrl = normalizeString(val)
         break
       case 'ncm':
         product.ncm = normalizeString(val)

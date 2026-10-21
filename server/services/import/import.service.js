@@ -7,6 +7,7 @@ import { detectFormat } from './formats/base.js'
 import { analyzeHeaders, mapColumns, normalizeRow } from './mapper.js'
 import { ImportValidator } from './validator.js'
 import { normalizeString, normalizePrice, normalizeQuantity, normalizeBarcode } from './normalizer.js'
+import { imageService } from './image.service.js'
 
 const DEFAULT_BATCH_SIZE = 100
 const MAX_BATCH_SIZE = 1000
@@ -17,6 +18,8 @@ export class ImportService {
     this.duplicatePolicy = options.duplicatePolicy ?? 'skip'
     this.requiredFields = options.requiredFields ?? ['name']
     this.importProfile = options.importProfile ?? null
+    this.defaultStock = parseInt(options.defaultStock) || 3
+    this.importImages = options.importImages !== false
   }
 
   /**
@@ -50,6 +53,8 @@ export class ImportService {
     }
 
     const { headers, rows, metadata } = parsed
+    // Extract ZIP images for later association
+    const zipImages = fmt.getImages?.() || new Map()
     onProgress?.({ step: 'parsed', progress: 10, total: rows.length, current: rows.length })
 
     // ── Step 2: Column mapping ───────────────────────────────────────────────
@@ -57,7 +62,7 @@ export class ImportService {
     let fieldMapping
 
     if (mapping) {
-      // User-provided mapping: { fieldName: headerIndex }
+      // User-provided mapping: { fieldName: headerIndex or headerName }
       fieldMapping = mapColumns(headers, mapping)
     } else {
       // Auto-detect best mapping
@@ -69,6 +74,9 @@ export class ImportService {
       }))
     }
 
+    // Track which fields were explicitly mapped (to distinguish "not provided" from "mapped to null")
+    const mappedFields = new Set(fieldMapping.fieldMapping.filter(f => !f.missing).map(f => f.field))
+
     onProgress?.({ step: 'mapped', progress: 20 })
 
     // ── Step 3: Load categories ──────────────────────────────────────────────
@@ -76,7 +84,7 @@ export class ImportService {
     const catMap = {}
     for (const cat of categories) {
       catMap[cat.name.toLowerCase()] = cat.id
-      catMap[cat.name] = cat.id // also store original case
+      catMap[cat.name] = cat.id
     }
     catMap['sem categoria'] = null
     catMap[''] = null
@@ -94,14 +102,45 @@ export class ImportService {
         if (fm.missing) product[fm.field] = null
       }
 
+      // Apply default stock only when stock was NOT explicitly mapped AND value is null/empty
+      if (!mappedFields.has('stock') && (product.stock === null || product.stock === undefined || product.stock === '')) {
+        product.stock = this.defaultStock
+      }
+
+      // Validate raw values BEFORE normalization — catch invalid inputs that normalize to null
+      const rawStock = rawRow[fieldMapping.fieldMapping.find(f => f.field === 'stock')?.index]
+      if (mappedFields.has('stock') && rawStock !== undefined && rawStock !== null && String(rawStock).trim() !== '') {
+        const normalizedStock = normalizeQuantity(String(rawStock))
+        if (normalizedStock === null) {
+          validationErrors.push({ row: i + 1, errors: [`Estoque inválido: "${rawStock}"`] })
+          continue // skip this row
+        }
+        product.stock = normalizedStock
+      }
+
+      // Validate raw price — catch invalid inputs that normalize to null
+      const rawPrice = rawRow[fieldMapping.fieldMapping.find(f => f.field === 'price')?.index]
+      if (mappedFields.has('price') && rawPrice !== undefined && rawPrice !== null && String(rawPrice).trim() !== '') {
+        const normalizedPrice = normalizePrice(String(rawPrice))
+        if (normalizedPrice === null) {
+          validationErrors.push({ row: i + 1, errors: [`Preço inválido: "${rawPrice}"`] })
+          continue // skip this row
+        }
+        product.price = normalizedPrice
+      }
+
       // Normalize specific fields
-      if (product.price !== null) product.price = normalizePrice(String(product.price))
-      if (product.cost !== null) product.cost = normalizePrice(String(product.cost))
-      if (product.stock !== null) product.stock = normalizeQuantity(String(product.stock))
+      if (product.price !== null && product.price !== undefined && product.price !== '') {
+        product.price = normalizePrice(String(product.price))
+      }
+      if (product.cost !== null && product.cost !== undefined && product.cost !== '') {
+        product.cost = normalizePrice(String(product.cost))
+      }
       if (product.barcode) product.barcode = normalizeBarcode(String(product.barcode))
       if (product.name) product.name = normalizeString(product.name)
       if (product.sku) product.sku = normalizeString(product.sku)?.toUpperCase()
       if (product.description) product.description = normalizeString(product.description)
+      if (product.videoUrl) product.videoUrl = normalizeString(product.videoUrl)
 
       if (skipValidation) {
         normalized.push(product)
@@ -175,20 +214,26 @@ export class ImportService {
       for (const product of batch) {
         try {
           if (product._conflict === 'update_existing' && product._existingId) {
-            // Update existing
+            // Update existing — preserve stock unless explicitly mapped
             const updateData = {}
-            if (product.name) updateData.name = product.name
-            if (product.sku) updateData.sku = product.sku
-            if (product.barcode) updateData.barcode = product.barcode
-            if (product.description) updateData.description = product.description
-            if (product.price !== null && product.price !== undefined) updateData.price = product.price
-            if (product.cost !== null && product.cost !== undefined) updateData.cost = product.cost
-            if (product.stock !== null && product.stock !== undefined) updateData.stock = product.stock
-            if (product.stock_min !== null && product.stock_min !== undefined) updateData.stock_min = product.stock_min
+            if (product.name !== undefined) updateData.name = product.name
+            if (product.sku !== undefined) updateData.sku = product.sku
+            if (product.barcode !== undefined) updateData.barcode = product.barcode
+            if (product.description !== undefined) updateData.description = product.description
+            if (product.price !== undefined && product.price !== null) updateData.price = product.price
+            if (product.cost !== undefined) updateData.cost = product.cost
+            // Only update stock if it was explicitly mapped in the import
+            if (mappedFields.has('stock') && product.stock !== undefined) {
+              updateData.stock = product.stock
+            } else {
+              updateData.stock = null // null → COALESCE preserves existing stock
+            }
+            if (product.stock_min !== undefined) updateData.stock_min = product.stock_min
             if (product.category) {
               updateData.category_id = catMap[product.category.toLowerCase()] ?? null
             }
             if (product.image) updateData.image_url = product.image
+            if (product.videoUrl !== undefined) updateData.video_url = product.videoUrl
 
             const result = await pool.query(
               `UPDATE products SET
@@ -202,13 +247,14 @@ export class ImportService {
                 stock_min = COALESCE($8, stock_min),
                 category_id = COALESCE($9, category_id),
                 image_url = COALESCE($10, image_url),
+                video_url = COALESCE($11, video_url),
                 price_shopee = CASE WHEN $5 IS NOT NULL THEN ROUND(( $5 * 1.19 + 4.71 ) * 100) / 100 ELSE price_shopee END,
                 updated_at = CURRENT_TIMESTAMP
-               WHERE id = $11 RETURNING *`,
+               WHERE id = $12 RETURNING *`,
               [
                 updateData.name, updateData.sku, updateData.barcode, updateData.description,
                 updateData.price, updateData.cost, updateData.stock, updateData.stock_min,
-                updateData.category_id, updateData.image_url, product._existingId,
+                updateData.category_id, updateData.image_url, updateData.video_url, product._existingId,
               ]
             )
             if (result.rows.length > 0) {
@@ -225,13 +271,13 @@ export class ImportService {
 
             const result = await pool.query(
               `INSERT INTO products
-                (name, sku, barcode, description, price, cost, stock, stock_min, category_id, image_url, is_active, price_shopee)
-               VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+                (name, sku, barcode, description, price, cost, stock, stock_min, category_id, image_url, video_url, is_active, price_shopee)
+               VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
                RETURNING *`,
               [
                 product.name, product.sku, product.barcode, product.description,
                 priceVal, product.cost ?? 0, product.stock ?? 0, product.stock_min ?? 0,
-                categoryId, product.image, true, priceShopee,
+                categoryId, product.image || null, product.videoUrl || null, true, priceShopee,
               ]
             )
             if (result.rows.length > 0) {
@@ -244,6 +290,43 @@ export class ImportService {
           skipped++
           errorList.push(`Linha ${i + 1}: ${err.message?.substring(0, 200)}`)
           logger.warn(`[Import] Error on row ${i + 1}: ${err.message}`)
+        }
+      }
+    }
+
+    // ── Step 7: Associate ZIP images with products ───────────────────────────
+    const pendingImageIds = []
+    if (this.importImages && zipImages.size > 0 && normalized.length > 0) {
+      // Distribute images across products: match by SKU first, then fill remaining sequentially
+      const availableImages = [...zipImages.entries()] // [{ entryName, buf }, ...]
+      let availableIdx = 0
+
+      for (const product of normalized) {
+        const assigned = []
+
+        // Try SKU-based matching first
+        if (product.sku) {
+          for (const [entryName, buf] of availableImages) {
+            if (entryName.toLowerCase().includes(product.sku.toLowerCase())) {
+              assigned.push({ entryName, buf })
+            }
+          }
+        }
+
+        // Fill remaining slots from sequential pool
+        const slotsNeeded = Math.max(0, 3 - assigned.length)
+        while (assigned.length < slotsNeeded && availableIdx < availableImages.length) {
+          const [entryName, buf] = availableImages[availableIdx++]
+          // Skip if already matched by SKU above
+          if (!assigned.find(a => a.entryName === entryName)) {
+            assigned.push({ entryName, buf })
+          }
+        }
+
+        // Save assigned images
+        for (const { entryName, buf } of assigned) {
+          const saved = await imageService.extractAndSave(buf, entryName, null, 'zip_extract')
+          if (saved) pendingImageIds.push(saved.id)
         }
       }
     }
@@ -270,6 +353,8 @@ export class ImportService {
       })),
       validationErrors: validationErrors.slice(0, 100),
       errorList: errorList.slice(0, 100),
+      imageCount: zipImages.size,
+      pendingImageIds,
     }
   }
 
@@ -280,7 +365,7 @@ export class ImportService {
     const mapping = {}
     const usedHeaders = new Set()
 
-    // Sort by confidence descending
+    // Sort by confidence descending, stable sort preserves original order for ties
     const sorted = [...headerAnalysis].sort((a, b) => b.confidence - a.confidence)
 
     for (const { header, mappedField, confidence } of sorted) {

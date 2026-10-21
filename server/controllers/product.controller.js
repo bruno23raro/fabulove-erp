@@ -15,8 +15,8 @@ export const listProducts = async (req, res, next) => {
     const search = req.query.search || null;
     const categoryId = req.query.category_id ? parseInt(req.query.category_id) : null;
 
-    const products = await ProductModel.findAll({ limit, offset, search, categoryId });
-    return res.json({ success: true, data: products, meta: { limit, offset } });
+    const { rows: products, total } = await ProductModel.findAll({ limit, offset, search, categoryId });
+    return res.json({ success: true, data: products, meta: { limit, offset, total } });
   } catch (err) {
     next(err);
   }

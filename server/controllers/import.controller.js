@@ -71,6 +71,8 @@ router.post('/import', upload.single('file'), async (req, res, next) => {
       batchSize = 100,
       skipValidation = false,
       importProfileId,
+      defaultStock = 3,
+      importImages = true,
     } = req.body
 
     // Parse mapping from JSON string if passed as string
@@ -87,11 +89,13 @@ router.post('/import', upload.single('file'), async (req, res, next) => {
       batchSize: parseInt(batchSize) || 100,
       duplicatePolicy,
       importProfileId,
+      defaultStock: parseInt(defaultStock) || 3,
+      importImages: importImages !== 'false',
     })
 
     const result = await service.import(req.file.buffer, req.file.originalname, parsedMapping, {
       duplicatePolicy,
-      skipValidation: skipValidation === true,
+      skipValidation: skipValidation === 'true' || skipValidation === true,
     })
 
     if (!result.success) {
@@ -100,7 +104,24 @@ router.post('/import', upload.single('file'), async (req, res, next) => {
 
     logger.info(`[Import] ${result.format}: created=${result.stats.created} updated=${result.stats.updated} skipped=${result.stats.skipped} errors=${result.stats.errors}`)
 
-    return res.json({ success: true, data: result })
+    // Flatten response to match frontend expectations
+    return res.json({
+      success: true,
+      data: {
+        success: true,
+        format: result.format,
+        created: result.stats.created,
+        updated: result.stats.updated,
+        skipped: result.stats.skipped,
+        totalLines: result.stats.totalRows,
+        errors: result.stats.errors,
+        errorList: result.errorList || [],
+        validationErrors: result.validationErrors || [],
+        conflicts: result.conflicts || [],
+        imageCount: result.imageCount || 0,
+        pendingImageIds: result.pendingImageIds || [],
+      },
+    })
   } catch (err) {
     next(err)
   }
@@ -153,10 +174,6 @@ router.delete('/import/profiles/:id', async (req, res, next) => {
   }
 })
 
-// ── Legacy single-file CSV/ZIP import (backward compat) ───────────────────────
-// Kept on /api/products/import for existing E2E tests and simple use cases
-// The new multi-format flow uses /api/products/import/analyze + /api/products/import
-
 // ── Image endpoints ────────────────────────────────────────────────────────────
 router.get('/import/images/pending', async (req, res, next) => {
   try {
@@ -194,5 +211,9 @@ router.delete('/import/images/:id', async (req, res, next) => {
     next(err)
   }
 })
+
+// ── Legacy single-file CSV/ZIP import (backward compat) ───────────────────────
+// Kept on /api/products/import for existing E2E tests and simple use cases
+// The new multi-format flow uses /api/products/import/analyze + /api/products/import
 
 export default router

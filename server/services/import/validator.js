@@ -120,6 +120,7 @@ export class ImportValidator {
             product._conflict = 'create_new'
             break
           case 'update':
+          case 'update_existing':
             product._conflict = 'update_existing'
             product._existingId = dup.id
             break

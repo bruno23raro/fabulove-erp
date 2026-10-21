@@ -7,7 +7,7 @@ import { registerFormat } from './base.js'
 // Dangerous file types to skip
 const DANGEROUS_EXTS = new Set(['exe', 'bat', 'cmd', 'sh', 'js', 'py', 'vbs', 'msi', 'dll', 'scr'])
 
-const IMAGE_EXTS = new Set(['jpg', 'jpeg', 'png', 'webp'])
+const IMAGE_EXTS = new Set(['jpg', 'jpeg', 'png', 'webp', 'gif'])
 
 export const zipFormat = {
   type: 'zip',
