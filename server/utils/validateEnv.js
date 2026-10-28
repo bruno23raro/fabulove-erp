@@ -38,8 +38,8 @@ export function validateEnv() {
     console.warn('[ENV] ⚠️  DB_PASSWORD não definido — usando sem senha (só aceitável localmente).');
   }
 
-  if (!process.env.OPENAI_API_KEY) {
-    console.warn('[ENV] ℹ️  OPENAI_API_KEY não definido — módulo de automação IA desabilitado.');
+  if (!process.env.NVIDIA_NIM_API_KEY && !process.env.AGNES_AI_API_KEY) {
+    console.warn('[ENV] ℹ️  NVIDIA_NIM_API_KEY e AGNES_AI_API_KEY não definidos — módulo de automação IA desabilitado.');
   }
 
   console.log(`[ENV] ✅ Ambiente validado. NODE_ENV=${process.env.NODE_ENV}, PORT=${process.env.PORT}`);

@@ -27,7 +27,7 @@
           </div>
           <div class="info-item">
             <span class="info-label">Modelo</span>
-            <span class="info-value">{{ currentModel || 'gpt-4o-mini' }}</span>
+            <span class="info-value">{{ currentModel || 'meta/llama-3.1-8b-instruct' }}</span>
           </div>
           <div class="info-item">
             <span class="info-label">Provedores Disponíveis</span>
@@ -104,7 +104,6 @@ const running = ref(false)
 const testResponse = ref(null)
 
 const providers = [
-  { key: 'openai', name: 'OpenAI', priority: 3 },
   { key: 'nvidia-nim', name: 'NVIDIA NIM', priority: 2 },
   { key: 'agnes-ai', name: 'Agnes AI', priority: 1 },
 ]
@@ -217,3 +216,4 @@ onMounted(refreshConfig)
 .text-muted { color: var(--color-text-muted); }
 .text-sm { font-size: 0.875rem; }
 </style>
+

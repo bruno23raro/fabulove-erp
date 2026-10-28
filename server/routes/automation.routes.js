@@ -1,8 +1,8 @@
 /**
  * Rotas de Automação IA
  *
- * Módulo de integração com OpenAI para sugestões automáticas.
- * Requer OPENAI_API_KEY no .env para funcionar plenamente.
+ * Módulo de integração com provedores NVIDIA NIM e Agnes AI para sugestões automáticas.
+ * Requer NVIDIA_NIM_API_KEY ou AGNES_AI_API_KEY no .env para funcionar plenamente.
  *
  * GET /api/automation/status  — verificar se integração está configurada
  */
@@ -15,14 +15,14 @@ const router = Router();
 router.use(authenticateToken);
 
 router.get('/status', (req, res) => {
-  const configured = Boolean(process.env.OPENAI_API_KEY);
+  const configured = Boolean(process.env.NVIDIA_NIM_API_KEY || process.env.AGNES_AI_API_KEY);
   return res.json({
     success: true,
     data: {
       configured,
       message: configured
-        ? 'Integração com OpenAI configurada.'
-        : 'Configure OPENAI_API_KEY no .env para habilitar automações IA.',
+        ? 'Integração com IA configurada.'
+        : 'Configure NVIDIA_NIM_API_KEY ou AGNES_AI_API_KEY no .env para habilitar automações IA.',
     },
   });
 });
