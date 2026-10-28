@@ -29,12 +29,15 @@ Arquitetura baseada em interface única `MarketplaceAdapter` que permite integra
 - **Status**: ✅ Completo e testado (15 testes)
 
 ### 2. Mercado Livre Adapter (`ml`)
+
 - **Uso**: Integração real com Mercado Livre
 - **Arquivo**: `server/adapters/ml.adapter.js`
 - **Auth**: OAuth 2.0 com `offline_access`, `read`, `write` scopes
 - **Endpoints**: `https://api.mercadolibre.com`
-- **Referência**: https://developers.mercadolivre.com.br
-- **Status**: 🟡 Skeleton — métodos retornam placeholders, aguarda credenciais
+- **Referência**: [https://developers.mercadolivre.com.br](https://developers.mercadolivre.com.br)
+- **Status**: ✅ Completo — 8 métodos usando `mercadolibre-sdk`
+- **Controller**: `server/controllers/ml.controller.js`
+- **Rotas**: `server/routes/ml.routes.js`
 
 ### 3. Shopee Adapter (`shopee`)
 - **Uso**: Integração real com Shopee Open Platform

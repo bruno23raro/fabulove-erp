@@ -1,104 +1,74 @@
-# SIZEN ERP — Infrastructure Decisions
+# SIZEN ERP — Infrastructure Documentation
 
-## Princípio Central
+## Deployment Targets
 
-**Sem Docker. Nunca.** Toda infraestrutura via serviços gerenciados ou binários nativos locais.
+| Target | Status | Notes |
+|--------|--------|-------|
+| Local (PostgreSQL) | ✅ Active | DB runs locally on port 5432 |
+| Supabase Cloud | ⏳ Pending | Requires manual login + `supabase login` |
+| Vercel | ⏳ Pending | Requires manual login + `vercel login` |
+| GitHub Actions CI | ✅ Active | Runs lint + test + build on push |
 
-## Serviços Externos (Gerenciados)
+## Cloud Setup Steps (Manual)
 
-| Componente | Serviço | Status | Config |
-|------------|---------|--------|--------|
-| Database | PostgreSQL local (dev) → Supabase (prod) | 🟡 Dev local | `DB_*` vars |
-| Email | Resend API | ✅ Configurado | `RESEND_API_KEY` no .env |
-| AI | NVIDIA NIM + Agnes AI | ✅ Interface pronta | `NVIDIA_NIM_API_KEY`, `AGNES_AI_API_KEY` |
-| Deploy | Vercel (frontend + API) | ✅ Config pronto | `vercel.json` criado |
-| CI/CD | GitHub Actions | ✅ Workflow criado | `.github/workflows/ci.yml` |
+### Supabase Cloud Migration
+```bash
+# 1. Login to Supabase CLI
+npx supabase login
 
-## Configurações de Ambiente
+# 2. Create a new project at https://supabase.com/dashboard
+# 3. Link to existing project
+npx supabase link --project-ref <your-project-ref>
 
-### Desenvolvimento Local
-- PostgreSQL: `localhost:5432`, DB `fabulove_erp`, user `postgres`
-- Node.js 20+ nativo
-- `.env` com variáveis locais (não commitado)
+# 4. Run migrations
+npx supabase db push
+```
 
-### Produção (Planejado)
-- **Supabase**: PostgreSQL gerenciado, auth, storage, edge functions
-- **Vercel**: Deploy automático do branch `main`, preview de PRs
-- **Resend**: Email transacional (já configurado com API key)
-- **AI**: NVIDIA NIM (gratuito) ou Agnes AI (free tier)
+### Vercel Deployment
+```bash
+# 1. Login to Vercel
+npx vercel login
 
-## Variáveis de Ambiente (.env)
+# 2. Create project (if not already)
+npx vercel --yes
+
+# 3. Deploy to production
+npx vercel --prod
+```
+
+## Environment Variables
+
+All secrets must be stored in `.env` (gitignored) and deployed via:
+- **Supabase**: Project settings → Database → Connection string
+- **Vercel**: Project settings → Environment Variables
+
+### Required Environment Variables
 
 ```bash
 # Database
-DB_HOST=localhost
-DB_PORT=5432
-DB_NAME=fabulove_erp
-DB_USER=postgres
-DB_PASSWORD=***
-# Ou DATABASE_URL=postgresql://...
+DATABASE_URL=postgresql://...
 
-# Auth
-JWT_SECRET=*** (32+ chars aleatórios)
+# JWT
+JWT_SECRET=<strong-random-secret>
 JWT_EXPIRES_IN=15m
 REFRESH_EXPIRES_IN=7d
 
-# Email (Resend)
-RESEND_API_KEY=re_***
+# Email (Resend recommended)
+RESEND_API_KEY=re_...
 
-# AI
-NVIDIA_NIM_API_KEY=***
-NVIDIA_NIM_BASE_URL=https://integrate.api.nvidia.com/v1
-AGNES_AI_API_KEY=***
-AI_PROVIDER=nvidia-nim
-AI_MODEL=meta/llama-3.1-8b-instruct
+# AI Providers
+NVIDIA_NIM_API_KEY=...
+AGNES_AI_API_KEY=...
 
-# Client
-CLIENT_URL=https://sizen.vercel.app
-CORS_ORIGINS=https://sizen.vercel.app
+# Marketplaces
+ML_CLIENT_ID=...
+ML_CLIENT_SECRET=...
+SHOPEE_PARTNER_ID=...
+SHOPEE_PARTNER_KEY=...
 ```
 
-## Segurança
+## Security Notes
 
-- **Helmet**: CSP, HSTS, X-Frame-Options
-- **CORS**: Restrito a `CLIENT_URL`
-- **Rate Limiting**: Auth (20/15min), API (300/15min)
-- **Bcrypt**: 12 rounds
-- **Anti-enumeração**: Mensagens genéricas em forgot/reset password
-- **Tokens**: Access (15min) + Refresh (7d) com rotação e revogação
-- **SQL Injection**: Prepared statements em todas as queries
-
-## Deploy Vercel
-
-`vercel.json` configurado para:
-- API serverless: `server/app.js` → `/api/*`
-- Frontend estático: `client/dist` → `/*`
-- Build automático via `npm run build`
-
-## GitHub Actions CI
-
-`.github/workflows/ci.yml`:
-- Trigger: push/PR to `main` e `sizren-erp-rebrand`
-- Steps: checkout → node 20 → npm ci → lint → test → build
-- Cache: npm dependencies
-
-## Decisões Rejeitadas
-
-| Opção | Motivo da Rejeição |
-|-------|-------------------|
-| Docker/Compose | Regra: "Sem Docker. Nunca." |
-| OpenAI | Removido — apenas NVIDIA NIM + Agnes AI |
-| Mercado Pago | Fora do escopo atual |
-| Prisma/ORM | SQL nativo é mais transparente e performático |
-| Webpack | Vite já configurado e mais rápido |
-
-## Checklist de Produção
-
-- [ ] Supabase project criado + `DATABASE_URL` no Vercel
-- [ ] `JWT_SECRET` forte gerado (`openssl rand -hex 32`)
-- [ ] `RESEND_API_KEY` válida no Vercel
-- [ ] `NVIDIA_NIM_API_KEY` ou `AGNES_AI_API_KEY` no Vercel
-- [ ] `CLIENT_URL` e `CORS_ORIGINS` apontando para domínio Vercel
-- [ ] Migrations rodadas no Supabase (`npm run db:migrate`)
-- [ ] Domain customizado configurado no Vercel
-- [ ] Health check `/api/health` monitorado
+- Never commit `.env` or `CREDENTIALS.local.md`
+- Marketplace tokens are stored in `marketplace_accounts` table (plaintext in current implementation)
+- Consider adding pgcrypto encryption for token storage (see task #7 in STATUS_PROJETO.md)
