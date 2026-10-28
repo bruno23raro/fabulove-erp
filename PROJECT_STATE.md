@@ -1,4 +1,4 @@
-# INVENTÁRIO DO PROJETO FABULOVE ERP
+# INVENTÁRIO DO PROJETO SIZEN ERP
 
 **Data:** 2026-10-28  
 **Path absoluto:** `C:\Users\brunow\fabulove-erp`
@@ -14,7 +14,7 @@ Fabulove ERP é um sistema completo de e-commerce com PDV, gestão de estoque, p
 ## 1. VISÃO GERAL
 
 ### Nome do projeto
-Fabulove AI Seller Agent - ERP
+SIZEN AI Seller Agent - ERP
 
 ### Objetivo
 ERP completo para automação de e-commerce com integração de IA, gestão de produtos, pedidos, estoque, financeiro e marketplace (Shopee).

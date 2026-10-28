@@ -86,6 +86,11 @@ const routes = [
         meta: { role: 'admin' },
       },
       {
+        path: 'crm',
+        name: 'CRM',
+        component: () => import('@/views/CrmView.vue'),
+      },
+      {
         path: 'financial',
         name: 'Financeiro',
         redirect: '/financial',

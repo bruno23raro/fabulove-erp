@@ -75,6 +75,7 @@ const navItems = [
   { to: '/stock',      icon: '📦', label: 'Estoque' },
   { to: '/reports',    icon: '📈', label: 'Relatórios' },
   { to: '/financial',  icon: '💰', label: 'Financeiro' },
+  { to: '/crm',        icon: '🤝', label: 'CRM' },
   { to: '/config',     icon: '⚙️', label: 'Configurações' },
 ]
 
@@ -91,6 +92,7 @@ const titles = {
   '/stock':      'Estoque',
   '/reports':       'Relatórios',
   '/financial':     'Financeiro',
+  '/crm':           'CRM',
   '/financial/receivables': 'Contas a Receber',
   '/financial/payable': 'Contas a Pagar',
   '/financial/cash': 'Caixa',

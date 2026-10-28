@@ -1,4 +1,4 @@
-# CREDENCIAIS DO PROJETO FABULOVE ERP
+# CREDENCIAIS DO PROJETO SIZEN ERP
 
 **Arquivo sensível — NÃO commitar no Git**  
 **(.gitignore protege este arquivo)**

@@ -1,4 +1,4 @@
-# STATE.md — Estado do Projeto Fabulove ERP
+# STATE.md — Estado do Projeto SIZEN ERP
 
 **Última atualização:** 2026-10-28
 

@@ -37,6 +37,7 @@ import purchaseRoutes   from './routes/purchase.routes.js';
 import stockRoutes      from './routes/stock.routes.js';
 import posRoutes        from './routes/pos.routes.js';
 import financialRoutes from './routes/financial.routes.js';
+import crmRoutes from './routes/crm.routes.js';
 
 import errorHandler from './middleware/errorHandler.js';
 import { authRateLimit, apiRateLimit } from './middleware/rateLimit.js';
@@ -103,6 +104,7 @@ app.use('/api/purchases',    purchaseRoutes);
 app.use('/api/stock',        stockRoutes);
 app.use('/api/pos',          posRoutes);
 app.use('/api/financial',    financialRoutes);
+app.use('/api/crm',         crmRoutes);
 
 // ── SPA fallback (só se o build existir) ─────────────────────────────────────
 if (fs.existsSync(clientDist)) {
