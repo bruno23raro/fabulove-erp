@@ -39,7 +39,7 @@
 | AI / IA (multi-provider: NVIDIA NIM, Agnes AI) | ai.controller + routes + views/AiView.vue | ✅ |
 | Marketplace Adapter (mock, ML skeleton, service) | adapters/ + marketplace.service.js | ✅ |
 | Shopee Adapter (real shopee-api integration) | shopee.adapter.js | ✅ |
-| Mercado Livre Adapter (real integration) | ml.adapter.js | ✅ |
+| Mercado Livre Adapter (real integration) | ml.adapter.js + ml.controller.js + ml.routes.js | ✅ |
 | Rebrand Fabulove → SIZEN | minimal name/UI changes | ✅ |
 | Automation IA (placeholder) | automation.routes | ⚠️ Placeholder |
 | Frontend — 19 Vue views + router + auth store | client/src/ | ✅ |
