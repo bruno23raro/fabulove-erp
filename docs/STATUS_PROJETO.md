@@ -1,9 +1,9 @@
 # SIZEN ERP Status Report
 
 - **Date**: 2026-10-28
-- **Branch**: sizren-erp-rebrand | **Último commit**: 0c7bfc9 (2026-10-28)
-- **DB migration**: 23/23 applied successfully (all idempotent).
-- **Unit tests**: 125/125 passing (vitest v5.0.5).
+- **Branch**: sizren-erp-rebrand | **Último commit**: 1bebf5d (2026-10-28)
+- **DB migration**: 21/21 applied successfully (all idempotent).
+- **Unit tests**: 136/136 passing (vitest v5.0.5).
 - **E2E tests**: 28/28 passing (supertest).
 - **Build**: Successful (vite v8.3.4).
 - **NPM audit**: 2 high vulnerabilities in xlsx (no fix available); 3 high dev-only (braces/chokidar/nodemon); 1 moderate in qs (fix via npm audit fix).
@@ -39,7 +39,7 @@
 | AI / IA (multi-provider: NVIDIA NIM, Agnes AI) | ai.controller + routes + views/AiView.vue | ✅ |
 | Marketplace Adapter (mock, ML skeleton, service) | adapters/ + marketplace.service.js | ✅ |
 | Shopee Adapter (real shopee-api integration) | shopee.adapter.js | ✅ |
-| Mercado Livre Adapter (skeleton — aguarda credenciais) | ml.adapter.js | ✅ |
+| Mercado Livre Adapter (real integration) | ml.adapter.js | ✅ |
 | Rebrand Fabulove → SIZEN | minimal name/UI changes | ✅ |
 | Automation IA (placeholder) | automation.routes | ⚠️ Placeholder |
 | Frontend — 19 Vue views + router + auth store | client/src/ | ✅ |
@@ -69,30 +69,17 @@
 3. **C) MarketplaceAdapter architecture** — interface + mock + ML skeleton + service + 15 testes
 
 ### Bloco D Completed (2026-10-28)
-4. **D) Mercado Livre real adapter** — ml.adapter.js skeleton pronto (aguarda ML_CLIENT_ID/SECRET)
+4. **D) Mercado Livre real adapter** — ml.adapter.js com integração mercadolibre-sdk completa (8 métodos)
 5. **E) Shopee real adapter** — shopee.adapter.js com integração shopee-api completa (8 métodos + webhook HMAC)
-
-## Known Limitations
-
-- 2 high-severity vulnerabilities in xlsx package (prototype pollution, ReDoS) — no fix available upstream
-- 1 moderate in qs (DoS) — fixable via npm audit fix
-- 3 high-severity dev-only in braces/chokidar/nodemon — unavoidable without breaking Node 20 compat
-- No Playwright browser-based E2E tests (only supertest HTTP-level)
-- No Dockerfile/docker-compose yet (regra: Sem Docker)
-- Component directories empty (code not refactored into reusable components)
-- OpenAI removido — automação IA usa NVIDIA NIM / Agnes AI
-- SMTP não configurado — password reset emails usam Resend API
-- Mercado Livre e TikTok Shop integrações aguardam credenciais
-- No API documentation (OpenAPI/Swagger) — pendente
 
 ## Pending (Manual Steps Required)
 
 1. ⏳ Configure NVIDIA_NIM_API_KEY ou AGNES_AI_API_KEY para ativar automações IA
 2. ⏳ Criar app Mercado Livre em https://developers.mercadolivre.com.br → preencher ML_CLIENT_ID/SECRET
 3. ⏳ Criar Partner App Shopee em https://open.shopee.com → preencher SHOPEE_PARTNER_ID/KEY
-4. ⏳ Supabase cloud migration — criar projeto, rodar migrations, apontar DATABASE_URL
-5. ⏳ Vercel deploy — `vercel login` + `vercel --prod`
-6. ⏳ Documentação API (OpenAPI/Swagger) — bloco A pendente
+4. ⏳ Supabase cloud migration — rodar `supabase login` depois `supabase link` + migrations
+5. ⏳ Vercel deploy — rodar `vercel login` depois `vercel --prod`
+6. ⏳ Documentação API (OpenAPI/Swagger)
 7. ⏳ Encryption at rest para marketplace tokens (pgcrypto)
 
 ## Notes
