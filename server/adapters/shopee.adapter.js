@@ -62,7 +62,6 @@ export class ShopeeAdapter {
     }
 
     const state = crypto.randomBytes(16).toString('hex');
-    const client = this._initClient();
 
     // Shopee uses partner_key + redirect_uri hash for token
     const token = crypto
@@ -78,10 +77,10 @@ export class ShopeeAdapter {
   /**
    * Handle OAuth callback — exchange code for tokens
    * @param {string} code
-   * @param {string} state
+   * @param {string} _state
    * @returns {Promise<{accessToken: string, expiresIn: number, refreshToken: string, shopId: number}>}
    */
-  async callbackHandler(code, state) {
+  async callbackHandler(code, _state) {
     if (!code) throw new Error('Authorization code is required');
 
     try {
@@ -114,7 +113,7 @@ export class ShopeeAdapter {
       };
     } catch (err) {
       console.error('[shopee-adapter] Error in callbackHandler:', err.message);
-      throw new Error(`Falha ao obter tokens: ${err.message}`);
+      throw new Error(`Falha ao obter tokens: ${err.message}`, { cause: err });
     }
   }
 
@@ -153,7 +152,7 @@ export class ShopeeAdapter {
       };
     } catch (err) {
       console.error('[shopee-adapter] Error refreshing token:', err.message);
-      throw new Error(`Falha ao renovar token: ${err.message}`);
+      throw new Error(`Falha ao renovar token: ${err.message}`, { cause: err });
     }
   }
 
@@ -197,7 +196,7 @@ export class ShopeeAdapter {
       };
     } catch (err) {
       console.error('[shopee-adapter] Error listing products:', err.message);
-      throw new Error(`Falha ao listar produtos: ${err.message}`);
+      throw new Error(`Falha ao listar produtos: ${err.message}`, { cause: err });
     }
   }
 
@@ -246,7 +245,7 @@ export class ShopeeAdapter {
       };
     } catch (err) {
       console.error('[shopee-adapter] Error pushing product:', err.message);
-      throw new Error(`Falha ao publicar produto: ${err.message}`);
+      throw new Error(`Falha ao publicar produto: ${err.message}`, { cause: err });
     }
   }
 
@@ -255,7 +254,7 @@ export class ShopeeAdapter {
    * @param {object} params
    * @returns {Promise<{orders: Array, total: number}>}
    */
-  async listOrders({ status, page = 1, limit = 50, timeFrom, timeTo } = {}) {
+  async listOrders({ status, _page = 1, limit = 50, timeFrom, timeTo } = {}) {
     if (!this.tokens?.access_token || !this.shopId) {
       throw new Error('Not connected. Run OAuth flow first.');
     }
@@ -305,7 +304,7 @@ export class ShopeeAdapter {
       };
     } catch (err) {
       console.error('[shopee-adapter] Error listing orders:', err.message);
-      throw new Error(`Falha ao listar pedidos: ${err.message}`);
+      throw new Error(`Falha ao listar pedidos: ${err.message}`, { cause: err });
     }
   }
 
@@ -334,7 +333,7 @@ export class ShopeeAdapter {
       return { success: true };
     } catch (err) {
       console.error('[shopee-adapter] Error updating stock:', err.message);
-      throw new Error(`Falha ao atualizar estoque: ${err.message}`);
+      throw new Error(`Falha ao atualizar estoque: ${err.message}`, { cause: err });
     }
   }
 

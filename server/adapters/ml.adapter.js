@@ -57,7 +57,7 @@ export class MercadoLivreAdapter {
    * @param {string} state
    * @returns {Promise<{accessToken: string, expiresIn: number}>}
    */
-  async callbackHandler(code, state) {
+  async callbackHandler(code, _state) {
     if (!code) throw new Error('Authorization code is required');
     console.warn('[ml-adapter] TODO: Implementar callbackHandler com ML API');
 
@@ -98,7 +98,7 @@ export class MercadoLivreAdapter {
    * @param {object} params
    * @returns {Promise<{items: Array, total: number, page: number}>}
    */
-  async listProducts({ page = 1, limit = 50 } = {}) {
+  async listProducts({ page = 1, limit: _limit = 50 } = {}) {
     console.warn('[ml-adapter] TODO: Implementar listProducts com ML API');
     return { items: [], total: 0, page };
   }
@@ -109,7 +109,7 @@ export class MercadoLivreAdapter {
    * @param {object} product
    * @returns {Promise<{remoteId: string, status: string}>}
    */
-  async pushProduct(product) {
+  async pushProduct(_product) {
     console.warn('[ml-adapter] TODO: Implementar pushProduct com ML API');
     return { remoteId: `ML-${Date.now()}`, status: 'pending' };
   }
@@ -120,7 +120,7 @@ export class MercadoLivreAdapter {
    * @param {object} params
    * @returns {Promise<{orders: Array, total: number}>}
    */
-  async listOrders({ status, page = 1 } = {}) {
+  async listOrders({ status: _status, page: _page = 1 } = {}) {
     console.warn('[ml-adapter] TODO: Implementar listOrders com ML API');
     return { orders: [], total: 0 };
   }
@@ -132,7 +132,7 @@ export class MercadoLivreAdapter {
    * @param {number} quantity
    * @returns {Promise<{success: boolean}>}
    */
-  async updateStock(productId, quantity) {
+  async updateStock(_productId, _quantity) {
     console.warn('[ml-adapter] TODO: Implementar updateStock com ML API');
     return { success: true };
   }
@@ -144,7 +144,7 @@ export class MercadoLivreAdapter {
    * @param {string} signature
    * @returns {Promise<{event: string, data: object}>}
    */
-  async webhookHandler(payload, signature) {
+  async webhookHandler(payload, _signature) {
     console.warn('[ml-adapter] TODO: Implementar webhookHandler com validação de assinatura');
     return {
       event: payload?.type || 'unknown',
