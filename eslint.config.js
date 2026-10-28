@@ -18,6 +18,7 @@ export default [
     rules: {
       'no-var': 'error',
       'eqeqeq': ['error', 'always'],
+      'no-unused-vars': ['error', { 'argsIgnorePattern': '^_' }],
     },
   },
   {
