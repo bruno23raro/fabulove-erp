@@ -12,6 +12,12 @@ export default defineConfig({
       reporter: ['text', 'json', 'html'],
       include: ['server/**/*.js'],
       exclude: ['server/scripts/**', 'server/tests/**'],
+      thresholds: {
+        statements: 22,
+        branches: 24,
+        functions: 20,
+        lines: 22,
+      },
     },
     // Aumenta timeout para testes de integração com DB
     testTimeout: 15000,
