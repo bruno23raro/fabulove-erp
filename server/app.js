@@ -76,13 +76,21 @@ app.use(morgan('combined', {
 }));
 
 // ── Arquivos estáticos ────────────────────────────────────────────────────────
-const uploadsDir = path.join(__dirname, '..', 'uploads');
-if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
-app.use('/uploads', express.static(uploadsDir));
+try {
+  const uploadsDir = path.join(__dirname, '..', 'uploads');
+  if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
+  app.use('/uploads', express.static(uploadsDir));
+} catch (err) {
+  console.warn('[STATIC] Usuário não pôde criar uploads:', err.message);
+}
 
-const clientDist = path.join(__dirname, '..', 'client', 'dist');
-if (fs.existsSync(clientDist)) {
-  app.use(express.static(clientDist));
+try {
+  const clientDist = path.join(__dirname, '..', 'client', 'dist');
+  if (fs.existsSync(clientDist)) {
+    app.use(express.static(clientDist));
+  }
+} catch (err) {
+  console.warn('[STATIC] Client dist não disponível:', err.message);
 }
 
 // ── Health & versão ───────────────────────────────────────────────────────────
