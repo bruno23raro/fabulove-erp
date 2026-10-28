@@ -1,0 +1,507 @@
+- generic [active] [ref=f372e1]:
+  - generic [ref=f372e5]:
+    - generic [ref=f372e6]:
+      - generic [ref=f372e7]:
+        - button "Olist" [ref=f372e9] [cursor=pointer]:
+          - img "Olist" [ref=f372e10]
+        - button [ref=f372e12] [cursor=pointer]:
+          - img "Lis" [ref=f372e13]
+      - generic [ref=f372e16]:
+        - link [ref=f372e19] [cursor=pointer]:
+          - /url: https://erp.olist.com/
+          - img "ERP" [ref=f372e20]
+        - link [ref=f372e23] [cursor=pointer]:
+          - /url: pdv
+          - img "PDV" [ref=f372e24]
+        - link [ref=f372e27] [cursor=pointer]:
+          - /url: conta_digital
+          - img "Conta Digital" [ref=f372e28]
+        - link [ref=f372e31] [cursor=pointer]:
+          - /url: olist_envios
+          - img "Envios" [ref=f372e32]
+        - link [ref=f372e35] [cursor=pointer]:
+          - /url: olist_ecommerce
+          - img "Ecommerce" [ref=f372e36]
+        - link [ref=f372e39] [cursor=pointer]:
+          - /url: https://agents.olist.com/chats/new/
+          - img "Lis" [ref=f372e40]
+      - generic [ref=f372e41]:
+        - button "AD" [ref=f372e43] [cursor=pointer]
+        - button [ref=f372e48] [cursor=pointer]:
+          - img "Notificações" [ref=f372e50]
+        - button [ref=f372e52] [cursor=pointer]:
+          - img "Ajuda" [ref=f372e54]
+    - generic [ref=f372e57]:
+      - generic [ref=f372e58]:
+        - generic:
+          - generic:
+            - generic [ref=f372e59]:
+              - button
+              - heading "ERP" [level=2]
+            - navigation "ERP" [ref=f372e60]:
+              - list:
+                - listitem:
+                  - link [ref=f372e61] [cursor=pointer]:
+                    - /url: index
+                - listitem:
+                  - link [ref=f372e65] [cursor=pointer]:
+                    - /url: contatos
+                - listitem:
+                  - link [ref=f372e73] [cursor=pointer]:
+                    - /url: estoques
+                - listitem:
+                  - link [ref=f372e77] [cursor=pointer]:
+                    - /url: crm
+                - listitem:
+                  - link [ref=f372e81] [cursor=pointer]:
+                    - /url: caixa
+        - generic [ref=f372e86]:
+          - link [ref=f372e87] [cursor=pointer]:
+            - /url: ideias
+            - generic:
+              - paragraph: Canal de ideias
+          - link [ref=f372e91] [cursor=pointer]:
+            - /url: https://cloud.comunicacao.olist.com/indique-e-ganhe
+            - generic:
+              - paragraph: Indique e ganhe
+          - button [ref=f372e95] [cursor=pointer]:
+            - img "Configurações" [ref=f372e97]
+            - generic:
+              - paragraph: Configurações
+          - generic [ref=f372e101]:
+            - generic [ref=f372e102]: Fixar menu
+            - switch "Fixar menu" [checked] [ref=f372e103] [cursor=pointer]
+      - generic [ref=f372e105]:
+        - button "Início" [ref=f372e107] [cursor=pointer]
+        - generic [ref=f372e114]:
+          - link [ref=f372e115] [cursor=pointer]:
+            - /url: index
+            - paragraph [ref=f372e121]: Índice
+          - link [ref=f372e122] [cursor=pointer]:
+            - /url: dashboard
+            - paragraph [ref=f372e129]: Dashboard
+          - link [ref=f372e130] [cursor=pointer]:
+            - /url: home_agenda
+            - paragraph [ref=f372e136]: Agenda
+          - link [ref=f372e137] [cursor=pointer]:
+            - /url: dados_conta
+            - paragraph [ref=f372e143]: Minha conta
+          - link [ref=f372e144] [cursor=pointer]:
+            - /url: integracoes
+            - paragraph [ref=f372e150]: Integrações
+          - link [ref=f372e151] [cursor=pointer]:
+            - /url: contratacao_servico
+            - paragraph [ref=f372e158]: Upgrade de plano
+          - link [ref=f372e159] [cursor=pointer]:
+            - /url: detalhes_versao
+            - paragraph [ref=f372e165]: Sobre a versão
+          - link [ref=f372e166] [cursor=pointer]:
+            - /url: ajuda/
+            - paragraph [ref=f372e171]: Ajuda do ERP
+          - link [ref=f372e172] [cursor=pointer]:
+            - /url: ferramentas_geral
+            - paragraph [ref=f372e179]: Ferramentas
+          - link [ref=f372e180] [cursor=pointer]:
+            - /url: loja_aplicativos
+            - paragraph [ref=f372e185]: Loja de extensões
+          - link [ref=f372e186] [cursor=pointer]:
+            - /url: https://olist.com/parceiros
+            - paragraph [ref=f372e191]: Shopping de Serviços
+  - generic [ref=f372e195]:
+    - generic [ref=f372e196]:
+      - generic [ref=f372e197]:
+        - list [ref=f372e198]:
+          - listitem [ref=f372e199]:
+            - link " Início" [ref=f372e200] [cursor=pointer]:
+              - /url: index
+              - generic [ref=f372e201]: 
+              - text: Início
+          - listitem [ref=f372e202]: Loja de extensões
+        - button "Minhas extensões" [ref=f372e206] [cursor=pointer]
+      - generic [ref=f372e207]: Loja de extensões
+      - generic [ref=f372e210]:
+        - textbox "Busque pela funcionalidade ou dúvida" [ref=f372e211]
+        - button "" [ref=f372e213] [cursor=pointer]
+    - generic [ref=f372e216]:
+      - generic [ref=f372e219]:
+        - text: 
+        - generic [ref=f372e222]:
+          - generic [ref=f372e224]:
+            - generic [ref=f372e225]: 
+            - generic [ref=f372e228]:
+              - heading "Logs de Produtos" [level=4] [ref=f372e230]
+              - generic [ref=f372e231]:
+                - generic [ref=f372e232]:
+                  - generic [ref=f372e233]: Novo
+                  - generic [ref=f372e234]: Grátis
+                - link " Instalar" [ref=f372e235] [cursor=pointer]:
+                  - /url: "#"
+                  - generic [ref=f372e236]: 
+                  - text: Instalar
+          - generic [ref=f372e238]:
+            - generic [ref=f372e239]: 
+            - generic [ref=f372e242]:
+              - heading "Logs de Estoque" [level=4] [ref=f372e244]
+              - generic [ref=f372e245]:
+                - generic [ref=f372e246]:
+                  - generic [ref=f372e247]: Novo
+                  - generic [ref=f372e248]: Grátis
+                - link " Instalar" [ref=f372e249] [cursor=pointer]:
+                  - /url: "#"
+                  - generic [ref=f372e250]: 
+                  - text: Instalar
+          - generic [ref=f372e252]:
+            - generic [ref=f372e253]: 
+            - generic [ref=f372e256]:
+              - heading "Maquininhas de cartão" [level=4] [ref=f372e258]
+              - generic [ref=f372e259]:
+                - generic [ref=f372e260]: Grátis
+                - link " Instalar" [ref=f372e262] [cursor=pointer]:
+                  - /url: "#"
+                  - generic [ref=f372e263]: 
+                  - text: Instalar
+        - button "" [ref=f372e264] [cursor=pointer]
+      - list [ref=f372e266]:
+        - listitem [ref=f372e267]: "Filtros:"
+        - listitem [ref=f372e268]:
+          - link " E-commerce " [ref=f372e269] [cursor=pointer]:
+            - /url: ""
+            - generic [ref=f372e270]: 
+            - text: E-commerce
+            - generic [ref=f372e271]: 
+        - listitem [ref=f372e272]:
+          - link " Comércio " [ref=f372e273] [cursor=pointer]:
+            - /url: ""
+            - generic [ref=f372e274]: 
+            - text: Comércio
+            - generic [ref=f372e275]: 
+        - listitem [ref=f372e276]:
+          - link " Serviço " [ref=f372e277] [cursor=pointer]:
+            - /url: ""
+            - generic [ref=f372e278]: 
+            - text: Serviço
+            - generic [ref=f372e279]: 
+        - listitem [ref=f372e280]:
+          - link "mais " [ref=f372e281] [cursor=pointer]:
+            - /url: "#"
+            - generic [ref=f372e283]:
+              - text: mais
+              - generic [ref=f372e284]: 
+            - text: 
+          - text:     
+      - heading "Explore o máximo potencial do seu plano" [level=2] [ref=f372e286]
+      - paragraph [ref=f372e287]: Confira as extensões disponíveis para o seu plano Impulsione e obtenha uma solução ainda mais completa para o seu negócio.
+      - generic [ref=f372e288]:
+        - generic [ref=f372e290]:
+          - generic [ref=f372e291]:
+            - generic [ref=f372e292]: 
+            - heading "Perguntas do e-commerce" [level=4] [ref=f372e294]
+            - generic [ref=f372e295]: Vendas
+          - link "Instalar" [ref=f372e297] [cursor=pointer]:
+            - /url: ""
+          - generic [ref=f372e298]: Grátis
+        - generic [ref=f372e301]:
+          - generic [ref=f372e302]:
+            - generic [ref=f372e303]: 
+            - heading "Pós-venda do Mercado Livre" [level=4] [ref=f372e305]
+            - generic [ref=f372e306]: Vendas
+          - link "Instalar" [ref=f372e308] [cursor=pointer]:
+            - /url: ""
+          - generic [ref=f372e309]: Grátis
+        - generic [ref=f372e312]:
+          - generic [ref=f372e313]:
+            - generic [ref=f372e314]: 
+            - heading "SAT-CFe" [level=4] [ref=f372e316]
+            - generic [ref=f372e317]: Vendas
+          - link "Instalar" [ref=f372e319] [cursor=pointer]:
+            - /url: ""
+          - generic [ref=f372e320]: Grátis
+        - generic [ref=f372e323]:
+          - generic [ref=f372e324]:
+            - generic [ref=f372e325]: 
+            - heading "Correios LOG+" [level=4] [ref=f372e327]
+            - generic [ref=f372e328]: Vendas
+          - link "Instalar" [ref=f372e330] [cursor=pointer]:
+            - /url: ""
+          - generic [ref=f372e331]: Grátis
+        - generic [ref=f372e334]:
+          - generic [ref=f372e335]:
+            - generic [ref=f372e336]: 
+            - heading "+ 1 milhão de Sincronizações de Estoque" [level=4] [ref=f372e338]
+          - link "Instalar" [ref=f372e340] [cursor=pointer]:
+            - /url: ""
+          - generic [ref=f372e341]: R$ 782,00
+        - generic [ref=f372e344]:
+          - generic [ref=f372e345]:
+            - generic [ref=f372e346]: 
+            - heading "+ 10 mil Anúncios" [level=4] [ref=f372e348]
+          - link "Instalar" [ref=f372e350] [cursor=pointer]:
+            - /url: ""
+          - generic [ref=f372e351]: R$ 223,00
+        - generic [ref=f372e354]:
+          - generic [ref=f372e355]:
+            - generic [ref=f372e356]: 
+            - heading "+ 10 mil Sincronizações de Estoque" [level=4] [ref=f372e358]
+          - link "Instalar" [ref=f372e360] [cursor=pointer]:
+            - /url: ""
+          - generic [ref=f372e361]: R$ 22,00
+        - generic [ref=f372e364]:
+          - generic [ref=f372e365]:
+            - generic [ref=f372e366]: 
+            - heading "+ 10 milhões de Sincronizações de Estoque" [level=4] [ref=f372e368]
+          - link "Instalar" [ref=f372e370] [cursor=pointer]:
+            - /url: ""
+          - generic [ref=f372e371]: R$ 7.819,00
+        - generic [ref=f372e374]:
+          - generic [ref=f372e375]:
+            - generic [ref=f372e376]: 
+            - heading "+ 100 mil Anúncios" [level=4] [ref=f372e378]
+          - link "Instalar" [ref=f372e380] [cursor=pointer]:
+            - /url: ""
+          - generic [ref=f372e381]: R$ 1.117,00
+        - generic [ref=f372e384]:
+          - generic [ref=f372e385]:
+            - generic [ref=f372e386]: 
+            - heading "+ 1000 Anúncios" [level=4] [ref=f372e388]
+          - link "Instalar" [ref=f372e390] [cursor=pointer]:
+            - /url: ""
+          - generic [ref=f372e391]: R$ 56,00
+        - generic [ref=f372e394]:
+          - generic [ref=f372e395]:
+            - generic [ref=f372e396]: 
+            - heading "+ 2 milhões de Sincronizações de Estoque" [level=4] [ref=f372e398]
+          - link "Instalar" [ref=f372e400] [cursor=pointer]:
+            - /url: ""
+          - generic [ref=f372e401]: R$ 1.564,00
+        - generic [ref=f372e404]:
+          - generic [ref=f372e405]:
+            - generic [ref=f372e406]: 
+            - heading "+ 200 mil Sincronizações de Estoque" [level=4] [ref=f372e408]
+          - link "Instalar" [ref=f372e410] [cursor=pointer]:
+            - /url: ""
+          - generic [ref=f372e411]: R$ 223,00
+        - generic [ref=f372e414]:
+          - generic [ref=f372e415]:
+            - generic [ref=f372e416]: 
+            - heading "+ 25 mil Sincronizações de Estoque" [level=4] [ref=f372e418]
+          - link "Instalar" [ref=f372e420] [cursor=pointer]:
+            - /url: ""
+          - generic [ref=f372e421]: R$ 56,00
+        - generic [ref=f372e424]:
+          - generic [ref=f372e425]:
+            - generic [ref=f372e426]: 
+            - heading "+ 250 mil Sincronizações de Estoque" [level=4] [ref=f372e428]
+          - link "Instalar" [ref=f372e430] [cursor=pointer]:
+            - /url: ""
+          - generic [ref=f372e431]: R$ 279,00
+        - generic [ref=f372e434]:
+          - generic [ref=f372e435]:
+            - generic [ref=f372e436]: 
+            - heading "+ 3 milhões de Sincronizações de Estoque" [level=4] [ref=f372e438]
+          - link "Instalar" [ref=f372e440] [cursor=pointer]:
+            - /url: ""
+          - generic [ref=f372e441]: R$ 2.346,00
+        - generic [ref=f372e444]:
+          - generic [ref=f372e445]:
+            - generic [ref=f372e446]: 
+            - heading "+ 4 milhões de Sincronizações de Estoque" [level=4] [ref=f372e448]
+          - link "Instalar" [ref=f372e450] [cursor=pointer]:
+            - /url: ""
+          - generic [ref=f372e451]: R$ 3.217,00
+        - generic [ref=f372e454]:
+          - generic [ref=f372e455]:
+            - generic [ref=f372e456]: 
+            - heading "+ 40 mil Anúncios" [level=4] [ref=f372e458]
+          - link "Instalar" [ref=f372e460] [cursor=pointer]:
+            - /url: ""
+          - generic [ref=f372e461]: R$ 447,00
+        - generic [ref=f372e464]:
+          - generic [ref=f372e465]:
+            - generic [ref=f372e466]: 
+            - heading "+ 5 mil Anúncios" [level=4] [ref=f372e468]
+          - link "Instalar" [ref=f372e470] [cursor=pointer]:
+            - /url: ""
+          - generic [ref=f372e471]: R$ 112,00
+        - generic [ref=f372e474]:
+          - generic [ref=f372e475]:
+            - generic [ref=f372e476]: 
+            - heading "+ 5 milhões de Sincronizações de Estoque" [level=4] [ref=f372e478]
+          - link "Instalar" [ref=f372e480] [cursor=pointer]:
+            - /url: ""
+          - generic [ref=f372e481]: R$ 3.910,00
+        - generic [ref=f372e484]:
+          - generic [ref=f372e485]:
+            - generic [ref=f372e486]: 
+            - heading "+ 50 mil Sincronizações de Estoque" [level=4] [ref=f372e488]
+          - link "Instalar" [ref=f372e490] [cursor=pointer]:
+            - /url: ""
+          - generic [ref=f372e491]: R$ 112,00
+        - generic [ref=f372e494]:
+          - generic [ref=f372e495]:
+            - generic [ref=f372e496]: 
+            - heading "+ 500 Anúncios" [level=4] [ref=f372e498]
+          - link "Instalar" [ref=f372e500] [cursor=pointer]:
+            - /url: ""
+          - generic [ref=f372e501]: R$ 28,00
+        - generic [ref=f372e504]:
+          - generic [ref=f372e505]:
+            - generic [ref=f372e506]: 
+            - heading "+ 500 mil Sincronizações de Estoque" [level=4] [ref=f372e508]
+          - link "Instalar" [ref=f372e510] [cursor=pointer]:
+            - /url: ""
+          - generic [ref=f372e511]: R$ 559,00
+        - generic [ref=f372e514]:
+          - generic [ref=f372e515]:
+            - generic [ref=f372e516]: 
+            - heading "+ 60 mil Anúncios" [level=4] [ref=f372e518]
+          - link "Instalar" [ref=f372e520] [cursor=pointer]:
+            - /url: ""
+          - generic [ref=f372e521]: R$ 670,00
+        - generic [ref=f372e524]:
+          - generic [ref=f372e525]:
+            - generic [ref=f372e526]: 
+            - heading "+ 80 mil Anúncios" [level=4] [ref=f372e528]
+          - link "Instalar" [ref=f372e530] [cursor=pointer]:
+            - /url: ""
+          - generic [ref=f372e531]: R$ 894,00
+        - generic [ref=f372e534]:
+          - generic [ref=f372e535]:
+            - generic [ref=f372e536]: 
+            - heading "Boa Vista SCPC" [level=4] [ref=f372e538]
+            - generic [ref=f372e539]: Cadastros
+          - link "Instalar" [ref=f372e541] [cursor=pointer]:
+            - /url: ""
+          - generic [ref=f372e542]: Grátis
+        - generic [ref=f372e545]:
+          - generic [ref=f372e546]:
+            - generic [ref=f372e547]: 
+            - heading "Logs de Produtos" [level=4] [ref=f372e549]
+            - generic [ref=f372e550]: Cadastros
+          - link "Instalar" [ref=f372e552] [cursor=pointer]:
+            - /url: ""
+          - generic [ref=f372e553]:
+            - generic [ref=f372e554]: Novo
+            - generic [ref=f372e555]: Grátis
+        - generic [ref=f372e557]:
+          - generic [ref=f372e558]:
+            - generic [ref=f372e559]: 
+            - heading "Logs de Estoque" [level=4] [ref=f372e561]
+            - generic [ref=f372e562]: Suprimentos
+          - link "Instalar" [ref=f372e564] [cursor=pointer]:
+            - /url: ""
+          - generic [ref=f372e565]:
+            - generic [ref=f372e566]: Novo
+            - generic [ref=f372e567]: Grátis
+        - generic [ref=f372e569]:
+          - generic [ref=f372e570]:
+            - generic [ref=f372e571]: 
+            - heading "Cálculo Automático de Volumes" [level=4] [ref=f372e573]
+            - generic [ref=f372e574]: Vendas
+          - link "Instalar" [ref=f372e576] [cursor=pointer]:
+            - /url: ""
+          - generic [ref=f372e577]: Grátis
+        - generic [ref=f372e580]:
+          - generic [ref=f372e581]:
+            - generic [ref=f372e582]: 
+            - heading "Impressão automática" [level=4] [ref=f372e584]
+            - generic [ref=f372e585]: Vendas
+          - link "Instalar" [ref=f372e587] [cursor=pointer]:
+            - /url: ""
+          - generic [ref=f372e588]: Grátis
+        - generic [ref=f372e591]:
+          - generic [ref=f372e592]:
+            - heading "Venda Consignada" [level=4] [ref=f372e594]
+            - generic [ref=f372e595]: Vendas
+          - link "Instalar" [ref=f372e597] [cursor=pointer]:
+            - /url: ""
+          - generic [ref=f372e598]:
+            - generic [ref=f372e599]: Novo
+            - generic [ref=f372e600]: Grátis
+        - generic [ref=f372e602]:
+          - generic [ref=f372e603]:
+            - generic [ref=f372e604]: 
+            - heading "Log sincronização de produtos com E-commerce" [level=4] [ref=f372e606]
+            - generic [ref=f372e607]: E-Commerce
+          - link "Instalar" [ref=f372e609] [cursor=pointer]:
+            - /url: ""
+          - generic [ref=f372e610]: Grátis
+        - generic [ref=f372e613]:
+          - generic [ref=f372e614]:
+            - generic [ref=f372e615]: 
+            - heading "Maquininhas de cartão" [level=4] [ref=f372e617]
+            - generic [ref=f372e618]: Financeiro
+          - link "Instalar" [ref=f372e620] [cursor=pointer]:
+            - /url: ""
+          - generic [ref=f372e621]: Grátis
+        - generic [ref=f372e624]:
+          - generic [ref=f372e625]:
+            - generic [ref=f372e626]: 
+            - heading "+1 GB de Banco de Dados" [level=4] [ref=f372e628]
+            - generic [ref=f372e629]: Outros
+          - link "Instalar" [ref=f372e631] [cursor=pointer]:
+            - /url: ""
+          - generic [ref=f372e632]: R$ 391,00
+        - generic [ref=f372e635]:
+          - generic [ref=f372e636]:
+            - generic [ref=f372e637]: 
+            - heading "+100 MB de Banco de Dados" [level=4] [ref=f372e639]
+            - generic [ref=f372e640]: Outros
+          - link "Instalar" [ref=f372e642] [cursor=pointer]:
+            - /url: ""
+          - generic [ref=f372e643]: R$ 67,00
+        - generic [ref=f372e646]:
+          - generic [ref=f372e647]:
+            - generic [ref=f372e648]: 
+            - heading "+2,5 GB | Anexos" [level=4] [ref=f372e650]
+            - generic [ref=f372e651]: Outros
+          - link "Instalar" [ref=f372e653] [cursor=pointer]:
+            - /url: ""
+          - generic [ref=f372e654]: R$ 121,03
+        - generic [ref=f372e657]:
+          - generic [ref=f372e658]:
+            - generic [ref=f372e659]: 
+            - heading "+200 MB de Banco de Dados" [level=4] [ref=f372e661]
+            - generic [ref=f372e662]: Outros
+          - link "Instalar" [ref=f372e664] [cursor=pointer]:
+            - /url: ""
+          - generic [ref=f372e665]: R$ 134,00
+        - generic [ref=f372e668]:
+          - generic [ref=f372e669]:
+            - generic [ref=f372e670]: 
+            - heading "+50 MB de Banco de Dados" [level=4] [ref=f372e672]
+            - generic [ref=f372e673]: Outros
+          - link "Instalar" [ref=f372e675] [cursor=pointer]:
+            - /url: ""
+          - generic [ref=f372e676]: R$ 34,00
+        - generic [ref=f372e679]:
+          - generic [ref=f372e680]:
+            - generic [ref=f372e681]: 
+            - heading "+500 MB de Banco de Dados" [level=4] [ref=f372e683]
+            - generic [ref=f372e684]: Outros
+          - link "Instalar" [ref=f372e686] [cursor=pointer]:
+            - /url: ""
+          - generic [ref=f372e687]: R$ 246,00
+        - generic [ref=f372e690]:
+          - generic [ref=f372e691]:
+            - generic [ref=f372e692]: 
+            - heading "+500 MB | Anexos" [level=4] [ref=f372e694]
+            - generic [ref=f372e695]: Outros
+          - link "Instalar" [ref=f372e697] [cursor=pointer]:
+            - /url: ""
+          - generic [ref=f372e698]: R$ 30,26
+        - generic [ref=f372e701]:
+          - generic [ref=f372e702]:
+            - generic [ref=f372e703]: 
+            - heading "Amazon Ads" [level=4] [ref=f372e705]
+            - generic [ref=f372e706]: Outros
+          - link "Instalar" [ref=f372e708] [cursor=pointer]:
+            - /url: ""
+          - generic [ref=f372e709]: Grátis
+        - generic [ref=f372e712]:
+          - generic [ref=f372e713]:
+            - generic [ref=f372e714]: 
+            - heading "Webhooks" [level=4] [ref=f372e716]
+            - generic [ref=f372e717]: Outros
+          - link "Instalar" [ref=f372e719] [cursor=pointer]:
+            - /url: ""
+          - generic [ref=f372e720]: Grátis

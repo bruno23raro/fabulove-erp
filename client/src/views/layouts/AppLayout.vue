@@ -4,7 +4,7 @@
     <aside class="sidebar" :class="{ 'sidebar-open': sidebarOpen }">
       <div class="sidebar-header">
         <span class="sidebar-logo">💜</span>
-        <span class="sidebar-brand">Fabulove ERP</span>
+        <span class="sidebar-brand">SIZEN ERP</span>
       </div>
 
       <nav class="sidebar-nav" aria-label="Navegação principal">
@@ -97,7 +97,7 @@ const titles = {
   '/config':        'Configurações',
 }
 
-const currentPageTitle = computed(() => titles[route.path] || 'Fabulove ERP')
+const currentPageTitle = computed(() => titles[route.path] || 'SIZEN ERP')
 const userInitial = computed(() => auth.user?.name?.charAt(0).toUpperCase() || 'U')
 
 async function handleLogout() {

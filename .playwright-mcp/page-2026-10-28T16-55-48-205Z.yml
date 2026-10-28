@@ -1,0 +1,152 @@
+- generic [active] [ref=f283e1]:
+  - generic [ref=f283e5]:
+    - generic [ref=f283e6]:
+      - generic [ref=f283e7]:
+        - button "Olist" [ref=f283e9] [cursor=pointer]:
+          - img "Olist" [ref=f283e10]
+        - button [ref=f283e12] [cursor=pointer]:
+          - img "Lis" [ref=f283e13]
+      - generic [ref=f283e16]:
+        - link [ref=f283e19] [cursor=pointer]:
+          - /url: https://erp.olist.com/
+          - img "ERP" [ref=f283e20]
+        - link [ref=f283e23] [cursor=pointer]:
+          - /url: pdv
+          - img "PDV" [ref=f283e24]
+        - link [ref=f283e27] [cursor=pointer]:
+          - /url: conta_digital
+          - img "Conta Digital" [ref=f283e28]
+        - link [ref=f283e31] [cursor=pointer]:
+          - /url: olist_envios
+          - img "Envios" [ref=f283e32]
+        - link [ref=f283e35] [cursor=pointer]:
+          - /url: olist_ecommerce
+          - img "Ecommerce" [ref=f283e36]
+        - link [ref=f283e39] [cursor=pointer]:
+          - /url: https://agents.olist.com/chats/new/
+          - img "Lis" [ref=f283e40]
+      - generic [ref=f283e41]:
+        - button "AD" [ref=f283e43] [cursor=pointer]
+        - button [ref=f283e48] [cursor=pointer]:
+          - img "Notificações" [ref=f283e50]
+        - button [ref=f283e52] [cursor=pointer]:
+          - img "Ajuda" [ref=f283e54]
+    - generic [ref=f283e57]:
+      - generic [ref=f283e58]:
+        - generic:
+          - generic:
+            - generic [ref=f283e59]:
+              - button
+              - heading "ERP" [level=2]
+            - navigation "ERP" [ref=f283e60]:
+              - list:
+                - listitem:
+                  - link [ref=f283e61] [cursor=pointer]:
+                    - /url: index
+                - listitem:
+                  - link [ref=f283e65] [cursor=pointer]:
+                    - /url: contatos
+                - listitem:
+                  - link [ref=f283e73] [cursor=pointer]:
+                    - /url: estoques
+                - listitem:
+                  - link [ref=f283e77] [cursor=pointer]:
+                    - /url: crm
+                - listitem:
+                  - link [ref=f283e81] [cursor=pointer]:
+                    - /url: caixa
+        - generic [ref=f283e86]:
+          - link [ref=f283e87] [cursor=pointer]:
+            - /url: ideias
+            - generic:
+              - paragraph: Canal de ideias
+          - link [ref=f283e91] [cursor=pointer]:
+            - /url: https://cloud.comunicacao.olist.com/indique-e-ganhe
+            - generic:
+              - paragraph: Indique e ganhe
+          - button [ref=f283e95] [cursor=pointer]:
+            - img "Configurações" [ref=f283e97]
+            - generic:
+              - paragraph: Configurações
+          - generic [ref=f283e101]:
+            - generic [ref=f283e102]: Fixar menu
+            - switch "Fixar menu" [checked] [ref=f283e103] [cursor=pointer]
+      - generic [ref=f283e105]:
+        - button "Início" [ref=f283e107] [cursor=pointer]
+        - generic [ref=f283e114]:
+          - link [ref=f283e115] [cursor=pointer]:
+            - /url: index
+            - paragraph [ref=f283e121]: Índice
+          - link [ref=f283e122] [cursor=pointer]:
+            - /url: dashboard
+            - paragraph [ref=f283e129]: Dashboard
+          - link [ref=f283e130] [cursor=pointer]:
+            - /url: home_agenda
+            - paragraph [ref=f283e136]: Agenda
+          - link [ref=f283e137] [cursor=pointer]:
+            - /url: dados_conta
+            - paragraph [ref=f283e143]: Minha conta
+          - link [ref=f283e144] [cursor=pointer]:
+            - /url: integracoes
+            - paragraph [ref=f283e150]: Integrações
+          - link [ref=f283e151] [cursor=pointer]:
+            - /url: contratacao_servico
+            - paragraph [ref=f283e158]: Upgrade de plano
+          - link [ref=f283e159] [cursor=pointer]:
+            - /url: detalhes_versao
+            - paragraph [ref=f283e165]: Sobre a versão
+          - link [ref=f283e166] [cursor=pointer]:
+            - /url: ajuda/
+            - paragraph [ref=f283e171]: Ajuda do ERP
+          - link [ref=f283e172] [cursor=pointer]:
+            - /url: ferramentas_geral
+            - paragraph [ref=f283e179]: Ferramentas
+          - link [ref=f283e180] [cursor=pointer]:
+            - /url: loja_aplicativos
+            - paragraph [ref=f283e185]: Loja de extensões
+          - link [ref=f283e186] [cursor=pointer]:
+            - /url: https://olist.com/parceiros
+            - paragraph [ref=f283e191]: Shopping de Serviços
+  - generic [ref=f283e194]:
+    - list [ref=f283e196]:
+      - listitem [ref=f283e197]:
+        - link " Início" [ref=f283e198] [cursor=pointer]:
+          - /url: javascript:void(0)
+          - generic [ref=f283e199]: 
+          - text: Início
+      - listitem [ref=f283e200]: Ferramentas
+    - generic [ref=f283e202]:
+      - generic [ref=f283e203]:
+        - paragraph [ref=f283e205]: Etapa atual
+        - paragraph [ref=f283e206]: Centralize seus produtos e estoque
+      - generic [ref=f283e207]:
+        - generic [ref=f283e208]: 0 de 4
+        - link "acessar o guia" [ref=f283e210] [cursor=pointer]:
+          - /url: index?abrirPassoDestaque=1
+    - generic [ref=f283e211]:
+      - generic [ref=f283e212]: Ferramentas
+      - generic [ref=f283e214]:
+        - list [ref=f283e215]:
+          - listitem [ref=f283e216]:
+            - link "Geral" [ref=f283e217]:
+              - /url: "#"
+          - listitem [ref=f283e218]:
+            - link "Importações" [ref=f283e219] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=f283e220]:
+            - link "Exportações" [ref=f283e221] [cursor=pointer]:
+              - /url: "#"
+          - text:  
+        - generic [ref=f283e224]:
+          - link "Backup" [ref=f283e225] [cursor=pointer]:
+            - /url: agendar_tarefas_backup
+          - link "Exclusão de registros" [ref=f283e227] [cursor=pointer]:
+            - /url: agendar_tarefas_exclusao
+          - link "Inutilizações de NFes" [ref=f283e229] [cursor=pointer]:
+            - /url: nfe_inutilizacao
+          - link "Gerenciar Anexos" [ref=f283e231] [cursor=pointer]:
+            - /url: gerenciar_anexos
+          - link "Resumo de Sincronizações" [ref=f283e233] [cursor=pointer]:
+            - /url: resumo_hub_ecommerce
+          - link "Reiniciar conta" [ref=f283e235] [cursor=pointer]:
+            - /url: resetar_conta

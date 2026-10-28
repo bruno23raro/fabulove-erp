@@ -1,5 +1,5 @@
 /**
- * Fabulove AI Seller Agent ERP - Servidor Principal
+ * SIZEN ERP - Servidor Principal
  *
  * API RESTful construída com Express, autenticada com JWT,
  * conectada ao PostgreSQL e com middleware de segurança.
@@ -81,7 +81,7 @@ if (fs.existsSync(clientDist)) {
 
 // ── Health & versão ───────────────────────────────────────────────────────────
 app.get('/api/health',  (req, res) => res.json({ status: 'ok', timestamp: new Date().toISOString() }));
-app.get('/api/version', (req, res) => res.json({ version: '1.0.0', name: 'Fabulove AI Seller Agent ERP' }));
+app.get('/api/version', (req, res) => res.json({ version: '1.0.0', name: 'SIZEN ERP' }));
 
 // ── Rate limiting ─────────────────────────────────────────────────────────────
 app.use('/api/auth', authRateLimit);   // mais restritivo — 20 req/15min
@@ -112,7 +112,7 @@ if (fs.existsSync(clientDist)) {
 } else {
   app.get('*', (req, res) => {
     if (!req.path.startsWith('/api')) {
-      res.status(200).json({ message: 'Fabulove ERP API', hint: 'Run npm run build to serve frontend.' });
+      res.status(200).json({ message: 'SIZEN ERP API', hint: 'Run npm run build to serve frontend.' });
     }
   });
 }
@@ -122,7 +122,7 @@ app.use(errorHandler);
 
 // ── Inicialização ─────────────────────────────────────────────────────────────
 app.listen(PORT, () => {
-  logger.info(`🚀 Fabulove ERP server rodando na porta ${PORT}`);
+  logger.info(`🚀 SIZEN ERP server rodando na porta ${PORT}`);
   logger.info(`📊 Ambiente: ${process.env.NODE_ENV || 'development'}`);
 });
 

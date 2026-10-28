@@ -1,0 +1,179 @@
+- generic [ref=f382e1]:
+  - generic [ref=f382e5]:
+    - generic [ref=f382e6]:
+      - generic [ref=f382e7]:
+        - button "Olist" [ref=f382e9] [cursor=pointer]:
+          - img "Olist" [ref=f382e10]
+        - button [ref=f382e12] [cursor=pointer]:
+          - img "Lis" [ref=f382e13]
+      - generic [ref=f382e16]:
+        - link [ref=f382e19] [cursor=pointer]:
+          - /url: https://erp.olist.com/
+          - img "ERP" [ref=f382e20]
+        - link [ref=f382e23] [cursor=pointer]:
+          - /url: pdv
+          - img "PDV" [ref=f382e24]
+        - link [ref=f382e27] [cursor=pointer]:
+          - /url: conta_digital
+          - img "Conta Digital" [ref=f382e28]
+        - link [ref=f382e31] [cursor=pointer]:
+          - /url: olist_envios
+          - img "Envios" [ref=f382e32]
+        - link [ref=f382e35] [cursor=pointer]:
+          - /url: olist_ecommerce
+          - img "Ecommerce" [ref=f382e36]
+        - link [ref=f382e39] [cursor=pointer]:
+          - /url: https://agents.olist.com/chats/new/
+          - img "Lis" [ref=f382e40]
+      - generic [ref=f382e41]:
+        - button "AD" [ref=f382e43] [cursor=pointer]
+        - button [ref=f382e48] [cursor=pointer]:
+          - img "Notificações" [ref=f382e50]
+        - button [ref=f382e52] [cursor=pointer]:
+          - img "Ajuda" [ref=f382e54]
+    - generic [ref=f382e57]:
+      - generic [ref=f382e58]:
+        - generic:
+          - generic:
+            - generic [ref=f382e59]:
+              - button
+              - heading "ERP" [level=2]
+            - navigation "ERP" [ref=f382e60]:
+              - list:
+                - listitem:
+                  - link [ref=f382e61] [cursor=pointer]:
+                    - /url: index
+                - listitem:
+                  - link [ref=f382e65] [cursor=pointer]:
+                    - /url: contatos
+                - listitem:
+                  - link [ref=f382e73] [cursor=pointer]:
+                    - /url: estoques
+                - listitem:
+                  - link [ref=f382e77] [cursor=pointer]:
+                    - /url: crm
+                - listitem:
+                  - link [ref=f382e81] [cursor=pointer]:
+                    - /url: caixa
+        - generic [ref=f382e86]:
+          - link [ref=f382e87] [cursor=pointer]:
+            - /url: ideias
+            - generic:
+              - paragraph: Canal de ideias
+          - link [ref=f382e91] [cursor=pointer]:
+            - /url: https://cloud.comunicacao.olist.com/indique-e-ganhe
+            - generic:
+              - paragraph: Indique e ganhe
+          - button [ref=f382e95] [cursor=pointer]:
+            - img "Configurações" [ref=f382e97]
+            - generic:
+              - paragraph: Configurações
+          - generic [ref=f382e101]:
+            - generic [ref=f382e102]: Fixar menu
+            - switch "Fixar menu" [checked] [ref=f382e103] [cursor=pointer]
+      - generic [ref=f382e105]:
+        - button "Finanças" [ref=f382e107] [cursor=pointer]
+        - generic [ref=f382e114]:
+          - link [ref=f382e115] [cursor=pointer]:
+            - /url: caixa
+            - paragraph [ref=f382e121]: Caixa
+          - link "Conta Digital pix grátis" [ref=f382e122] [cursor=pointer]:
+            - /url: conta_digital?utm=modulo
+            - paragraph [ref=f382e127]: Conta Digital
+            - generic [ref=f382e128]: pix grátis
+          - link [ref=f382e129] [cursor=pointer]:
+            - /url: conta_digital_pagar_com_cartao
+            - paragraph [ref=f382e135]: Parcelamento de contas
+          - link [ref=f382e136] [cursor=pointer]:
+            - /url: contas_pagar
+            - paragraph [ref=f382e142]: Contas a Pagar
+          - link [ref=f382e143] [cursor=pointer]:
+            - /url: contas_receber
+            - paragraph [ref=f382e149]: Contas a Receber
+          - link [ref=f382e150] [cursor=pointer]:
+            - /url: cobrancas_registradas
+            - paragraph [ref=f382e157]: Cobranças Bancárias
+          - link [ref=f382e158] [cursor=pointer]:
+            - /url: extratos_bancarios
+            - paragraph [ref=f382e164]: Extratos Bancários
+          - link [ref=f382e165] [cursor=pointer]:
+            - /url: relatorios_sistema?id=5
+            - paragraph [ref=f382e171]: Relatórios
+          - link "Painel de Contadores Novo" [ref=f382e172] [cursor=pointer]:
+            - /url: painel_contador
+            - paragraph [ref=f382e177]: Painel de Contadores
+            - generic [ref=f382e178]: Novo
+  - generic [ref=f382e180]:
+    - generic [ref=f382e181]:
+      - generic [ref=f382e182]:
+        - generic [ref=f382e183]:
+          - list [ref=f382e184]:
+            - listitem [ref=f382e185]:
+              - link "Início" [ref=f382e186] [cursor=pointer]:
+                - /url: https://erp.olist.com/
+            - listitem [ref=f382e187]:
+              - link " Finanças" [ref=f382e188] [cursor=pointer]:
+                - /url: javascript:void(0)
+                - generic [ref=f382e189]: 
+                - text: Finanças
+            - listitem [ref=f382e190]: Caixa
+          - generic [ref=f382e191]:
+            - button " Transferir" [ref=f382e193] [cursor=pointer]:
+              - generic [ref=f382e194]: 
+              - text: Transferir
+            - link "Incluir lançamento" [ref=f382e195] [cursor=pointer]:
+              - /url: "#"
+            - generic [ref=f382e196]:
+              - button "Mais ações " [ref=f382e197] [cursor=pointer]:
+                - text: Mais ações
+                - generic [ref=f382e198]: 
+              - text:       
+        - generic [ref=f382e200]:
+          - generic [ref=f382e201]:
+            - paragraph [ref=f382e203]: Etapa atual
+            - paragraph [ref=f382e204]: Centralize seus produtos e estoque
+          - generic [ref=f382e205]:
+            - generic [ref=f382e206]: 0 de 4
+            - link "acessar o guia" [ref=f382e208] [cursor=pointer]:
+              - /url: index?abrirPassoDestaque=1
+        - generic [ref=f382e209]: Caixa e Bancos
+        - generic [ref=f382e210]:
+          - generic [ref=f382e212]:
+            - textbox "Pesquise por cliente" [active] [ref=f382e213]
+            - button "" [ref=f382e215] [cursor=pointer]
+            - button "" [ref=f382e218] [cursor=pointer]
+          - list [ref=f382e222]:
+            - listitem [ref=f382e223]:
+              - link "Últimos 30 dias" [ref=f382e224] [cursor=pointer]:
+                - /url: "#"
+              - text:            
+            - listitem [ref=f382e225]:
+              - link " filtros" [ref=f382e226] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f382e227]: 
+                - text: filtros
+            - listitem [ref=f382e228]:
+              - link " limpar filtros" [ref=f382e229] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f382e230]: 
+                - text: limpar filtros
+      - generic [ref=f382e231]:
+        - generic [ref=f382e232]:
+          - list [ref=f382e233]:
+            - listitem [ref=f382e234]:
+              - link " Caixa" [ref=f382e235] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f382e236]: 
+                - text: Caixa
+          - generic [ref=f382e238]:
+            - heading "Saldo atual (R$)" [level=4] [ref=f382e239]
+            - generic [ref=f382e240]: 0,00
+        - generic [ref=f382e242]:
+          - heading "Sua pesquisa não retornou resultados." [level=4] [ref=f382e243]
+          - paragraph [ref=f382e244]: Tente outras opções de pesquisa, períodos ou remova os filtros.
+          - generic [ref=f382e245]:
+            - button "Alterar pesquisa" [ref=f382e246] [cursor=pointer]
+            - button "Limpar filtros" [ref=f382e247] [cursor=pointer]
+        - text:    
+      - text:             
+    - text:    

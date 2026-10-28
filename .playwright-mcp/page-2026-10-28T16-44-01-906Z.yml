@@ -1,0 +1,31 @@
+- generic [ref=f8e3]:
+  - banner:
+    - heading [level=1]
+  - generic [ref=f8e8]:
+    - main [ref=f8e9]:
+      - complementary [ref=f8e10]:
+        - heading "acesse sua conta" [level=3] [ref=f8e20]
+        - generic [ref=f8e21]:
+          - generic [ref=f8e22]:
+            - generic [ref=f8e23]:
+              - generic [ref=f8e24]: usuário
+              - textbox "usuário" [active] [ref=f8e31]:
+                - /placeholder: email@email.com
+            - generic [ref=f8e32]:
+              - generic [ref=f8e33]: senha
+              - generic [ref=f8e35]:
+                - textbox "senha" [ref=f8e40]
+                - button "mostrar senha" [ref=f8e42] [cursor=pointer]
+            - button "Entrar" [ref=f8e47] [cursor=pointer]
+          - link "Esqueceu sua senha?" [ref=f8e48] [cursor=pointer]:
+            - /url: https://accounts.olist.com/auth/request-recovery?client_id=tiny-webapp
+      - complementary [ref=f8e50]:
+        - heading "Que bom ter você aqui!" [level=2] [ref=f8e51]
+        - generic [ref=f8e52]: Entre com seus dados para acessar a Olist, um ecossistema que transforma negócios em gigantes do e-commerce.
+    - generic [ref=f8e53]:
+      - generic [ref=f8e54]:
+        - link "olist.com" [ref=f8e55] [cursor=pointer]:
+          - /url: https://olist.com/pt-br/
+        - text: © Todos os direitos reservados
+      - link "políticas de privacidade" [ref=f8e57] [cursor=pointer]:
+        - /url: https://olist.com/pt-br/seguranca-e-privacidade/politica-de-privacidade/

@@ -1,0 +1,162 @@
+- generic [active] [ref=f102e1]:
+  - generic [ref=f102e5]:
+    - generic [ref=f102e6]:
+      - generic [ref=f102e7]:
+        - button "Olist" [ref=f102e9] [cursor=pointer]:
+          - img "Olist" [ref=f102e10]
+        - button [ref=f102e12] [cursor=pointer]:
+          - img "Lis" [ref=f102e13]
+      - generic [ref=f102e16]:
+        - link [ref=f102e19] [cursor=pointer]:
+          - /url: https://erp.olist.com/
+          - img "ERP" [ref=f102e20]
+        - link [ref=f102e23] [cursor=pointer]:
+          - /url: pdv
+          - img "PDV" [ref=f102e24]
+        - link [ref=f102e27] [cursor=pointer]:
+          - /url: conta_digital
+          - img "Conta Digital" [ref=f102e28]
+        - link [ref=f102e31] [cursor=pointer]:
+          - /url: olist_envios
+          - img "Envios" [ref=f102e32]
+        - link [ref=f102e35] [cursor=pointer]:
+          - /url: olist_ecommerce
+          - img "Ecommerce" [ref=f102e36]
+        - button [ref=f102e38] [cursor=pointer]:
+          - img "Mais produtos" [ref=f102e39]
+      - generic [ref=f102e40]:
+        - button "BR" [ref=f102e42] [cursor=pointer]
+        - button [ref=f102e47] [cursor=pointer]:
+          - img "Notificações" [ref=f102e49]
+        - button [ref=f102e51] [cursor=pointer]:
+          - img "Ajuda" [ref=f102e53]
+    - generic [ref=f102e56]:
+      - generic [ref=f102e57]:
+        - generic:
+          - generic:
+            - generic [ref=f102e58]:
+              - button
+              - heading "ERP" [level=2]
+            - navigation "ERP" [ref=f102e59]:
+              - list:
+                - listitem:
+                  - link [ref=f102e60] [cursor=pointer]:
+                    - /url: index
+                - listitem:
+                  - link [ref=f102e64] [cursor=pointer]:
+                    - /url: contatos
+                - listitem:
+                  - link [ref=f102e72] [cursor=pointer]:
+                    - /url: estoques
+                - listitem:
+                  - link [ref=f102e76] [cursor=pointer]:
+                    - /url: crm
+                - listitem:
+                  - link [ref=f102e80] [cursor=pointer]:
+                    - /url: caixa
+        - generic [ref=f102e85]:
+          - link [ref=f102e86] [cursor=pointer]:
+            - /url: ideias
+            - generic:
+              - paragraph: Canal de ideias
+          - link [ref=f102e90] [cursor=pointer]:
+            - /url: https://cloud.comunicacao.olist.com/indique-e-ganhe
+            - generic:
+              - paragraph: Indique e ganhe
+          - button [ref=f102e94] [cursor=pointer]:
+            - img "Configurações" [ref=f102e96]
+            - generic:
+              - paragraph: Configurações
+          - generic [ref=f102e100]:
+            - generic [ref=f102e101]: Fixar menu
+            - switch "Fixar menu" [checked] [ref=f102e102] [cursor=pointer]
+      - generic [ref=f102e104]:
+        - button "Início" [ref=f102e106] [cursor=pointer]
+        - generic [ref=f102e113]:
+          - link [ref=f102e114] [cursor=pointer]:
+            - /url: index
+            - paragraph [ref=f102e120]: Índice
+          - link [ref=f102e121] [cursor=pointer]:
+            - /url: dashboard
+            - paragraph [ref=f102e128]: Dashboard
+          - link [ref=f102e129] [cursor=pointer]:
+            - /url: home_agenda
+            - paragraph [ref=f102e135]: Agenda
+          - link [ref=f102e136] [cursor=pointer]:
+            - /url: dados_conta
+            - paragraph [ref=f102e142]: Minha conta
+          - link [ref=f102e143] [cursor=pointer]:
+            - /url: integracoes
+            - paragraph [ref=f102e149]: Integrações
+          - link [ref=f102e150] [cursor=pointer]:
+            - /url: contratacao_servico
+            - paragraph [ref=f102e157]: Upgrade de plano
+          - link [ref=f102e158] [cursor=pointer]:
+            - /url: detalhes_versao
+            - paragraph [ref=f102e164]: Sobre a versão
+          - link [ref=f102e165] [cursor=pointer]:
+            - /url: ajuda/
+            - paragraph [ref=f102e170]: Ajuda do ERP
+          - link [ref=f102e171] [cursor=pointer]:
+            - /url: ferramentas_geral
+            - paragraph [ref=f102e178]: Ferramentas
+          - link [ref=f102e179] [cursor=pointer]:
+            - /url: loja_aplicativos
+            - paragraph [ref=f102e184]: Loja de extensões
+          - link [ref=f102e185] [cursor=pointer]:
+            - /url: https://olist.com/parceiros
+            - paragraph [ref=f102e190]: Shopping de Serviços
+  - generic [ref=f102e192]:
+    - generic [ref=f102e195]:
+      - button "×" [ref=f102e196] [cursor=pointer]
+      - paragraph [ref=f102e197]:
+        - strong [ref=f102e198]: Aviso.
+        - text: Identificamos uma instabilidade temporária na plataforma da Shopee, o que impede o envio automático dos seus dados fiscais para a loja. Enquanto isso, orientamos emitir suas notas fiscais diretamente pelo painel do vendedor na Shopee.
+    - generic [ref=f102e202]:
+      - generic [ref=f102e203]:
+        - img "Sistema ERP da Olist" [ref=f102e205]
+        - generic [ref=f102e206]:
+          - list [ref=f102e208]:
+            - listitem [ref=f102e209]:
+              - link " Voltar" [ref=f102e210] [cursor=pointer]:
+                - /url: ""
+                - generic [ref=f102e211]: 
+                - text: Voltar
+            - listitem [ref=f102e212]:
+              - link " Início" [ref=f102e213] [cursor=pointer]:
+                - /url: index
+                - generic [ref=f102e214]: 
+                - text: Início
+            - listitem [ref=f102e215]: ativação do contrato
+          - generic [ref=f102e216]: Complete os dados de pagamento para realizar a assinatura
+          - generic [ref=f102e217]: Para liberar a navegação e centralizar sua gestão, finalize a ativação do seu plano. Esse é o único passo que falta para você automatizar rotinas e escalar suas vendas com o Sistema ERP da Olist.
+        - generic [ref=f102e218]:
+          - generic [ref=f102e219]: Escolha o ciclo de pagamento
+          - generic [ref=f102e220]:
+            - generic [ref=f102e222]:
+              - radio "Anual economize 17%" [checked]
+              - text: Anual
+              - generic [ref=f102e223]: economize 17%
+            - generic [ref=f102e225]:
+              - radio "Mensal"
+              - text: Mensal
+        - generic [ref=f102e226]:
+          - generic [ref=f102e227]: Informe os dados de pagamento
+          - generic [ref=f102e230]:
+            - radio "Cartão de crédito" [checked]
+            - text: Cartão de crédito
+      - generic [ref=f102e243]:
+        - generic [ref=f102e246]:
+          - generic [ref=f102e247]: Plano Escolhido
+          - link "comparar planos" [ref=f102e249] [cursor=pointer]:
+            - /url: ""
+        - generic [ref=f102e253]:
+          - generic [ref=f102e254]:
+            - heading "Pagamento" [level=5] [ref=f102e255]
+            - generic [ref=f102e256]:
+              - generic [ref=f102e260]: R$ 0,00
+              - generic [ref=f102e262]: R$ 0,00
+          - generic [ref=f102e266] [cursor=pointer]:
+            - checkbox "Tenho um cupom de desconto"
+            - paragraph [ref=f102e267]: Tenho um cupom de desconto
+        - button "Contratar" [ref=f102e269] [cursor=pointer]

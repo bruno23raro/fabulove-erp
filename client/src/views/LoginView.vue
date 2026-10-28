@@ -3,7 +3,7 @@
     <div class="login-card card">
       <div class="login-header">
         <div class="login-logo">💜</div>
-        <h1 class="login-title">Fabulove ERP</h1>
+        <h1 class="login-title">SIZEN ERP</h1>
         <p class="login-subtitle">Faça login para continuar</p>
       </div>
 

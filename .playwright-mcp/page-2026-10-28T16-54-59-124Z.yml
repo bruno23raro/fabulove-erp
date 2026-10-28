@@ -1,0 +1,182 @@
+- generic [active] [ref=f210e1]:
+  - generic [ref=f210e5]:
+    - generic [ref=f210e6]:
+      - generic [ref=f210e7]:
+        - button "Olist" [ref=f210e9] [cursor=pointer]:
+          - img "Olist" [ref=f210e10]
+        - button [ref=f210e12] [cursor=pointer]:
+          - img "Lis" [ref=f210e13]
+      - generic [ref=f210e16]:
+        - link [ref=f210e19] [cursor=pointer]:
+          - /url: https://erp.olist.com/
+          - img "ERP" [ref=f210e20]
+        - link [ref=f210e23] [cursor=pointer]:
+          - /url: pdv
+          - img "PDV" [ref=f210e24]
+        - link [ref=f210e27] [cursor=pointer]:
+          - /url: conta_digital
+          - img "Conta Digital" [ref=f210e28]
+        - link [ref=f210e31] [cursor=pointer]:
+          - /url: olist_envios
+          - img "Envios" [ref=f210e32]
+        - link [ref=f210e35] [cursor=pointer]:
+          - /url: olist_ecommerce
+          - img "Ecommerce" [ref=f210e36]
+        - link [ref=f210e39] [cursor=pointer]:
+          - /url: https://agents.olist.com/chats/new/
+          - img "Lis" [ref=f210e40]
+      - generic [ref=f210e41]:
+        - button "AD" [ref=f210e43] [cursor=pointer]
+        - button [ref=f210e48] [cursor=pointer]:
+          - img "Notificações" [ref=f210e50]
+        - button [ref=f210e52] [cursor=pointer]:
+          - img "Ajuda" [ref=f210e54]
+    - generic [ref=f210e57]:
+      - generic [ref=f210e58]:
+        - generic:
+          - generic:
+            - generic [ref=f210e59]:
+              - button
+              - heading "ERP" [level=2]
+            - navigation "ERP" [ref=f210e60]:
+              - list:
+                - listitem:
+                  - link [ref=f210e61] [cursor=pointer]:
+                    - /url: index
+                - listitem:
+                  - link [ref=f210e65] [cursor=pointer]:
+                    - /url: contatos
+                - listitem:
+                  - link [ref=f210e73] [cursor=pointer]:
+                    - /url: estoques
+                - listitem:
+                  - link [ref=f210e77] [cursor=pointer]:
+                    - /url: crm
+                - listitem:
+                  - link [ref=f210e81] [cursor=pointer]:
+                    - /url: caixa
+        - generic [ref=f210e86]:
+          - link [ref=f210e87] [cursor=pointer]:
+            - /url: ideias
+            - generic:
+              - paragraph: Canal de ideias
+          - link [ref=f210e91] [cursor=pointer]:
+            - /url: https://cloud.comunicacao.olist.com/indique-e-ganhe
+            - generic:
+              - paragraph: Indique e ganhe
+          - button [ref=f210e95] [cursor=pointer]:
+            - img "Configurações" [ref=f210e97]
+            - generic:
+              - paragraph: Configurações
+          - generic [ref=f210e101]:
+            - generic [ref=f210e102]: Fixar menu
+            - switch "Fixar menu" [checked] [ref=f210e103] [cursor=pointer]
+      - generic [ref=f210e105]:
+        - button "Cadastros" [ref=f210e107] [cursor=pointer]
+        - generic [ref=f210e114]:
+          - link [ref=f210e115] [cursor=pointer]:
+            - /url: contatos
+            - paragraph [ref=f210e121]: Clientes e Fornecedores
+          - link [ref=f210e122] [cursor=pointer]:
+            - /url: produtos#list
+            - paragraph [ref=f210e131]: Produtos
+          - link [ref=f210e132] [cursor=pointer]:
+            - /url: promocoes
+            - paragraph [ref=f210e139]: Campanhas Promocionais
+          - link [ref=f210e140] [cursor=pointer]:
+            - /url: produto_categorias
+            - paragraph [ref=f210e147]: Categorias dos Produtos
+          - link [ref=f210e148] [cursor=pointer]:
+            - /url: vendedores#list
+            - paragraph [ref=f210e154]: Vendedores
+          - link [ref=f210e155] [cursor=pointer]:
+            - /url: embalagens
+            - paragraph [ref=f210e161]: Embalagens
+          - link [ref=f210e162] [cursor=pointer]:
+            - /url: relatorios_sistema?id=1
+            - paragraph [ref=f210e168]: Relatórios
+  - generic [ref=f210e173]:
+    - generic [ref=f210e174]:
+      - generic [ref=f210e175]:
+        - list [ref=f210e176]:
+          - listitem [ref=f210e177]:
+            - link "Início" [ref=f210e178] [cursor=pointer]:
+              - /url: index
+          - listitem [ref=f210e179]:
+            - link " Cadastros" [ref=f210e180] [cursor=pointer]:
+              - /url: contatos
+              - generic [ref=f210e181]: 
+              - text: Cadastros
+          - listitem [ref=f210e182]: Clientes e Fornecedores
+        - generic [ref=f210e184]:
+          - button "incluir cadastro" [ref=f210e186] [cursor=pointer]
+          - generic [ref=f210e187]:
+            - button "Ações " [ref=f210e188] [cursor=pointer]:
+              - text: Ações
+              - generic [ref=f210e189]: 
+            - text:       
+      - generic [ref=f210e191]:
+        - generic [ref=f210e192]:
+          - paragraph [ref=f210e194]: Etapa atual
+          - paragraph [ref=f210e195]: Centralize seus produtos e estoque
+        - generic [ref=f210e196]:
+          - generic [ref=f210e197]: 0 de 4
+          - link "acessar o guia" [ref=f210e199] [cursor=pointer]:
+            - /url: index?abrirPassoDestaque=1
+      - generic [ref=f210e200]: Clientes e Fornecedores
+      - generic [ref=f210e201]:
+        - generic [ref=f210e203]:
+          - textbox "Pesquise por nome, cód., fantasia, email ou CPF/CNPJ" [ref=f210e204]
+          - button "" [ref=f210e206] [cursor=pointer]
+          - button "" [ref=f210e209] [cursor=pointer]
+        - list [ref=f210e213]:
+          - listitem [ref=f210e214]:
+            - link " por data do cadastro" [ref=f210e215] [cursor=pointer]:
+              - /url: "#"
+              - generic [ref=f210e216]: 
+              - text: por data do cadastro
+          - listitem [ref=f210e217]:
+            - link " nome" [ref=f210e218] [cursor=pointer]:
+              - /url: "#"
+              - generic [ref=f210e219]: 
+              - text: nome
+          - listitem [ref=f210e220]:
+            - link "por situação" [ref=f210e221] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=f210e222]:
+            - link " filtros" [ref=f210e223] [cursor=pointer]:
+              - /url: "#"
+              - generic [ref=f210e224]: 
+              - text: filtros
+      - list [ref=f210e226]:
+        - listitem [ref=f210e227]:
+          - link "Todos" [ref=f210e228]:
+            - /url: ""
+        - listitem [ref=f210e229]:
+          - link "Cliente" [ref=f210e230] [cursor=pointer]:
+            - /url: ""
+        - listitem [ref=f210e231]:
+          - link "Fornecedor" [ref=f210e232] [cursor=pointer]:
+            - /url: ""
+        - listitem [ref=f210e233]:
+          - link "Transportador" [ref=f210e234] [cursor=pointer]:
+            - /url: ""
+        - listitem [ref=f210e235]:
+          - link "mais " [ref=f210e236] [cursor=pointer]:
+            - /url: "#"
+            - generic [ref=f210e238]:
+              - text: mais
+              - generic [ref=f210e239]: 
+    - generic [ref=f210e242]:
+      - generic [ref=f210e243]:
+        - heading "Nenhum registro encontrado" [level=4] [ref=f210e244]
+        - paragraph [ref=f210e245]: Nenhum registro foi encontrado.
+      - generic [ref=f210e246]:
+        - paragraph [ref=f210e247]: Ficou com alguma dúvida?
+        - generic [ref=f210e248]: Ajuda do Sistema ERP
+    - generic [ref=f210e249]:
+      - generic [ref=f210e250]:          
+      - text:    
+  - status [ref=f210e251]
+  - status [ref=f210e252]
+  - status [ref=f210e253]

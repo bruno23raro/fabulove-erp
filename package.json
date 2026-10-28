@@ -1,7 +1,7 @@
 {
-  "name": "fabulove-erp",
+  "name": "sizren-erp",
   "version": "1.0.0",
-  "description": "Fabulove AI Seller Agent - ERP completo para automação de e-commerce",
+  "description": "SIZEN ERP — ERP completo para automação de e-commerce",
   "main": "server/app.js",
   "type": "module",
   "scripts": {

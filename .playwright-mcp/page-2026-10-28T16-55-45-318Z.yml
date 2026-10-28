@@ -1,0 +1,1611 @@
+- generic [ref=f274e1]:
+  - generic [ref=f274e5]:
+    - generic [ref=f274e6]:
+      - generic [ref=f274e7]:
+        - button "Olist" [ref=f274e9] [cursor=pointer]:
+          - img "Olist" [ref=f274e10]
+        - button [ref=f274e12] [cursor=pointer]:
+          - img "Lis" [ref=f274e13]
+      - generic [ref=f274e16]:
+        - link [ref=f274e19] [cursor=pointer]:
+          - /url: https://erp.olist.com/
+          - img "ERP" [ref=f274e20]
+        - link [ref=f274e23] [cursor=pointer]:
+          - /url: pdv
+          - img "PDV" [ref=f274e24]
+        - link [ref=f274e27] [cursor=pointer]:
+          - /url: conta_digital
+          - img "Conta Digital" [ref=f274e28]
+        - link [ref=f274e31] [cursor=pointer]:
+          - /url: olist_envios
+          - img "Envios" [ref=f274e32]
+        - link [ref=f274e35] [cursor=pointer]:
+          - /url: olist_ecommerce
+          - img "Ecommerce" [ref=f274e36]
+        - link [ref=f274e39] [cursor=pointer]:
+          - /url: https://agents.olist.com/chats/new/
+          - img "Lis" [ref=f274e40]
+      - generic [ref=f274e41]:
+        - button "AD" [ref=f274e43] [cursor=pointer]
+        - button [ref=f274e48] [cursor=pointer]:
+          - img "Notificações" [ref=f274e50]
+        - button [ref=f274e52] [cursor=pointer]:
+          - img "Ajuda" [ref=f274e54]
+    - generic [ref=f274e57]:
+      - generic [ref=f274e58]:
+        - generic:
+          - generic:
+            - generic [ref=f274e59]:
+              - button
+              - heading "ERP" [level=2]
+            - navigation "ERP" [ref=f274e60]:
+              - list:
+                - listitem:
+                  - link [ref=f274e61] [cursor=pointer]:
+                    - /url: index
+                - listitem:
+                  - link [ref=f274e65] [cursor=pointer]:
+                    - /url: contatos
+                - listitem:
+                  - link [ref=f274e73] [cursor=pointer]:
+                    - /url: estoques
+                - listitem:
+                  - link [ref=f274e77] [cursor=pointer]:
+                    - /url: crm
+                - listitem:
+                  - link [ref=f274e81] [cursor=pointer]:
+                    - /url: caixa
+        - generic [ref=f274e86]:
+          - link [ref=f274e87] [cursor=pointer]:
+            - /url: ideias
+            - generic:
+              - paragraph: Canal de ideias
+          - link [ref=f274e91] [cursor=pointer]:
+            - /url: https://cloud.comunicacao.olist.com/indique-e-ganhe
+            - generic:
+              - paragraph: Indique e ganhe
+          - button [ref=f274e95] [cursor=pointer]:
+            - img "Configurações" [ref=f274e97]
+            - generic:
+              - paragraph: Configurações
+          - generic [ref=f274e101]:
+            - generic [ref=f274e102]: Fixar menu
+            - switch "Fixar menu" [checked] [ref=f274e103] [cursor=pointer]
+      - generic [ref=f274e105]:
+        - button "Início" [ref=f274e107] [cursor=pointer]
+        - generic [ref=f274e114]:
+          - link [ref=f274e115] [cursor=pointer]:
+            - /url: index
+            - paragraph [ref=f274e121]: Índice
+          - link [ref=f274e122] [cursor=pointer]:
+            - /url: dashboard
+            - paragraph [ref=f274e129]: Dashboard
+          - link [ref=f274e130] [cursor=pointer]:
+            - /url: home_agenda
+            - paragraph [ref=f274e136]: Agenda
+          - link [ref=f274e137] [cursor=pointer]:
+            - /url: dados_conta
+            - paragraph [ref=f274e143]: Minha conta
+          - link [ref=f274e144] [cursor=pointer]:
+            - /url: integracoes
+            - paragraph [ref=f274e150]: Integrações
+          - link [ref=f274e151] [cursor=pointer]:
+            - /url: contratacao_servico
+            - paragraph [ref=f274e158]: Upgrade de plano
+          - link [ref=f274e159] [cursor=pointer]:
+            - /url: detalhes_versao
+            - paragraph [ref=f274e165]: Sobre a versão
+          - link [ref=f274e166] [cursor=pointer]:
+            - /url: ajuda/
+            - paragraph [ref=f274e171]: Ajuda do ERP
+          - link [ref=f274e172] [cursor=pointer]:
+            - /url: ferramentas_geral
+            - paragraph [ref=f274e179]: Ferramentas
+          - link [ref=f274e180] [cursor=pointer]:
+            - /url: loja_aplicativos
+            - paragraph [ref=f274e185]: Loja de extensões
+          - link [ref=f274e186] [cursor=pointer]:
+            - /url: https://olist.com/parceiros
+            - paragraph [ref=f274e191]: Shopping de Serviços
+  - generic [ref=f274e195]:
+    - generic [ref=f274e196]:
+      - list [ref=f274e198]:
+        - listitem [ref=f274e199]:
+          - link " Início" [ref=f274e200] [cursor=pointer]:
+            - /url: index
+            - generic [ref=f274e201]: 
+            - text: Início
+        - listitem [ref=f274e202]: Integrações
+      - generic [ref=f274e204]:
+        - generic [ref=f274e205]:
+          - paragraph [ref=f274e207]: Etapa atual
+          - paragraph [ref=f274e208]: Centralize seus produtos e estoque
+        - generic [ref=f274e209]:
+          - generic [ref=f274e210]: 0 de 4
+          - link "acessar o guia" [ref=f274e212] [cursor=pointer]:
+            - /url: index?abrirPassoDestaque=1
+      - generic [ref=f274e213]: Adicionar integração
+      - generic [ref=f274e216]:
+        - textbox "Pesquise por integrações ou canais de venda" [active] [ref=f274e217]
+        - button "" [ref=f274e219] [cursor=pointer]
+      - generic [ref=f274e222]:
+        - button "todas as integrações" [ref=f274e223] [cursor=pointer]
+        - button "marketplaces e hubs" [ref=f274e224] [cursor=pointer]
+        - button "plataformas de e-commerce" [ref=f274e225] [cursor=pointer]
+        - button "outras integrações" [ref=f274e226] [cursor=pointer]
+    - generic [ref=f274e227]:
+      - generic [ref=f274e228]:
+        - heading "Marketplaces e Hubs" [level=4] [ref=f274e229]
+        - paragraph [ref=f274e230]: Marketplaces funcionam como um shopping online, onde as empresas podem anunciar seus produtos em lojas conhecidas e abrir novos canais de venda com maior visibilidade, enquanto hubs são conectores que ligam o Sistema ERP com marketplaces ainda não integrados de forma nativa.
+        - generic [ref=f274e232]:
+          - generic [ref=f274e234]:
+            - img "Mercado Livre" [ref=f274e236]
+            - generic [ref=f274e237]:
+              - generic [ref=f274e238]:
+                - heading "Mercado Livre" [level=3] [ref=f274e239]
+                - paragraph [ref=f274e240]: Marketplace
+              - generic [ref=f274e242]:
+                - generic [ref=f274e243]: via HUB
+                - link "instalar" [ref=f274e245] [cursor=pointer]:
+                  - /url: ""
+          - generic [ref=f274e247]:
+            - img "Shopee" [ref=f274e249]
+            - generic [ref=f274e250]:
+              - generic [ref=f274e251]:
+                - heading "Shopee" [level=3] [ref=f274e252]
+                - paragraph [ref=f274e253]: Marketplace
+              - link "instalar" [ref=f274e256] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e258]:
+            - img "Americanas Marketplace" [ref=f274e260]
+            - generic [ref=f274e261]:
+              - generic [ref=f274e262]:
+                - heading "Americanas Marketplace" [level=3] [ref=f274e263]
+                - paragraph [ref=f274e264]: Marketplace
+              - link "instalar" [ref=f274e267] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e269]:
+            - img "Magalu Marketplace" [ref=f274e271]
+            - generic [ref=f274e272]:
+              - generic [ref=f274e273]:
+                - heading "Magalu Marketplace" [level=3] [ref=f274e274]
+                - paragraph [ref=f274e275]: Marketplace
+              - link "instalar" [ref=f274e278] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e280]:
+            - img "Casas Bahia Marketplace" [ref=f274e282]
+            - generic [ref=f274e283]:
+              - generic [ref=f274e284]:
+                - heading "Casas Bahia Marketplace" [level=3] [ref=f274e285]
+                - paragraph [ref=f274e286]: Marketplace
+              - generic [ref=f274e287]:
+                - generic:
+                  - img "Extra" [ref=f274e289]
+                  - img "Casas Bahia" [ref=f274e291]
+                  - img "Ponto" [ref=f274e293]
+                  - link "instalar" [ref=f274e295] [cursor=pointer]:
+                    - /url: ""
+          - generic [ref=f274e297]:
+            - img "Carrefour" [ref=f274e299]
+            - generic [ref=f274e300]:
+              - generic [ref=f274e301]:
+                - heading "Carrefour" [level=3] [ref=f274e302]
+                - paragraph [ref=f274e303]: Marketplace
+              - link "instalar" [ref=f274e306] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e308]:
+            - img "MadeiraMadeira" [ref=f274e310]
+            - generic [ref=f274e311]:
+              - generic [ref=f274e312]:
+                - heading "MadeiraMadeira" [level=3] [ref=f274e313]
+                - paragraph [ref=f274e314]: Marketplace
+              - link "instalar" [ref=f274e317] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e319]:
+            - img "AliExpress" [ref=f274e321]
+            - generic [ref=f274e322]:
+              - generic [ref=f274e323]:
+                - heading "AliExpress" [level=3] [ref=f274e324]
+                - paragraph [ref=f274e325]: Marketplace
+              - link "instalar" [ref=f274e328] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e330]:
+            - img "TikTok Shop" [ref=f274e332]
+            - generic [ref=f274e333]:
+              - generic [ref=f274e334]:
+                - heading "TikTok Shop" [level=3] [ref=f274e335]
+                - paragraph [ref=f274e336]: Marketplace
+              - link "instalar" [ref=f274e339] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e341]:
+            - img "Anymarket" [ref=f274e343]
+            - generic [ref=f274e344]:
+              - generic [ref=f274e345]:
+                - heading "Anymarket" [level=3] [ref=f274e346]
+                - paragraph [ref=f274e347]: Hub
+              - link "instalar" [ref=f274e350] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e352]:
+            - img "Plugg.to" [ref=f274e354]
+            - generic [ref=f274e355]:
+              - generic [ref=f274e356]:
+                - heading "Plugg.to" [level=3] [ref=f274e357]
+                - paragraph [ref=f274e358]: Hub
+              - link "instalar" [ref=f274e361] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e363]:
+            - img "Netshoes" [ref=f274e365]
+            - generic [ref=f274e366]:
+              - generic [ref=f274e367]:
+                - heading "Netshoes" [level=3] [ref=f274e368]
+                - paragraph [ref=f274e369]: Marketplace
+              - generic [ref=f274e370]:
+                - generic:
+                  - img "Netshoes" [ref=f274e372]
+                  - img "Zattini" [ref=f274e374]
+                  - link "instalar" [ref=f274e376] [cursor=pointer]:
+                    - /url: ""
+          - generic [ref=f274e378]:
+            - img "Ideris" [ref=f274e380]
+            - generic [ref=f274e381]:
+              - generic [ref=f274e382]:
+                - heading "Ideris" [level=3] [ref=f274e383]
+                - paragraph [ref=f274e384]: Hub
+              - link "instalar" [ref=f274e387] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e389]:
+            - img "Grupo Pão de Açúcar" [ref=f274e391]
+            - generic [ref=f274e392]:
+              - generic [ref=f274e393]:
+                - heading "Grupo Pão de Açúcar" [level=3] [ref=f274e394]
+                - paragraph [ref=f274e395]: Marketplace
+              - link "instalar" [ref=f274e398] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e400]:
+            - img "Leroy Merlin" [ref=f274e402]
+            - generic [ref=f274e403]:
+              - generic [ref=f274e404]:
+                - heading "Leroy Merlin" [level=3] [ref=f274e405]
+                - paragraph [ref=f274e406]: Marketplace
+              - link "instalar" [ref=f274e409] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e411]:
+            - img "Kabum" [ref=f274e413]
+            - generic [ref=f274e414]:
+              - generic [ref=f274e415]:
+                - heading "Kabum" [level=3] [ref=f274e416]
+                - paragraph [ref=f274e417]: Marketplace
+              - link "instalar" [ref=f274e420] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e422]:
+            - img "RD Marketplace" [ref=f274e424]
+            - generic [ref=f274e425]:
+              - generic [ref=f274e426]:
+                - heading "RD Marketplace" [level=3] [ref=f274e427]
+                - paragraph [ref=f274e428]: Marketplace
+              - link "instalar" [ref=f274e431] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e433]:
+            - img "Hub2b" [ref=f274e435]
+            - generic [ref=f274e436]:
+              - generic [ref=f274e437]:
+                - heading "Hub2b" [level=3] [ref=f274e438]
+                - paragraph [ref=f274e439]: Hub
+              - link "instalar" [ref=f274e442] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e444]:
+            - img "Wish" [ref=f274e446]
+            - generic [ref=f274e447]:
+              - generic [ref=f274e448]:
+                - heading "Wish" [level=3] [ref=f274e449]
+                - paragraph [ref=f274e450]: Marketplace
+              - link "instalar" [ref=f274e453] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e455]:
+            - img "Shopping De Preços" [ref=f274e457]
+            - generic [ref=f274e458]:
+              - generic [ref=f274e459]:
+                - heading "Shopping De Preços" [level=3] [ref=f274e460]
+                - paragraph [ref=f274e461]: Hub
+              - link "instalar" [ref=f274e464] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e466]:
+            - img "WebContinental" [ref=f274e468]
+            - generic [ref=f274e469]:
+              - generic [ref=f274e470]:
+                - heading "WebContinental" [level=3] [ref=f274e471]
+                - paragraph [ref=f274e472]: Marketplace
+              - link "instalar" [ref=f274e475] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e477]:
+            - img "Venda.la" [ref=f274e479]
+            - generic [ref=f274e480]:
+              - generic [ref=f274e481]:
+                - heading "Venda.la" [level=3] [ref=f274e482]
+                - paragraph [ref=f274e483]: Hub
+              - link "instalar" [ref=f274e486] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e488]:
+            - img "Toda Mulher" [ref=f274e490]
+            - generic [ref=f274e491]:
+              - generic [ref=f274e492]:
+                - heading "Toda Mulher" [level=3] [ref=f274e493]
+                - paragraph [ref=f274e494]: Marketplace
+              - link "instalar" [ref=f274e497] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e499]:
+            - img "Decathlon" [ref=f274e501]
+            - generic [ref=f274e502]:
+              - generic [ref=f274e503]:
+                - heading "Decathlon" [level=3] [ref=f274e504]
+                - paragraph [ref=f274e505]: Marketplace
+              - link "instalar" [ref=f274e508] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e510]:
+            - img "Tiffin Foods" [ref=f274e512]
+            - generic [ref=f274e513]:
+              - generic [ref=f274e514]:
+                - heading "Tiffin Foods" [level=3] [ref=f274e515]
+                - paragraph [ref=f274e516]: Marketplace
+              - link "instalar" [ref=f274e519] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e521]:
+            - img "Hipervinho" [ref=f274e523]
+            - generic [ref=f274e524]:
+              - generic [ref=f274e525]:
+                - heading "Hipervinho" [level=3] [ref=f274e526]
+                - paragraph [ref=f274e527]: Marketplace
+              - link "instalar" [ref=f274e530] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e532]:
+            - img "Cassol" [ref=f274e534]
+            - generic [ref=f274e535]:
+              - generic [ref=f274e536]:
+                - heading "Cassol" [level=3] [ref=f274e537]
+                - paragraph [ref=f274e538]: Marketplace
+              - link "instalar" [ref=f274e541] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e543]:
+            - img "Pit Stop" [ref=f274e545]
+            - generic [ref=f274e546]:
+              - generic [ref=f274e547]:
+                - heading "Pit Stop" [level=3] [ref=f274e548]
+                - paragraph [ref=f274e549]: Marketplace
+              - link "instalar" [ref=f274e552] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e554]:
+            - img "The Lounge" [ref=f274e556]
+            - generic [ref=f274e557]:
+              - generic [ref=f274e558]:
+                - heading "The Lounge" [level=3] [ref=f274e559]
+                - paragraph [ref=f274e560]: Marketplace
+              - link "instalar" [ref=f274e563] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e565]:
+            - img "Peça Brás" [ref=f274e567]
+            - generic [ref=f274e568]:
+              - generic [ref=f274e569]:
+                - heading "Peça Brás" [level=3] [ref=f274e570]
+                - paragraph [ref=f274e571]: Marketplace
+              - link "instalar" [ref=f274e574] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e576]:
+            - img "Beleza na Web" [ref=f274e578]
+            - generic [ref=f274e579]:
+              - generic [ref=f274e580]:
+                - generic [ref=f274e581]: BETA
+                - heading "Beleza na Web" [level=3] [ref=f274e583]
+                - paragraph [ref=f274e584]: Marketplace
+              - link "instalar" [ref=f274e587] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e589]:
+            - img "Fibra Cirúrgica" [ref=f274e591]
+            - generic [ref=f274e592]:
+              - generic [ref=f274e593]:
+                - heading "Fibra Cirúrgica" [level=3] [ref=f274e594]
+                - paragraph [ref=f274e595]: Marketplace
+              - link "instalar" [ref=f274e598] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e600]:
+            - img "Amazon" [ref=f274e602]
+            - generic [ref=f274e603]:
+              - generic [ref=f274e604]:
+                - heading "Amazon" [level=3] [ref=f274e605]
+                - paragraph [ref=f274e606]: Marketplace
+              - link "instalar" [ref=f274e609] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e611]:
+            - img "Amazon FBA Classic" [ref=f274e613]
+            - generic [ref=f274e614]:
+              - generic [ref=f274e615]:
+                - heading "Amazon FBA Classic" [level=3] [ref=f274e616]
+                - paragraph [ref=f274e617]: Marketplace
+              - link "instalar" [ref=f274e620] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e622]:
+            - img "Amazon FBA Onsite" [ref=f274e624]
+            - generic [ref=f274e625]:
+              - generic [ref=f274e626]:
+                - heading "Amazon FBA Onsite" [level=3] [ref=f274e627]
+                - paragraph [ref=f274e628]: Marketplace
+              - link "instalar" [ref=f274e631] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e633]:
+            - img "Brinquedo Livre" [ref=f274e635]
+            - generic [ref=f274e636]:
+              - generic [ref=f274e637]:
+                - heading "Brinquedo Livre" [level=3] [ref=f274e638]
+                - paragraph [ref=f274e639]: Marketplace
+              - link "instalar" [ref=f274e642] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e644]:
+            - img "Centauro" [ref=f274e646]
+            - generic [ref=f274e647]:
+              - generic [ref=f274e648]:
+                - heading "Centauro" [level=3] [ref=f274e649]
+                - paragraph [ref=f274e650]: Marketplace
+              - link "instalar" [ref=f274e653] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e655]:
+            - img "Centro Fashion" [ref=f274e657]
+            - generic [ref=f274e658]:
+              - generic [ref=f274e659]:
+                - heading "Centro Fashion" [level=3] [ref=f274e660]
+                - paragraph [ref=f274e661]: Marketplace
+              - link "instalar" [ref=f274e664] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e666]:
+            - img "ClubeTrainer" [ref=f274e668]
+            - generic [ref=f274e669]:
+              - generic [ref=f274e670]:
+                - heading "ClubeTrainer" [level=3] [ref=f274e671]
+                - paragraph [ref=f274e672]: Marketplace
+              - link "instalar" [ref=f274e675] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e677]:
+            - img "Compre sua peça" [ref=f274e679]
+            - generic [ref=f274e680]:
+              - generic [ref=f274e681]:
+                - heading "Compre sua peça" [level=3] [ref=f274e682]
+                - paragraph [ref=f274e683]: Marketplace
+              - link "instalar" [ref=f274e686] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e688]:
+            - img "Dafiti" [ref=f274e690]
+            - generic [ref=f274e691]:
+              - generic [ref=f274e692]:
+                - heading "Dafiti" [level=3] [ref=f274e693]
+                - paragraph [ref=f274e694]: Marketplace
+              - generic [ref=f274e695]:
+                - generic:
+                  - img "Dafiti" [ref=f274e697]
+                  - img "Kanui" [ref=f274e699]
+                  - img "Tricae" [ref=f274e701]
+                  - link "instalar" [ref=f274e703] [cursor=pointer]:
+                    - /url: ""
+          - generic [ref=f274e705]:
+            - img "Kwai" [ref=f274e707]
+            - generic [ref=f274e708]:
+              - generic [ref=f274e709]:
+                - generic [ref=f274e710]: BETA
+                - heading "Kwai" [level=3] [ref=f274e712]
+                - paragraph [ref=f274e713]: Marketplace
+              - link "instalar" [ref=f274e716] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e718]:
+            - img "Livelo" [ref=f274e720]
+            - generic [ref=f274e721]:
+              - generic [ref=f274e722]:
+                - heading "Livelo" [level=3] [ref=f274e723]
+                - paragraph [ref=f274e724]: Marketplace
+              - link "instalar" [ref=f274e727] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e729]:
+            - img "Meu Compras" [ref=f274e731]
+            - generic [ref=f274e732]:
+              - generic [ref=f274e733]:
+                - heading "Meu Compras" [level=3] [ref=f274e734]
+                - paragraph [ref=f274e735]: Marketplace
+              - link "instalar" [ref=f274e738] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e740]:
+            - img "Meu Datacenter" [ref=f274e742]
+            - generic [ref=f274e743]:
+              - generic [ref=f274e744]:
+                - heading "Meu Datacenter" [level=3] [ref=f274e745]
+                - paragraph [ref=f274e746]: Marketplace
+              - link "instalar" [ref=f274e749] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e751]:
+            - img "Pictan" [ref=f274e753]
+            - generic [ref=f274e754]:
+              - generic [ref=f274e755]:
+                - heading "Pictan" [level=3] [ref=f274e756]
+                - paragraph [ref=f274e757]: Marketplace
+              - link "instalar" [ref=f274e760] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e762]:
+            - img "Renner" [ref=f274e764]
+            - generic [ref=f274e765]:
+              - generic [ref=f274e766]:
+                - generic [ref=f274e767]: BETA
+                - heading "Renner" [level=3] [ref=f274e769]
+                - paragraph [ref=f274e770]: Marketplace
+              - link "instalar" [ref=f274e773] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e775]:
+            - img "Riachuelo" [ref=f274e777]
+            - generic [ref=f274e778]:
+              - generic [ref=f274e779]:
+                - heading "Riachuelo" [level=3] [ref=f274e780]
+                - paragraph [ref=f274e781]: Marketplace
+              - link "instalar" [ref=f274e784] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e786]:
+            - img "Shein" [ref=f274e788]
+            - generic [ref=f274e789]:
+              - generic [ref=f274e790]:
+                - heading "Shein" [level=3] [ref=f274e791]
+                - paragraph [ref=f274e792]: Marketplace
+              - link "instalar" [ref=f274e795] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e797]:
+            - img "Stellar" [ref=f274e799]
+            - generic [ref=f274e800]:
+              - generic [ref=f274e801]:
+                - heading "Stellar" [level=3] [ref=f274e802]
+                - paragraph [ref=f274e803]: Marketplace
+              - link "instalar" [ref=f274e806] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e808]:
+            - img "Temu" [ref=f274e810]
+            - generic [ref=f274e811]:
+              - generic [ref=f274e812]:
+                - generic [ref=f274e813]: BETA
+                - heading "Temu" [level=3] [ref=f274e815]
+                - paragraph [ref=f274e816]: Marketplace
+              - generic [ref=f274e818]:
+                - generic [ref=f274e819]: via HUB
+                - link "instalar" [ref=f274e821] [cursor=pointer]:
+                  - /url: ""
+          - generic [ref=f274e823]:
+            - img "Vtrina" [ref=f274e825]
+            - generic [ref=f274e826]:
+              - generic [ref=f274e827]:
+                - heading "Vtrina" [level=3] [ref=f274e828]
+                - paragraph [ref=f274e829]: Hub
+              - link "instalar" [ref=f274e832] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e834]:
+            - img "Wabi2B" [ref=f274e836]
+            - generic [ref=f274e837]:
+              - generic [ref=f274e838]:
+                - heading "Wabi2B" [level=3] [ref=f274e839]
+                - paragraph [ref=f274e840]: Marketplace
+              - link "instalar" [ref=f274e843] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e845]:
+            - img "iFood Mercado" [ref=f274e847]
+            - generic [ref=f274e848]:
+              - generic [ref=f274e849]:
+                - heading "iFood Mercado" [level=3] [ref=f274e850]
+                - paragraph [ref=f274e851]: Marketplace
+              - link "instalar" [ref=f274e854] [cursor=pointer]:
+                - /url: ""
+      - generic [ref=f274e855]:
+        - heading "Plataformas de e-commerce" [level=4] [ref=f274e856]
+        - paragraph [ref=f274e857]: Sistemas que permitem a criação, publicação e gerenciamento de lojas virtuais. As plataformas de e-commerce disponibilizam a vitrine online para a divulgação dos produtos oferecidos por empresas dos mais variados segmentos.
+        - generic [ref=f274e859]:
+          - generic [ref=f274e861]:
+            - img "Ecommerce da Olist" [ref=f274e863]
+            - generic [ref=f274e864]:
+              - generic [ref=f274e865]:
+                - heading "Ecommerce da Olist" [level=3] [ref=f274e866]
+                - paragraph [ref=f274e867]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e870] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e872]:
+            - img "Olist Vnda" [ref=f274e874]
+            - generic [ref=f274e875]:
+              - generic [ref=f274e876]:
+                - heading "Olist Vnda" [level=3] [ref=f274e877]
+                - paragraph [ref=f274e878]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e881] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e883]:
+            - img "Nuvemshop" [ref=f274e885]
+            - generic [ref=f274e886]:
+              - generic [ref=f274e887]:
+                - heading "Nuvemshop" [level=3] [ref=f274e888]
+                - paragraph [ref=f274e889]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e892] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e894]:
+            - img "Tray" [ref=f274e896]
+            - generic [ref=f274e897]:
+              - generic [ref=f274e898]:
+                - heading "Tray" [level=3] [ref=f274e899]
+                - paragraph [ref=f274e900]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e903] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e905]:
+            - img "Loja Integrada" [ref=f274e907]
+            - generic [ref=f274e908]:
+              - generic [ref=f274e909]:
+                - heading "Loja Integrada" [level=3] [ref=f274e910]
+                - paragraph [ref=f274e911]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e914] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e916]:
+            - img "WooCommerce" [ref=f274e918]
+            - generic [ref=f274e919]:
+              - generic [ref=f274e920]:
+                - heading "WooCommerce" [level=3] [ref=f274e921]
+                - paragraph [ref=f274e922]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e925] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e927]:
+            - img "Shopify" [ref=f274e929]
+            - generic [ref=f274e930]:
+              - generic [ref=f274e931]:
+                - heading "Shopify" [level=3] [ref=f274e932]
+                - paragraph [ref=f274e933]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e936] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e938]:
+            - img "Wix" [ref=f274e940]
+            - generic [ref=f274e941]:
+              - generic [ref=f274e942]:
+                - heading "Wix" [level=3] [ref=f274e943]
+                - paragraph [ref=f274e944]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e947] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e949]:
+            - img "Magento" [ref=f274e951]
+            - generic [ref=f274e952]:
+              - generic [ref=f274e953]:
+                - heading "Magento" [level=3] [ref=f274e954]
+                - paragraph [ref=f274e955]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e958] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e960]:
+            - img "OpenCart" [ref=f274e962]
+            - generic [ref=f274e963]:
+              - generic [ref=f274e964]:
+                - heading "OpenCart" [level=3] [ref=f274e965]
+                - paragraph [ref=f274e966]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e969] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e971]:
+            - img "VTEX" [ref=f274e973]
+            - generic [ref=f274e974]:
+              - generic [ref=f274e975]:
+                - heading "VTEX" [level=3] [ref=f274e976]
+                - paragraph [ref=f274e977]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e980] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e982]:
+            - img "Dooca Commerce" [ref=f274e984]
+            - generic [ref=f274e985]:
+              - generic [ref=f274e986]:
+                - heading "Dooca Commerce" [level=3] [ref=f274e987]
+                - paragraph [ref=f274e988]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e991] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e993]:
+            - img "wBuy" [ref=f274e995]
+            - generic [ref=f274e996]:
+              - generic [ref=f274e997]:
+                - heading "wBuy" [level=3] [ref=f274e998]
+                - paragraph [ref=f274e999]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e1002] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1004]:
+            - img "Wake" [ref=f274e1006]
+            - generic [ref=f274e1007]:
+              - generic [ref=f274e1008]:
+                - heading "Wake" [level=3] [ref=f274e1009]
+                - paragraph [ref=f274e1010]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e1013] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1015]:
+            - img "Xtech Commerce" [ref=f274e1017]
+            - generic [ref=f274e1018]:
+              - generic [ref=f274e1019]:
+                - heading "Xtech Commerce" [level=3] [ref=f274e1020]
+                - paragraph [ref=f274e1021]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e1024] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1026]:
+            - img "PrestaShop" [ref=f274e1028]
+            - generic [ref=f274e1029]:
+              - generic [ref=f274e1030]:
+                - heading "PrestaShop" [level=3] [ref=f274e1031]
+                - paragraph [ref=f274e1032]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e1035] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1037]:
+            - img "JetNeo" [ref=f274e1039]
+            - generic [ref=f274e1040]:
+              - generic [ref=f274e1041]:
+                - heading "JetNeo" [level=3] [ref=f274e1042]
+                - paragraph [ref=f274e1043]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e1046] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1048]:
+            - img "Hotmart" [ref=f274e1050]
+            - generic [ref=f274e1051]:
+              - generic [ref=f274e1052]:
+                - heading "Hotmart" [level=3] [ref=f274e1053]
+                - paragraph [ref=f274e1054]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e1057] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1059]:
+            - img "Yampi" [ref=f274e1061]
+            - generic [ref=f274e1062]:
+              - generic [ref=f274e1063]:
+                - heading "Yampi" [level=3] [ref=f274e1064]
+                - paragraph [ref=f274e1065]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e1068] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1070]:
+            - img "Cartpanda" [ref=f274e1072]
+            - generic [ref=f274e1073]:
+              - generic [ref=f274e1074]:
+                - heading "Cartpanda" [level=3] [ref=f274e1075]
+                - paragraph [ref=f274e1076]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e1079] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1081]:
+            - img "E-Com Plus" [ref=f274e1083]
+            - generic [ref=f274e1084]:
+              - generic [ref=f274e1085]:
+                - heading "E-Com Plus" [level=3] [ref=f274e1086]
+                - paragraph [ref=f274e1087]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e1090] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1092]:
+            - img "Iset" [ref=f274e1094]
+            - generic [ref=f274e1095]:
+              - generic [ref=f274e1096]:
+                - heading "Iset" [level=3] [ref=f274e1097]
+                - paragraph [ref=f274e1098]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e1101] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1103]:
+            - img "Irroba" [ref=f274e1105]
+            - generic [ref=f274e1106]:
+              - generic [ref=f274e1107]:
+                - heading "Irroba" [level=3] [ref=f274e1108]
+                - paragraph [ref=f274e1109]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e1112] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1114]:
+            - img "UOL Host" [ref=f274e1116]
+            - generic [ref=f274e1117]:
+              - generic [ref=f274e1118]:
+                - heading "UOL Host" [level=3] [ref=f274e1119]
+                - paragraph [ref=f274e1120]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e1123] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1125]:
+            - img "Moovin" [ref=f274e1127]
+            - generic [ref=f274e1128]:
+              - generic [ref=f274e1129]:
+                - heading "Moovin" [level=3] [ref=f274e1130]
+                - paragraph [ref=f274e1131]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e1134] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1136]:
+            - img "SoluçõesNet" [ref=f274e1138]
+            - generic [ref=f274e1139]:
+              - generic [ref=f274e1140]:
+                - heading "SoluçõesNet" [level=3] [ref=f274e1141]
+                - paragraph [ref=f274e1142]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e1145] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1147]:
+            - img "EZCommerce" [ref=f274e1149]
+            - generic [ref=f274e1150]:
+              - generic [ref=f274e1151]:
+                - heading "EZCommerce" [level=3] [ref=f274e1152]
+                - paragraph [ref=f274e1153]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e1156] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1158]:
+            - img "Webstore" [ref=f274e1160]
+            - generic [ref=f274e1161]:
+              - generic [ref=f274e1162]:
+                - heading "Webstore" [level=3] [ref=f274e1163]
+                - paragraph [ref=f274e1164]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e1167] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1169]:
+            - img "Cartbuy" [ref=f274e1171]
+            - generic [ref=f274e1172]:
+              - generic [ref=f274e1173]:
+                - heading "Cartbuy" [level=3] [ref=f274e1174]
+                - paragraph [ref=f274e1175]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e1178] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1180]:
+            - img "Loja Mestre" [ref=f274e1182]
+            - generic [ref=f274e1183]:
+              - generic [ref=f274e1184]:
+                - heading "Loja Mestre" [level=3] [ref=f274e1185]
+                - paragraph [ref=f274e1186]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e1189] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1191]:
+            - img "Novaoito" [ref=f274e1193]
+            - generic [ref=f274e1194]:
+              - generic [ref=f274e1195]:
+                - heading "Novaoito" [level=3] [ref=f274e1196]
+                - paragraph [ref=f274e1197]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e1200] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1202]:
+            - img "FastCommerce" [ref=f274e1204]
+            - generic [ref=f274e1205]:
+              - generic [ref=f274e1206]:
+                - heading "FastCommerce" [level=3] [ref=f274e1207]
+                - paragraph [ref=f274e1208]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e1211] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1213]:
+            - img "Anyshop" [ref=f274e1215]
+            - generic [ref=f274e1216]:
+              - generic [ref=f274e1217]:
+                - heading "Anyshop" [level=3] [ref=f274e1218]
+                - paragraph [ref=f274e1219]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e1222] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1224]:
+            - img "Interspire" [ref=f274e1226]
+            - generic [ref=f274e1227]:
+              - generic [ref=f274e1228]:
+                - heading "Interspire" [level=3] [ref=f274e1229]
+                - paragraph [ref=f274e1230]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e1233] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1235]:
+            - img "Visual E-commerce" [ref=f274e1237]
+            - generic [ref=f274e1238]:
+              - generic [ref=f274e1239]:
+                - heading "Visual E-commerce" [level=3] [ref=f274e1240]
+                - paragraph [ref=f274e1241]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e1244] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1246]:
+            - img "Wap.store" [ref=f274e1248]
+            - generic [ref=f274e1249]:
+              - generic [ref=f274e1250]:
+                - heading "Wap.store" [level=3] [ref=f274e1251]
+                - paragraph [ref=f274e1252]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e1255] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1257]:
+            - img "Adena" [ref=f274e1259]
+            - generic [ref=f274e1260]:
+              - generic [ref=f274e1261]:
+                - heading "Adena" [level=3] [ref=f274e1262]
+                - paragraph [ref=f274e1263]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e1266] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1268]:
+            - img "Shoppub" [ref=f274e1270]
+            - generic [ref=f274e1271]:
+              - generic [ref=f274e1272]:
+                - heading "Shoppub" [level=3] [ref=f274e1273]
+                - paragraph [ref=f274e1274]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e1277] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1279]:
+            - img "H5 Web" [ref=f274e1281]
+            - generic [ref=f274e1282]:
+              - generic [ref=f274e1283]:
+                - heading "H5 Web" [level=3] [ref=f274e1284]
+                - paragraph [ref=f274e1285]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e1288] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1290]:
+            - img "AssineStore" [ref=f274e1292]
+            - generic [ref=f274e1293]:
+              - generic [ref=f274e1294]:
+                - heading "AssineStore" [level=3] [ref=f274e1295]
+                - paragraph [ref=f274e1296]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e1299] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1301]:
+            - img "BW Commerce" [ref=f274e1303]
+            - generic [ref=f274e1304]:
+              - generic [ref=f274e1305]:
+                - heading "BW Commerce" [level=3] [ref=f274e1306]
+                - paragraph [ref=f274e1307]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e1310] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1312]:
+            - img "Bagy" [ref=f274e1314]
+            - generic [ref=f274e1315]:
+              - generic [ref=f274e1316]:
+                - generic [ref=f274e1317]: BETA
+                - heading "Bagy" [level=3] [ref=f274e1319]
+                - paragraph [ref=f274e1320]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e1323] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1325]:
+            - img "Bagy 3.0" [ref=f274e1327]
+            - generic [ref=f274e1328]:
+              - generic [ref=f274e1329]:
+                - heading "Bagy 3.0" [level=3] [ref=f274e1330]
+                - paragraph [ref=f274e1331]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e1334] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1336]:
+            - img "Braavo" [ref=f274e1338]
+            - generic [ref=f274e1339]:
+              - generic [ref=f274e1340]:
+                - heading "Braavo" [level=3] [ref=f274e1341]
+                - paragraph [ref=f274e1342]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e1345] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1347]:
+            - img "Convertr" [ref=f274e1349]
+            - generic [ref=f274e1350]:
+              - generic [ref=f274e1351]:
+                - heading "Convertr" [level=3] [ref=f274e1352]
+                - paragraph [ref=f274e1353]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e1356] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1358]:
+            - img "DSComm" [ref=f274e1360]
+            - generic [ref=f274e1361]:
+              - generic [ref=f274e1362]:
+                - heading "DSComm" [level=3] [ref=f274e1363]
+                - paragraph [ref=f274e1364]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e1367] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1369]:
+            - img "Digital Manager Guru" [ref=f274e1371]
+            - generic [ref=f274e1372]:
+              - generic [ref=f274e1373]:
+                - heading "Digital Manager Guru" [level=3] [ref=f274e1374]
+                - paragraph [ref=f274e1375]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e1378] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1380]:
+            - img "E-ship WMS" [ref=f274e1382]
+            - generic [ref=f274e1383]:
+              - generic [ref=f274e1384]:
+                - heading "E-ship WMS" [level=3] [ref=f274e1385]
+                - paragraph [ref=f274e1386]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e1389] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1391]:
+            - img "GAP BI" [ref=f274e1393]
+            - generic [ref=f274e1394]:
+              - generic [ref=f274e1395]:
+                - heading "GAP BI" [level=3] [ref=f274e1396]
+                - paragraph [ref=f274e1397]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e1400] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1402]:
+            - img "Indexa Aí" [ref=f274e1404]
+            - generic [ref=f274e1405]:
+              - generic [ref=f274e1406]:
+                - heading "Indexa Aí" [level=3] [ref=f274e1407]
+                - paragraph [ref=f274e1408]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e1411] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1413]:
+            - img "Jet Enterprise" [ref=f274e1415]
+            - generic [ref=f274e1416]:
+              - generic [ref=f274e1417]:
+                - heading "Jet Enterprise" [level=3] [ref=f274e1418]
+                - paragraph [ref=f274e1419]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e1422] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1424]:
+            - img "Loja Que Vende" [ref=f274e1426]
+            - generic [ref=f274e1427]:
+              - generic [ref=f274e1428]:
+                - heading "Loja Que Vende" [level=3] [ref=f274e1429]
+                - paragraph [ref=f274e1430]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e1433] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1435]:
+            - img "Macro Publicidade" [ref=f274e1437]
+            - generic [ref=f274e1438]:
+              - generic [ref=f274e1439]:
+                - heading "Macro Publicidade" [level=3] [ref=f274e1440]
+                - paragraph [ref=f274e1441]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e1444] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1446]:
+            - img "Oruc" [ref=f274e1448]
+            - generic [ref=f274e1449]:
+              - generic [ref=f274e1450]:
+                - heading "Oruc" [level=3] [ref=f274e1451]
+                - paragraph [ref=f274e1452]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e1455] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1457]:
+            - img "Persys" [ref=f274e1459]
+            - generic [ref=f274e1460]:
+              - generic [ref=f274e1461]:
+                - heading "Persys" [level=3] [ref=f274e1462]
+                - paragraph [ref=f274e1463]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e1466] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1468]:
+            - img "Prax" [ref=f274e1470]
+            - generic [ref=f274e1471]:
+              - generic [ref=f274e1472]:
+                - heading "Prax" [level=3] [ref=f274e1473]
+                - paragraph [ref=f274e1474]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e1477] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1479]:
+            - img "Simplo7" [ref=f274e1481]
+            - generic [ref=f274e1482]:
+              - generic [ref=f274e1483]:
+                - heading "Simplo7" [level=3] [ref=f274e1484]
+                - paragraph [ref=f274e1485]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e1488] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1490]:
+            - img "SpiritShop" [ref=f274e1492]
+            - generic [ref=f274e1493]:
+              - generic [ref=f274e1494]:
+                - heading "SpiritShop" [level=3] [ref=f274e1495]
+                - paragraph [ref=f274e1496]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e1499] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1501]:
+            - img "Spotshop" [ref=f274e1503]
+            - generic [ref=f274e1504]:
+              - generic [ref=f274e1505]:
+                - heading "Spotshop" [level=3] [ref=f274e1506]
+                - paragraph [ref=f274e1507]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e1510] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1512]:
+            - img "Studio Loja" [ref=f274e1514]
+            - generic [ref=f274e1515]:
+              - generic [ref=f274e1516]:
+                - heading "Studio Loja" [level=3] [ref=f274e1517]
+                - paragraph [ref=f274e1518]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e1521] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1523]:
+            - img "TrocaMe" [ref=f274e1525]
+            - generic [ref=f274e1526]:
+              - generic [ref=f274e1527]:
+                - heading "TrocaMe" [level=3] [ref=f274e1528]
+                - paragraph [ref=f274e1529]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e1532] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1534]:
+            - img "UILIA" [ref=f274e1536]
+            - generic [ref=f274e1537]:
+              - generic [ref=f274e1538]:
+                - heading "UILIA" [level=3] [ref=f274e1539]
+                - paragraph [ref=f274e1540]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e1543] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1545]:
+            - img "Versotech" [ref=f274e1547]
+            - generic [ref=f274e1548]:
+              - generic [ref=f274e1549]:
+                - heading "Versotech" [level=3] [ref=f274e1550]
+                - paragraph [ref=f274e1551]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e1554] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1556]:
+            - img "Via Shop Moda" [ref=f274e1558]
+            - generic [ref=f274e1559]:
+              - generic [ref=f274e1560]:
+                - heading "Via Shop Moda" [level=3] [ref=f274e1561]
+                - paragraph [ref=f274e1562]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e1565] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1567]:
+            - img "VirtUOL" [ref=f274e1569]
+            - generic [ref=f274e1570]:
+              - generic [ref=f274e1571]:
+                - heading "VirtUOL" [level=3] [ref=f274e1572]
+                - paragraph [ref=f274e1573]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e1576] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1578]:
+            - img "YEP" [ref=f274e1580]
+            - generic [ref=f274e1581]:
+              - generic [ref=f274e1582]:
+                - heading "YEP" [level=3] [ref=f274e1583]
+                - paragraph [ref=f274e1584]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e1587] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1589]:
+            - img "Yever" [ref=f274e1591]
+            - generic [ref=f274e1592]:
+              - generic [ref=f274e1593]:
+                - heading "Yever" [level=3] [ref=f274e1594]
+                - paragraph [ref=f274e1595]: Plataforma de e-commerce
+              - link "instalar" [ref=f274e1598] [cursor=pointer]:
+                - /url: ""
+      - generic [ref=f274e1599]:
+        - heading "Outras integrações" [level=4] [ref=f274e1600]
+        - paragraph [ref=f274e1601]: Integrações com sistemas que completam a operação da empresa através de diferentes recursos e soluções. Tudo para tornar o sistema flexível e completo a fim de otimizar o seu negócio.
+        - generic [ref=f274e1603]:
+          - generic [ref=f274e1605]:
+            - img "Mercos" [ref=f274e1607]
+            - generic [ref=f274e1608]:
+              - generic [ref=f274e1609]:
+                - heading "Mercos" [level=3] [ref=f274e1610]
+                - paragraph [ref=f274e1611]: Outra Integração
+              - link "instalar" [ref=f274e1614] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1616]:
+            - img "Conecta Lá" [ref=f274e1618]
+            - generic [ref=f274e1619]:
+              - generic [ref=f274e1620]:
+                - heading "Conecta Lá" [level=3] [ref=f274e1621]
+                - paragraph [ref=f274e1622]: Outra Integração
+              - link "instalar" [ref=f274e1625] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1627]:
+            - img "Devi PDV" [ref=f274e1629]
+            - generic [ref=f274e1630]:
+              - generic [ref=f274e1631]:
+                - heading "Devi PDV" [level=3] [ref=f274e1632]
+                - paragraph [ref=f274e1633]: Outra Integração
+              - link "instalar" [ref=f274e1636] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1638]:
+            - img "Hoop" [ref=f274e1640]
+            - generic [ref=f274e1641]:
+              - generic [ref=f274e1642]:
+                - heading "Hoop" [level=3] [ref=f274e1643]
+                - paragraph [ref=f274e1644]: Outra Integração
+              - link "instalar" [ref=f274e1647] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1649]:
+            - img "99Meli" [ref=f274e1651]
+            - generic [ref=f274e1652]:
+              - generic [ref=f274e1653]:
+                - heading "99Meli" [level=3] [ref=f274e1654]
+                - paragraph [ref=f274e1655]: Outra Integração
+              - link "instalar" [ref=f274e1658] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1660]:
+            - img "Vesti" [ref=f274e1662]
+            - generic [ref=f274e1663]:
+              - generic [ref=f274e1664]:
+                - heading "Vesti" [level=3] [ref=f274e1665]
+                - paragraph [ref=f274e1666]: Outra Integração
+              - link "instalar" [ref=f274e1669] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1671]:
+            - img "Dooster" [ref=f274e1673]
+            - generic [ref=f274e1674]:
+              - generic [ref=f274e1675]:
+                - heading "Dooster" [level=3] [ref=f274e1676]
+                - paragraph [ref=f274e1677]: Outra Integração
+              - link "instalar" [ref=f274e1680] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1682]:
+            - img "Ecomece by Moovin" [ref=f274e1684]
+            - generic [ref=f274e1685]:
+              - generic [ref=f274e1686]:
+                - heading "Ecomece by Moovin" [level=3] [ref=f274e1687]
+                - paragraph [ref=f274e1688]: Outra Integração
+              - link "instalar" [ref=f274e1691] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1693]:
+            - img "API do ERP" [ref=f274e1695]
+            - generic [ref=f274e1696]:
+              - generic [ref=f274e1697]:
+                - heading "API do ERP" [level=3] [ref=f274e1698]
+                - paragraph [ref=f274e1699]: Outra Integração
+              - link "instalar" [ref=f274e1702] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1704]:
+            - img "Alfreds" [ref=f274e1706]
+            - generic [ref=f274e1707]:
+              - generic [ref=f274e1708]:
+                - heading "Alfreds" [level=3] [ref=f274e1709]
+                - paragraph [ref=f274e1710]: Outra Integração
+              - link "instalar" [ref=f274e1713] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1715]:
+            - img "Arquivei" [ref=f274e1717]
+            - generic [ref=f274e1718]:
+              - generic [ref=f274e1719]:
+                - heading "Arquivei" [level=3] [ref=f274e1720]
+                - paragraph [ref=f274e1721]: Outra Integração
+              - link "instalar" [ref=f274e1724] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1726]:
+            - img "Base" [ref=f274e1728]
+            - generic [ref=f274e1729]:
+              - generic [ref=f274e1730]:
+                - heading "Base" [level=3] [ref=f274e1731]
+                - paragraph [ref=f274e1732]: Outra Integração
+              - link "instalar" [ref=f274e1735] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1737]:
+            - img "Bendito" [ref=f274e1739]
+            - generic [ref=f274e1740]:
+              - generic [ref=f274e1741]:
+                - heading "Bendito" [level=3] [ref=f274e1742]
+                - paragraph [ref=f274e1743]: Outra Integração
+              - link "instalar" [ref=f274e1746] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1748]:
+            - img "BiHands" [ref=f274e1750]
+            - generic [ref=f274e1751]:
+              - generic [ref=f274e1752]:
+                - heading "BiHands" [level=3] [ref=f274e1753]
+                - paragraph [ref=f274e1754]: Outra Integração
+              - link "instalar" [ref=f274e1757] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1759]:
+            - img "Bling ERP" [ref=f274e1761]
+            - generic [ref=f274e1762]:
+              - generic [ref=f274e1763]:
+                - heading "Bling ERP" [level=3] [ref=f274e1764]
+                - paragraph [ref=f274e1765]: Outra Integração
+              - link "instalar" [ref=f274e1768] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1770]:
+            - img "Catálogo Mobile" [ref=f274e1772]
+            - generic [ref=f274e1773]:
+              - generic [ref=f274e1774]:
+                - heading "Catálogo Mobile" [level=3] [ref=f274e1775]
+                - paragraph [ref=f274e1776]: Outra Integração
+              - link "instalar" [ref=f274e1779] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1781]:
+            - img "Conecta Venda" [ref=f274e1783]
+            - generic [ref=f274e1784]:
+              - generic [ref=f274e1785]:
+                - heading "Conecta Venda" [level=3] [ref=f274e1786]
+                - paragraph [ref=f274e1787]: Outra Integração
+              - link "instalar" [ref=f274e1790] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1792]:
+            - img "Confery" [ref=f274e1794]
+            - generic [ref=f274e1795]:
+              - generic [ref=f274e1796]:
+                - heading "Confery" [level=3] [ref=f274e1797]
+                - paragraph [ref=f274e1798]: Outra Integração
+              - link "instalar" [ref=f274e1801] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1803]:
+            - img "Cubbo" [ref=f274e1805]
+            - generic [ref=f274e1806]:
+              - generic [ref=f274e1807]:
+                - heading "Cubbo" [level=3] [ref=f274e1808]
+                - paragraph [ref=f274e1809]: Outra Integração
+              - link "instalar" [ref=f274e1812] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1814]:
+            - img "DSlite" [ref=f274e1816]
+            - generic [ref=f274e1817]:
+              - generic [ref=f274e1818]:
+                - heading "DSlite" [level=3] [ref=f274e1819]
+                - paragraph [ref=f274e1820]: Outra Integração
+              - link "instalar" [ref=f274e1823] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1825]:
+            - img "Dropi" [ref=f274e1827]
+            - generic [ref=f274e1828]:
+              - generic [ref=f274e1829]:
+                - heading "Dropi" [level=3] [ref=f274e1830]
+                - paragraph [ref=f274e1831]: Outra Integração
+              - link "instalar" [ref=f274e1834] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1836]:
+            - img "Enviando" [ref=f274e1838]
+            - generic [ref=f274e1839]:
+              - generic [ref=f274e1840]:
+                - heading "Enviando" [level=3] [ref=f274e1841]
+                - paragraph [ref=f274e1842]: Outra Integração
+              - link "instalar" [ref=f274e1845] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1847]:
+            - img "Fidelimax" [ref=f274e1849]
+            - generic [ref=f274e1850]:
+              - generic [ref=f274e1851]:
+                - heading "Fidelimax" [level=3] [ref=f274e1852]
+                - paragraph [ref=f274e1853]: Outra Integração
+              - link "instalar" [ref=f274e1856] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1858]:
+            - img "Fieldy" [ref=f274e1860]
+            - generic [ref=f274e1861]:
+              - generic [ref=f274e1862]:
+                - heading "Fieldy" [level=3] [ref=f274e1863]
+                - paragraph [ref=f274e1864]: Outra Integração
+              - link "instalar" [ref=f274e1867] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1869]:
+            - img "Gestão Ecommerce" [ref=f274e1871]
+            - generic [ref=f274e1872]:
+              - generic [ref=f274e1873]:
+                - heading "Gestão Ecommerce" [level=3] [ref=f274e1874]
+                - paragraph [ref=f274e1875]: Outra Integração
+              - link "instalar" [ref=f274e1878] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1880]:
+            - img "Hubbi" [ref=f274e1882]
+            - generic [ref=f274e1883]:
+              - generic [ref=f274e1884]:
+                - heading "Hubbi" [level=3] [ref=f274e1885]
+                - paragraph [ref=f274e1886]: Outra Integração
+              - link "instalar" [ref=f274e1889] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1891]:
+            - img "Integrai" [ref=f274e1893]
+            - generic [ref=f274e1894]:
+              - generic [ref=f274e1895]:
+                - heading "Integrai" [level=3] [ref=f274e1896]
+                - paragraph [ref=f274e1897]: Outra Integração
+              - link "instalar" [ref=f274e1900] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1902]:
+            - img "Jodda" [ref=f274e1904]
+            - generic [ref=f274e1905]:
+              - generic [ref=f274e1906]:
+                - heading "Jodda" [level=3] [ref=f274e1907]
+                - paragraph [ref=f274e1908]: Outra Integração
+              - link "instalar" [ref=f274e1911] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1913]:
+            - img "Kiskadi" [ref=f274e1915]
+            - generic [ref=f274e1916]:
+              - generic [ref=f274e1917]:
+                - heading "Kiskadi" [level=3] [ref=f274e1918]
+                - paragraph [ref=f274e1919]: Outra Integração
+              - link "instalar" [ref=f274e1922] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1924]:
+            - img "LS Tech" [ref=f274e1926]
+            - generic [ref=f274e1927]:
+              - generic [ref=f274e1928]:
+                - heading "LS Tech" [level=3] [ref=f274e1929]
+                - paragraph [ref=f274e1930]: Outra Integração
+              - link "instalar" [ref=f274e1933] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1935]:
+            - img "Lagom" [ref=f274e1937]
+            - generic [ref=f274e1938]:
+              - generic [ref=f274e1939]:
+                - heading "Lagom" [level=3] [ref=f274e1940]
+                - paragraph [ref=f274e1941]: Outra Integração
+              - link "instalar" [ref=f274e1944] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1946]:
+            - img "Letzee" [ref=f274e1948]
+            - generic [ref=f274e1949]:
+              - generic [ref=f274e1950]:
+                - heading "Letzee" [level=3] [ref=f274e1951]
+                - paragraph [ref=f274e1952]: Outra Integração
+              - link "instalar" [ref=f274e1955] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1957]:
+            - img "Linqui" [ref=f274e1959]
+            - generic [ref=f274e1960]:
+              - generic [ref=f274e1961]:
+                - heading "Linqui" [level=3] [ref=f274e1962]
+                - paragraph [ref=f274e1963]: Outra Integração
+              - link "instalar" [ref=f274e1966] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1968]:
+            - img "Log Manager" [ref=f274e1970]
+            - generic [ref=f274e1971]:
+              - generic [ref=f274e1972]:
+                - heading "Log Manager" [level=3] [ref=f274e1973]
+                - paragraph [ref=f274e1974]: Outra Integração
+              - link "instalar" [ref=f274e1977] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1979]:
+            - img "LogHouse" [ref=f274e1981]
+            - generic [ref=f274e1982]:
+              - generic [ref=f274e1983]:
+                - heading "LogHouse" [level=3] [ref=f274e1984]
+                - paragraph [ref=f274e1985]: Outra Integração
+              - link "instalar" [ref=f274e1988] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e1990]:
+            - img "Lua de Cristal" [ref=f274e1992]
+            - generic [ref=f274e1993]:
+              - generic [ref=f274e1994]:
+                - heading "Lua de Cristal" [level=3] [ref=f274e1995]
+                - paragraph [ref=f274e1996]: Outra Integração
+              - link "instalar" [ref=f274e1999] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e2001]:
+            - img "Magecommerce" [ref=f274e2003]
+            - generic [ref=f274e2004]:
+              - generic [ref=f274e2005]:
+                - heading "Magecommerce" [level=3] [ref=f274e2006]
+                - paragraph [ref=f274e2007]: Outra Integração
+              - link "instalar" [ref=f274e2010] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e2012]:
+            - img "Magiic" [ref=f274e2014]
+            - generic [ref=f274e2015]:
+              - generic [ref=f274e2016]:
+                - heading "Magiic" [level=3] [ref=f274e2017]
+                - paragraph [ref=f274e2018]: Outra Integração
+              - link "instalar" [ref=f274e2021] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e2023]:
+            - img "Maker" [ref=f274e2025]
+            - generic [ref=f274e2026]:
+              - generic [ref=f274e2027]:
+                - heading "Maker" [level=3] [ref=f274e2028]
+                - paragraph [ref=f274e2029]: Outra Integração
+              - link "instalar" [ref=f274e2032] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e2034]:
+            - img "Nostradamus" [ref=f274e2036]
+            - generic [ref=f274e2037]:
+              - generic [ref=f274e2038]:
+                - heading "Nostradamus" [level=3] [ref=f274e2039]
+                - paragraph [ref=f274e2040]: Outra Integração
+              - link "instalar" [ref=f274e2043] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e2045]:
+            - img "Oi Place" [ref=f274e2047]
+            - generic [ref=f274e2048]:
+              - generic [ref=f274e2049]:
+                - heading "Oi Place" [level=3] [ref=f274e2050]
+                - paragraph [ref=f274e2051]: Outra Integração
+              - link "instalar" [ref=f274e2054] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e2056]:
+            - img "Partiu Shop" [ref=f274e2058]
+            - generic [ref=f274e2059]:
+              - generic [ref=f274e2060]:
+                - heading "Partiu Shop" [level=3] [ref=f274e2061]
+                - paragraph [ref=f274e2062]: Outra Integração
+              - link "instalar" [ref=f274e2065] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e2067]:
+            - img "Pedido Eletrônico" [ref=f274e2069]
+            - generic [ref=f274e2070]:
+              - generic [ref=f274e2071]:
+                - heading "Pedido Eletrônico" [level=3] [ref=f274e2072]
+                - paragraph [ref=f274e2073]: Outra Integração
+              - link "instalar" [ref=f274e2076] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e2078]:
+            - img "Pluga" [ref=f274e2080]
+            - generic [ref=f274e2081]:
+              - generic [ref=f274e2082]:
+                - heading "Pluga" [level=3] [ref=f274e2083]
+                - paragraph [ref=f274e2084]: Outra Integração
+              - link "instalar" [ref=f274e2087] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e2089]:
+            - img "Preço Certo" [ref=f274e2091]
+            - generic [ref=f274e2092]:
+              - generic [ref=f274e2093]:
+                - heading "Preço Certo" [level=3] [ref=f274e2094]
+                - paragraph [ref=f274e2095]: Outra Integração
+              - link "instalar" [ref=f274e2098] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e2100]:
+            - img "Profitfy" [ref=f274e2102]
+            - generic [ref=f274e2103]:
+              - generic [ref=f274e2104]:
+                - heading "Profitfy" [level=3] [ref=f274e2105]
+                - paragraph [ref=f274e2106]: Outra Integração
+              - link "instalar" [ref=f274e2109] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e2111]:
+            - img "Qint" [ref=f274e2113]
+            - generic [ref=f274e2114]:
+              - generic [ref=f274e2115]:
+                - heading "Qint" [level=3] [ref=f274e2116]
+                - paragraph [ref=f274e2117]: Outra Integração
+              - link "instalar" [ref=f274e2120] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e2122]:
+            - img "Rastreio.net" [ref=f274e2124]
+            - generic [ref=f274e2125]:
+              - generic [ref=f274e2126]:
+                - heading "Rastreio.net" [level=3] [ref=f274e2127]
+                - paragraph [ref=f274e2128]: Outra Integração
+              - link "instalar" [ref=f274e2131] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e2133]:
+            - img "Régua de Cobrança" [ref=f274e2135]
+            - generic [ref=f274e2136]:
+              - generic [ref=f274e2137]:
+                - heading "Régua de Cobrança" [level=3] [ref=f274e2138]
+                - paragraph [ref=f274e2139]: Outra Integração
+              - link "instalar" [ref=f274e2142] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e2144]:
+            - img "Santri" [ref=f274e2146]
+            - generic [ref=f274e2147]:
+              - generic [ref=f274e2148]:
+                - heading "Santri" [level=3] [ref=f274e2149]
+                - paragraph [ref=f274e2150]: Outra Integração
+              - link "instalar" [ref=f274e2153] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e2155]:
+            - img "Sellent" [ref=f274e2157]
+            - generic [ref=f274e2158]:
+              - generic [ref=f274e2159]:
+                - heading "Sellent" [level=3] [ref=f274e2160]
+                - paragraph [ref=f274e2161]: Outra Integração
+              - link "instalar" [ref=f274e2164] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e2166]:
+            - img "Stokki WMS" [ref=f274e2168]
+            - generic [ref=f274e2169]:
+              - generic [ref=f274e2170]:
+                - heading "Stokki WMS" [level=3] [ref=f274e2171]
+                - paragraph [ref=f274e2172]: Outra Integração
+              - link "instalar" [ref=f274e2175] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e2177]:
+            - img "Top Metas" [ref=f274e2179]
+            - generic [ref=f274e2180]:
+              - generic [ref=f274e2181]:
+                - heading "Top Metas" [level=3] [ref=f274e2182]
+                - paragraph [ref=f274e2183]: Outra Integração
+              - link "instalar" [ref=f274e2186] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e2188]:
+            - img "TriCommerce" [ref=f274e2190]
+            - generic [ref=f274e2191]:
+              - generic [ref=f274e2192]:
+                - heading "TriCommerce" [level=3] [ref=f274e2193]
+                - paragraph [ref=f274e2194]: Outra Integração
+              - link "instalar" [ref=f274e2197] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e2199]:
+            - img "Tribox" [ref=f274e2201]
+            - generic [ref=f274e2202]:
+              - generic [ref=f274e2203]:
+                - heading "Tribox" [level=3] [ref=f274e2204]
+                - paragraph [ref=f274e2205]: Outra Integração
+              - link "instalar" [ref=f274e2208] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e2210]:
+            - img "Turbo Drop" [ref=f274e2212]
+            - generic [ref=f274e2213]:
+              - generic [ref=f274e2214]:
+                - heading "Turbo Drop" [level=3] [ref=f274e2215]
+                - paragraph [ref=f274e2216]: Outra Integração
+              - link "instalar" [ref=f274e2219] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e2221]:
+            - img "Uplaces" [ref=f274e2223]
+            - generic [ref=f274e2224]:
+              - generic [ref=f274e2225]:
+                - heading "Uplaces" [level=3] [ref=f274e2226]
+                - paragraph [ref=f274e2227]: Outra Integração
+              - link "instalar" [ref=f274e2230] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e2232]:
+            - img "Zenvia" [ref=f274e2234]
+            - generic [ref=f274e2235]:
+              - generic [ref=f274e2236]:
+                - heading "Zenvia" [level=3] [ref=f274e2237]
+                - paragraph [ref=f274e2238]: Outra Integração
+              - link "instalar" [ref=f274e2241] [cursor=pointer]:
+                - /url: ""
+          - generic [ref=f274e2243]:
+            - img "eCommerce-net" [ref=f274e2245]
+            - generic [ref=f274e2246]:
+              - generic [ref=f274e2247]:
+                - heading "eCommerce-net" [level=3] [ref=f274e2248]
+                - paragraph [ref=f274e2249]: Outra Integração
+              - link "instalar" [ref=f274e2252] [cursor=pointer]:
+                - /url: ""

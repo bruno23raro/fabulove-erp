@@ -1,0 +1,225 @@
+- generic [active] [ref=f356e1]:
+  - generic [ref=f356e5]:
+    - generic [ref=f356e6]:
+      - generic [ref=f356e7]:
+        - button "Olist" [ref=f356e9] [cursor=pointer]:
+          - img "Olist" [ref=f356e10]
+        - button [ref=f356e12] [cursor=pointer]:
+          - img "Lis" [ref=f356e13]
+      - generic [ref=f356e16]:
+        - link [ref=f356e19] [cursor=pointer]:
+          - /url: https://erp.olist.com/
+          - img "ERP" [ref=f356e20]
+        - link [ref=f356e23] [cursor=pointer]:
+          - /url: pdv
+          - img "PDV" [ref=f356e24]
+        - link [ref=f356e27] [cursor=pointer]:
+          - /url: conta_digital
+          - img "Conta Digital" [ref=f356e28]
+        - link [ref=f356e31] [cursor=pointer]:
+          - /url: olist_envios
+          - img "Envios" [ref=f356e32]
+        - link [ref=f356e35] [cursor=pointer]:
+          - /url: olist_ecommerce
+          - img "Ecommerce" [ref=f356e36]
+        - link [ref=f356e39] [cursor=pointer]:
+          - /url: https://agents.olist.com/chats/new/
+          - img "Lis" [ref=f356e40]
+      - generic [ref=f356e41]:
+        - button "AD" [ref=f356e43] [cursor=pointer]
+        - button [ref=f356e48] [cursor=pointer]:
+          - img "Notificações" [ref=f356e50]
+        - button [ref=f356e52] [cursor=pointer]:
+          - img "Ajuda" [ref=f356e54]
+    - generic [ref=f356e57]:
+      - generic [ref=f356e58]:
+        - generic:
+          - generic:
+            - generic [ref=f356e59]:
+              - button
+              - heading "ERP" [level=2]
+            - navigation "ERP" [ref=f356e60]:
+              - list:
+                - listitem:
+                  - link [ref=f356e61] [cursor=pointer]:
+                    - /url: index
+                - listitem:
+                  - link [ref=f356e65] [cursor=pointer]:
+                    - /url: contatos
+                - listitem:
+                  - link [ref=f356e73] [cursor=pointer]:
+                    - /url: estoques
+                - listitem:
+                  - link [ref=f356e77] [cursor=pointer]:
+                    - /url: crm
+                - listitem:
+                  - link [ref=f356e81] [cursor=pointer]:
+                    - /url: caixa
+        - generic [ref=f356e86]:
+          - link [ref=f356e87] [cursor=pointer]:
+            - /url: ideias
+            - generic:
+              - paragraph: Canal de ideias
+          - link [ref=f356e91] [cursor=pointer]:
+            - /url: https://cloud.comunicacao.olist.com/indique-e-ganhe
+            - generic:
+              - paragraph: Indique e ganhe
+          - button [ref=f356e95] [cursor=pointer]:
+            - img "Configurações" [ref=f356e97]
+            - generic:
+              - paragraph: Configurações
+          - generic [ref=f356e101]:
+            - generic [ref=f356e102]: Fixar menu
+            - switch "Fixar menu" [checked] [ref=f356e103] [cursor=pointer]
+      - generic [ref=f356e105]:
+        - button "Vendas" [ref=f356e107] [cursor=pointer]
+        - generic [ref=f356e114]:
+          - link [ref=f356e115] [cursor=pointer]:
+            - /url: crm
+            - paragraph [ref=f356e121]: CRM
+          - link [ref=f356e122] [cursor=pointer]:
+            - /url: automacoes
+            - paragraph [ref=f356e128]: Painel de Automações
+          - link [ref=f356e129] [cursor=pointer]:
+            - /url: pdv
+            - paragraph [ref=f356e135]: PDV
+          - link [ref=f356e136] [cursor=pointer]:
+            - /url: orcamentos#list
+            - paragraph [ref=f356e142]: Propostas Comerciais
+          - link [ref=f356e143] [cursor=pointer]:
+            - /url: vendas#list
+            - paragraph [ref=f356e149]: Pedidos de Venda
+          - link [ref=f356e150] [cursor=pointer]:
+            - /url: notas_fiscais#list
+            - paragraph [ref=f356e156]: Notas Fiscais
+          - link [ref=f356e157] [cursor=pointer]:
+            - /url: comissoes#list
+            - paragraph [ref=f356e162]: Comissões
+          - link [ref=f356e163] [cursor=pointer]:
+            - /url: notas_fiscais_consumidor#list
+            - paragraph [ref=f356e169]: Notas Fiscais Consumidor
+          - link [ref=f356e170] [cursor=pointer]:
+            - /url: metas_venda#list
+            - paragraph [ref=f356e176]: Performance de Vendas
+          - link [ref=f356e177] [cursor=pointer]:
+            - /url: margem_contribuicao
+            - paragraph [ref=f356e183]: Margem Contribuição
+          - link [ref=f356e184] [cursor=pointer]:
+            - /url: custos_ecommerce
+            - paragraph [ref=f356e190]: Custos do e-commerce
+          - link [ref=f356e191] [cursor=pointer]:
+            - /url: separacao
+            - paragraph [ref=f356e197]: Separação
+          - link [ref=f356e198] [cursor=pointer]:
+            - /url: expedicao
+            - paragraph [ref=f356e203]: Expedição
+          - link [ref=f356e204] [cursor=pointer]:
+            - /url: devolucoes_vendas
+            - paragraph [ref=f356e209]: Devoluções de venda
+          - link [ref=f356e210] [cursor=pointer]:
+            - /url: relatorios_sistema?id=3
+            - paragraph [ref=f356e216]: Relatórios
+  - generic [ref=f356e218]:
+    - generic [ref=f356e220]:
+      - generic [ref=f356e221]: 
+      - generic [ref=f356e222]:
+        - text: Você está no ambiente para testes de notas fiscais.
+        - link " alterar ambiente" [ref=f356e223] [cursor=pointer]:
+          - /url: configuracoes_ambiente_nfe
+          - generic [ref=f356e224]: 
+          - text: alterar ambiente
+        - text: para gerar notas com valor fiscal.
+    - generic [ref=f356e225]:
+      - generic [ref=f356e226]:
+        - generic [ref=f356e227]:
+          - list [ref=f356e228]:
+            - listitem [ref=f356e229]:
+              - link "Início" [ref=f356e230] [cursor=pointer]:
+                - /url: https://erp.olist.com/
+            - listitem [ref=f356e231]:
+              - link " Vendas" [ref=f356e232] [cursor=pointer]:
+                - /url: javascript:void(0)
+                - generic [ref=f356e233]: 
+                - text: Vendas
+            - listitem [ref=f356e234]: Notas Fiscais
+          - generic [ref=f356e235]:
+            - link "Incluir nota fiscal" [ref=f356e236] [cursor=pointer]:
+              - /url: "#"
+            - generic [ref=f356e237]:
+              - button "Ações " [ref=f356e238] [cursor=pointer]:
+                - text: Ações
+                - generic [ref=f356e239]: 
+              - text:          
+        - generic [ref=f356e241]:
+          - generic [ref=f356e242]:
+            - paragraph [ref=f356e244]: Etapa atual
+            - paragraph [ref=f356e245]: Centralize seus produtos e estoque
+          - generic [ref=f356e246]:
+            - generic [ref=f356e247]: 0 de 4
+            - link "acessar o guia" [ref=f356e249] [cursor=pointer]:
+              - /url: index?abrirPassoDestaque=1
+        - generic [ref=f356e250]: Notas Fiscais
+        - generic [ref=f356e251]:
+          - generic [ref=f356e253]:
+            - textbox "Pesquise pelo nome do cliente" [ref=f356e254]
+            - button "" [ref=f356e256] [cursor=pointer]
+            - button "Cliente" [ref=f356e259] [cursor=pointer]
+          - list [ref=f356e261]:
+            - listitem [ref=f356e262]:
+              - link "Últimos 30 dias" [ref=f356e263] [cursor=pointer]:
+                - /url: "#"
+              - text:      
+            - listitem [ref=f356e264]:
+              - link " data de emissão" [ref=f356e265] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f356e266]: 
+                - text: data de emissão
+              - text:  
+            - listitem [ref=f356e267]:
+              - link " filtros" [ref=f356e268] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f356e269]: 
+                - text: filtros
+            - listitem [ref=f356e270]:
+              - link " limpar filtros" [ref=f356e271] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f356e272]: 
+                - text: limpar filtros
+        - generic [ref=f356e273]:
+          - button "" [ref=f356e275] [cursor=pointer]
+          - list [ref=f356e278]:
+            - listitem [ref=f356e279]:
+              - link [ref=f356e280]:
+                - /url: "#"
+            - listitem [ref=f356e283]:
+              - link [ref=f356e284] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=f356e288]:
+              - link [ref=f356e289] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=f356e293]:
+              - link [ref=f356e294] [cursor=pointer]:
+                - /url: "#"
+            - text: 
+      - generic [ref=f356e298]:                         
+      - text:                  
+      - generic [ref=f356e301]:
+        - generic [ref=f356e303]:
+          - heading "Quantidade" [level=4] [ref=f356e305]
+          - heading "Valor Total (R$)" [level=4] [ref=f356e309]
+          - button "" [ref=f356e313] [cursor=pointer]
+        - text:    
+    - text:                                           
+  - status [ref=f356e315]
+  - status [ref=f356e316]
+  - status [ref=f356e317]
+  - status [ref=f356e318]
+  - status [ref=f356e319]
+  - status [ref=f356e320]
+  - status [ref=f356e321]
+  - status [ref=f356e322]
+  - status [ref=f356e323]
+  - status [ref=f356e324]
+  - status [ref=f356e325]
+  - status [ref=f356e326]
+  - status [ref=f356e327]

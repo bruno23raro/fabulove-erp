@@ -1,0 +1,176 @@
+- generic [ref=f332e1]:
+  - generic: fechar 
+  - generic [ref=f332e5]:
+    - generic [ref=f332e6]:
+      - generic [ref=f332e7]:
+        - button "Olist" [ref=f332e9] [cursor=pointer]:
+          - img "Olist" [ref=f332e10]
+        - button [ref=f332e12] [cursor=pointer]:
+          - img "Lis" [ref=f332e13]
+      - generic [ref=f332e16]:
+        - link [ref=f332e19] [cursor=pointer]:
+          - /url: https://erp.olist.com/
+          - img "ERP" [ref=f332e20]
+        - link [ref=f332e23] [cursor=pointer]:
+          - /url: pdv
+          - img "PDV" [ref=f332e24]
+        - link [ref=f332e27] [cursor=pointer]:
+          - /url: conta_digital
+          - img "Conta Digital" [ref=f332e28]
+        - link [ref=f332e31] [cursor=pointer]:
+          - /url: olist_envios
+          - img "Envios" [ref=f332e32]
+        - link [ref=f332e35] [cursor=pointer]:
+          - /url: olist_ecommerce
+          - img "Ecommerce" [ref=f332e36]
+        - link [ref=f332e39] [cursor=pointer]:
+          - /url: https://agents.olist.com/chats/new/
+          - img "Lis" [ref=f332e40]
+      - generic [ref=f332e41]:
+        - button "AD" [ref=f332e43] [cursor=pointer]
+        - button [ref=f332e48] [cursor=pointer]:
+          - img "Notificações" [ref=f332e50]
+        - button [ref=f332e52] [cursor=pointer]:
+          - img "Ajuda" [ref=f332e54]
+    - generic [ref=f332e57]:
+      - generic [ref=f332e58]:
+        - generic:
+          - generic:
+            - generic [ref=f332e59]:
+              - button
+              - heading "ERP" [level=2]
+            - navigation "ERP" [ref=f332e60]:
+              - list:
+                - listitem:
+                  - link [ref=f332e61] [cursor=pointer]:
+                    - /url: index
+                - listitem:
+                  - link [ref=f332e65] [cursor=pointer]:
+                    - /url: contatos
+                - listitem:
+                  - link [ref=f332e73] [cursor=pointer]:
+                    - /url: estoques
+                - listitem:
+                  - link [ref=f332e77] [cursor=pointer]:
+                    - /url: crm
+                - listitem:
+                  - link [ref=f332e81] [cursor=pointer]:
+                    - /url: caixa
+        - generic [ref=f332e86]:
+          - link [ref=f332e87] [cursor=pointer]:
+            - /url: ideias
+            - generic:
+              - paragraph: Canal de ideias
+          - link [ref=f332e91] [cursor=pointer]:
+            - /url: https://cloud.comunicacao.olist.com/indique-e-ganhe
+            - generic:
+              - paragraph: Indique e ganhe
+          - button [ref=f332e95] [cursor=pointer]:
+            - img "Configurações" [ref=f332e97]
+            - generic:
+              - paragraph: Configurações
+          - generic [ref=f332e101]:
+            - generic [ref=f332e102]: Fixar menu
+            - switch "Fixar menu" [checked] [ref=f332e103] [cursor=pointer]
+      - generic [ref=f332e105]:
+        - button "Suprimentos" [ref=f332e107] [cursor=pointer]
+        - generic [ref=f332e114]:
+          - link [ref=f332e115] [cursor=pointer]:
+            - /url: estoques
+            - paragraph [ref=f332e120]: Controle de Estoques
+          - link [ref=f332e121] [cursor=pointer]:
+            - /url: pedidos_compra#list
+            - paragraph [ref=f332e127]: Ordens de Compra
+          - link [ref=f332e128] [cursor=pointer]:
+            - /url: servicos_tomados
+            - paragraph [ref=f332e134]: Serviços Tomados
+          - link [ref=f332e135] [cursor=pointer]:
+            - /url: notas_entrada#list
+            - paragraph [ref=f332e142]: Notas de Entrada
+          - link [ref=f332e143] [cursor=pointer]:
+            - /url: entrada_de_mercadorias
+            - paragraph [ref=f332e151]: Conferência de compra
+          - link [ref=f332e152] [cursor=pointer]:
+            - /url: relatorio_necessidade_compra
+            - paragraph [ref=f332e158]: Necessidades de Compra
+          - link [ref=f332e159] [cursor=pointer]:
+            - /url: giro_estoque
+            - paragraph [ref=f332e165]: Giro de Estoque
+          - link [ref=f332e166] [cursor=pointer]:
+            - /url: fci
+            - paragraph [ref=f332e172]: FCI
+          - link [ref=f332e173] [cursor=pointer]:
+            - /url: relatorios_sistema?id=2
+            - paragraph [ref=f332e179]: Relatórios
+  - generic [ref=f332e182]:
+    - generic [ref=f332e183]:
+      - generic [ref=f332e184]:
+        - list [ref=f332e185]:
+          - listitem [ref=f332e186]:
+            - link "Início" [ref=f332e187] [cursor=pointer]:
+              - /url: https://erp.olist.com/
+          - listitem [ref=f332e188]:
+            - link " Suprimentos" [ref=f332e189] [cursor=pointer]:
+              - /url: javascript:void(0)
+              - generic [ref=f332e190]: 
+              - text: Suprimentos
+          - listitem [ref=f332e191]: Controle de Estoques
+        - generic [ref=f332e192]:
+          - button "Gerenciar produtos" [ref=f332e193] [cursor=pointer]
+          - generic [ref=f332e194]:
+            - button "Ações " [ref=f332e195] [cursor=pointer]:
+              - text: Ações
+              - generic [ref=f332e196]: 
+            - text:  
+      - generic [ref=f332e198]:
+        - generic [ref=f332e199]:
+          - paragraph [ref=f332e201]: Etapa atual
+          - paragraph [ref=f332e202]: Centralize seus produtos e estoque
+        - generic [ref=f332e203]:
+          - generic [ref=f332e204]: 0 de 4
+          - link "acessar o guia" [ref=f332e206] [cursor=pointer]:
+            - /url: index?abrirPassoDestaque=1
+      - generic [ref=f332e207]: Controle de estoques
+      - generic [ref=f332e208]:
+        - generic [ref=f332e210]:
+          - textbox "Pesquise por nome, código (SKU) ou GTIN/EAN" [active] [ref=f332e211]
+          - button "" [ref=f332e213] [cursor=pointer]
+          - button "" [ref=f332e216] [cursor=pointer]
+        - list [ref=f332e220]:
+          - listitem [ref=f332e221]:
+            - link " filtros" [ref=f332e222] [cursor=pointer]:
+              - /url: "#"
+              - generic [ref=f332e223]: 
+              - text: filtros
+            - text: 
+          - listitem [ref=f332e224]:
+            - link " limpar filtros" [ref=f332e225] [cursor=pointer]:
+              - /url: "#"
+              - generic [ref=f332e226]: 
+              - text: limpar filtros
+      - generic [ref=f332e227]:
+        - text: 
+        - list [ref=f332e229]:
+          - listitem [ref=f332e230]:
+            - link "Todos" [ref=f332e231]:
+              - /url: "#"
+          - listitem [ref=f332e232]:
+            - link "Simples" [ref=f332e233] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=f332e234]:
+            - link "Kits" [ref=f332e235] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=f332e236]:
+            - link "Matéria-prima" [ref=f332e237] [cursor=pointer]:
+              - /url: "#"
+          - text: 
+    - generic [ref=f332e238]:
+      - generic [ref=f332e240]:
+        - heading "Sua pesquisa não retornou resultados." [level=4] [ref=f332e241]
+        - paragraph [ref=f332e242]: Tente outras opções de pesquisa, tipos de produtos ou remova os filtros.
+        - generic [ref=f332e243]:
+          - button "Alterar pesquisa" [ref=f332e244] [cursor=pointer]
+          - button "Limpar filtros" [ref=f332e245] [cursor=pointer]
+      - text: 
+    - text:     
+  - status [ref=f332e246]

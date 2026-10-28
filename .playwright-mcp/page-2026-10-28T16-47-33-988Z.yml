@@ -1,0 +1,113 @@
+- generic [active] [ref=f115e1]:
+  - generic [ref=f115e5]:
+    - generic [ref=f115e6]:
+      - generic [ref=f115e7]:
+        - button "Olist" [ref=f115e9] [cursor=pointer]:
+          - img "Olist" [ref=f115e10]
+        - button [ref=f115e12] [cursor=pointer]:
+          - img "Lis" [ref=f115e13]
+      - generic [ref=f115e16]:
+        - link [ref=f115e19] [cursor=pointer]:
+          - /url: https://erp.olist.com/
+          - img "ERP" [ref=f115e20]
+        - link [ref=f115e23] [cursor=pointer]:
+          - /url: pdv
+          - img "PDV" [ref=f115e24]
+        - link [ref=f115e27] [cursor=pointer]:
+          - /url: conta_digital
+          - img "Conta Digital" [ref=f115e28]
+        - link [ref=f115e31] [cursor=pointer]:
+          - /url: olist_envios
+          - img "Envios" [ref=f115e32]
+        - link [ref=f115e35] [cursor=pointer]:
+          - /url: olist_ecommerce
+          - img "Ecommerce" [ref=f115e36]
+        - button [ref=f115e38] [cursor=pointer]:
+          - img "Mais produtos" [ref=f115e39]
+      - generic [ref=f115e40]:
+        - button "BR" [ref=f115e42] [cursor=pointer]
+        - button [ref=f115e47] [cursor=pointer]:
+          - img "Notificações" [ref=f115e49]
+        - button [ref=f115e51] [cursor=pointer]:
+          - img "Ajuda" [ref=f115e53]
+    - generic [ref=f115e56]:
+      - generic [ref=f115e57]:
+        - generic:
+          - generic:
+            - generic [ref=f115e58]:
+              - button
+              - heading "ERP" [level=2]
+            - navigation "ERP" [ref=f115e59]:
+              - list:
+                - listitem:
+                  - link [ref=f115e60] [cursor=pointer]:
+                    - /url: index
+                - listitem:
+                  - link [ref=f115e64] [cursor=pointer]:
+                    - /url: contatos
+                - listitem:
+                  - link [ref=f115e72] [cursor=pointer]:
+                    - /url: estoques
+                - listitem:
+                  - link [ref=f115e76] [cursor=pointer]:
+                    - /url: crm
+                - listitem:
+                  - link [ref=f115e80] [cursor=pointer]:
+                    - /url: caixa
+        - generic [ref=f115e85]:
+          - link [ref=f115e86] [cursor=pointer]:
+            - /url: ideias
+            - generic:
+              - paragraph: Canal de ideias
+          - link [ref=f115e90] [cursor=pointer]:
+            - /url: https://cloud.comunicacao.olist.com/indique-e-ganhe
+            - generic:
+              - paragraph: Indique e ganhe
+          - button [ref=f115e94] [cursor=pointer]:
+            - img "Configurações" [ref=f115e96]
+            - generic:
+              - paragraph: Configurações
+          - generic [ref=f115e100]:
+            - generic [ref=f115e101]: Fixar menu
+            - switch "Fixar menu" [checked] [ref=f115e102] [cursor=pointer]
+      - generic [ref=f115e104]:
+        - button "Início" [ref=f115e106] [cursor=pointer]
+        - generic [ref=f115e113]:
+          - link [ref=f115e114] [cursor=pointer]:
+            - /url: index
+            - paragraph [ref=f115e120]: Índice
+          - link [ref=f115e121] [cursor=pointer]:
+            - /url: dashboard
+            - paragraph [ref=f115e128]: Dashboard
+          - link [ref=f115e129] [cursor=pointer]:
+            - /url: home_agenda
+            - paragraph [ref=f115e135]: Agenda
+          - link [ref=f115e136] [cursor=pointer]:
+            - /url: dados_conta
+            - paragraph [ref=f115e142]: Minha conta
+          - link [ref=f115e143] [cursor=pointer]:
+            - /url: integracoes
+            - paragraph [ref=f115e149]: Integrações
+          - link [ref=f115e150] [cursor=pointer]:
+            - /url: contratacao_servico
+            - paragraph [ref=f115e157]: Upgrade de plano
+          - link [ref=f115e158] [cursor=pointer]:
+            - /url: detalhes_versao
+            - paragraph [ref=f115e164]: Sobre a versão
+          - link [ref=f115e165] [cursor=pointer]:
+            - /url: ajuda/
+            - paragraph [ref=f115e170]: Ajuda do ERP
+          - link [ref=f115e171] [cursor=pointer]:
+            - /url: ferramentas_geral
+            - paragraph [ref=f115e178]: Ferramentas
+          - link [ref=f115e179] [cursor=pointer]:
+            - /url: loja_aplicativos
+            - paragraph [ref=f115e184]: Loja de extensões
+          - link [ref=f115e185] [cursor=pointer]:
+            - /url: https://olist.com/parceiros
+            - paragraph [ref=f115e190]: Shopping de Serviços
+  - generic [ref=f115e195]:
+    - button "×" [ref=f115e196] [cursor=pointer]
+    - paragraph [ref=f115e197]:
+      - strong [ref=f115e198]: Aviso.
+      - text: Identificamos uma instabilidade temporária na plataforma da Shopee, o que impede o envio automático dos seus dados fiscais para a loja. Enquanto isso, orientamos emitir suas notas fiscais diretamente pelo painel do vendedor na Shopee.

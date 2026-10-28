@@ -1,0 +1,190 @@
+- generic [active] [ref=f266e1]:
+  - generic [ref=f266e5]:
+    - generic [ref=f266e6]:
+      - generic [ref=f266e7]:
+        - button "Olist" [ref=f266e9] [cursor=pointer]:
+          - img "Olist" [ref=f266e10]
+        - button [ref=f266e12] [cursor=pointer]:
+          - img "Lis" [ref=f266e13]
+      - generic [ref=f266e16]:
+        - link [ref=f266e19] [cursor=pointer]:
+          - /url: https://erp.olist.com/
+          - img "ERP" [ref=f266e20]
+        - link [ref=f266e23] [cursor=pointer]:
+          - /url: pdv
+          - img "PDV" [ref=f266e24]
+        - link [ref=f266e27] [cursor=pointer]:
+          - /url: conta_digital
+          - img "Conta Digital" [ref=f266e28]
+        - link [ref=f266e31] [cursor=pointer]:
+          - /url: olist_envios
+          - img "Envios" [ref=f266e32]
+        - link [ref=f266e35] [cursor=pointer]:
+          - /url: olist_ecommerce
+          - img "Ecommerce" [ref=f266e36]
+        - link [ref=f266e39] [cursor=pointer]:
+          - /url: https://agents.olist.com/chats/new/
+          - img "Lis" [ref=f266e40]
+      - generic [ref=f266e41]:
+        - button "AD" [ref=f266e43] [cursor=pointer]
+        - button [ref=f266e48] [cursor=pointer]:
+          - img "Notificações" [ref=f266e50]
+        - button [ref=f266e52] [cursor=pointer]:
+          - img "Ajuda" [ref=f266e54]
+    - generic [ref=f266e57]:
+      - generic [ref=f266e58]:
+        - generic:
+          - generic:
+            - generic [ref=f266e59]:
+              - button
+              - heading "ERP" [level=2]
+            - navigation "ERP" [ref=f266e60]:
+              - list:
+                - listitem:
+                  - link [ref=f266e61] [cursor=pointer]:
+                    - /url: index
+                - listitem:
+                  - link [ref=f266e65] [cursor=pointer]:
+                    - /url: contatos
+                - listitem:
+                  - link [ref=f266e73] [cursor=pointer]:
+                    - /url: estoques
+                - listitem:
+                  - link [ref=f266e77] [cursor=pointer]:
+                    - /url: crm
+                - listitem:
+                  - link [ref=f266e81] [cursor=pointer]:
+                    - /url: caixa
+        - generic [ref=f266e86]:
+          - link [ref=f266e87] [cursor=pointer]:
+            - /url: ideias
+            - generic:
+              - paragraph: Canal de ideias
+          - link [ref=f266e91] [cursor=pointer]:
+            - /url: https://cloud.comunicacao.olist.com/indique-e-ganhe
+            - generic:
+              - paragraph: Indique e ganhe
+          - button [ref=f266e95] [cursor=pointer]:
+            - img "Configurações" [ref=f266e97]
+            - generic:
+              - paragraph: Configurações
+          - generic [ref=f266e101]:
+            - generic [ref=f266e102]: Fixar menu
+            - switch "Fixar menu" [checked] [ref=f266e103] [cursor=pointer]
+      - generic [ref=f266e105]:
+        - button "Início" [ref=f266e107] [cursor=pointer]
+        - generic [ref=f266e114]:
+          - link [ref=f266e115] [cursor=pointer]:
+            - /url: index
+            - paragraph [ref=f266e121]: Índice
+          - link [ref=f266e122] [cursor=pointer]:
+            - /url: dashboard
+            - paragraph [ref=f266e129]: Dashboard
+          - link [ref=f266e130] [cursor=pointer]:
+            - /url: home_agenda
+            - paragraph [ref=f266e136]: Agenda
+          - link [ref=f266e137] [cursor=pointer]:
+            - /url: dados_conta
+            - paragraph [ref=f266e143]: Minha conta
+          - link [ref=f266e144] [cursor=pointer]:
+            - /url: integracoes
+            - paragraph [ref=f266e150]: Integrações
+          - link [ref=f266e151] [cursor=pointer]:
+            - /url: contratacao_servico
+            - paragraph [ref=f266e158]: Upgrade de plano
+          - link [ref=f266e159] [cursor=pointer]:
+            - /url: detalhes_versao
+            - paragraph [ref=f266e165]: Sobre a versão
+          - link [ref=f266e166] [cursor=pointer]:
+            - /url: ajuda/
+            - paragraph [ref=f266e171]: Ajuda do ERP
+          - link [ref=f266e172] [cursor=pointer]:
+            - /url: ferramentas_geral
+            - paragraph [ref=f266e179]: Ferramentas
+          - link [ref=f266e180] [cursor=pointer]:
+            - /url: loja_aplicativos
+            - paragraph [ref=f266e185]: Loja de extensões
+          - link [ref=f266e186] [cursor=pointer]:
+            - /url: https://olist.com/parceiros
+            - paragraph [ref=f266e191]: Shopping de Serviços
+  - generic [ref=f266e195]:
+    - generic [ref=f266e196]:
+      - list [ref=f266e198]:
+        - listitem [ref=f266e199]:
+          - link " Início" [ref=f266e200] [cursor=pointer]:
+            - /url: index
+            - generic [ref=f266e201]: 
+            - text: Início
+        - listitem [ref=f266e202]:
+          - link "Dashboard" [ref=f266e203] [cursor=pointer]:
+            - /url: dashboard
+        - listitem [ref=f266e204]: Vendas
+      - generic [ref=f266e205]: Dashboard de vendas
+      - list [ref=f266e208]:
+        - listitem [ref=f266e209]:
+          - link "Vendas" [ref=f266e210]:
+            - /url: ""
+        - listitem [ref=f266e211]:
+          - link "Finanças" [ref=f266e212] [cursor=pointer]:
+            - /url: ""
+      - list [ref=f266e214]:
+        - listitem [ref=f266e215]:
+          - link " últimos 7 dias" [ref=f266e216] [cursor=pointer]:
+            - /url: "#"
+            - generic [ref=f266e217]: 
+            - text: últimos 7 dias
+        - listitem [ref=f266e218]:
+          - link " Filtros" [ref=f266e219] [cursor=pointer]:
+            - /url: "#"
+            - generic [ref=f266e220]: 
+            - text: Filtros
+        - listitem [ref=f266e221]:
+          - link " atualizado agora" [ref=f266e222] [cursor=pointer]:
+            - /url: "#"
+            - generic [ref=f266e223]: 
+            - text: atualizado agora
+    - generic [ref=f266e224]:
+      - text:  
+      - generic [ref=f266e226]:
+        - button "" [ref=f266e230] [cursor=pointer]
+        - generic [ref=f266e232]:
+          - generic [ref=f266e234]:
+            - heading "Total das vendas" [level=4] [ref=f266e236]
+            - generic [ref=f266e237]: R$ 0,00
+            - link "expandir detalhes" [ref=f266e244] [cursor=pointer]:
+              - /url: "#/vendas/total-vendas"
+          - generic [ref=f266e246]:
+            - heading "Ticket médio" [level=4] [ref=f266e248]
+            - generic [ref=f266e249]: R$ 0,00
+            - link "expandir detalhes" [ref=f266e256] [cursor=pointer]:
+              - /url: "#/vendas/ticket-medio"
+          - heading "Visão geral" [level=4] [ref=f266e260]
+          - generic [ref=f266e278]:
+            - heading "Pedidos por integrações" [level=4] [ref=f266e280]
+            - link "expandir detalhes" [ref=f266e285] [cursor=pointer]:
+              - /url: "#/vendas/por-integracoes"
+          - generic [ref=f266e287]:
+            - heading "Pedidos por estado" [level=4] [ref=f266e289]
+            - link "expandir detalhes" [ref=f266e294] [cursor=pointer]:
+              - /url: "#/vendas/por-estado"
+          - generic [ref=f266e296]:
+            - heading "Funil de assuntos no CRM Assuntos com ações pendentes" [level=4] [ref=f266e298]:
+              - text: Funil de assuntos no CRM
+              - generic [ref=f266e299]: Assuntos com ações pendentes
+            - link "ver assuntos" [ref=f266e304] [cursor=pointer]:
+              - /url: crm#acoes_pendentes
+          - generic [ref=f266e306]:
+            - heading "Produtos mais vendidos" [level=4] [ref=f266e308]
+            - link "expandir detalhes" [ref=f266e315] [cursor=pointer]:
+              - /url: "#/vendas/produtos-mais-vendidos"
+          - generic [ref=f266e317]:
+            - heading "Horários com mais vendas" [level=4] [ref=f266e319]
+            - link "expandir detalhes" [ref=f266e324] [cursor=pointer]:
+              - /url: "#/vendas/por-horario"
+          - generic [ref=f266e326]:
+            - heading "Vendas X Devoluções" [level=4] [ref=f266e328]
+            - generic [ref=f266e329]:
+              - generic [ref=f266e330]: "0"
+              - generic [ref=f266e331]: "0"
+            - link "expandir detalhes" [ref=f266e336] [cursor=pointer]:
+              - /url: "#/vendas/vendas-vs-devolucoes"

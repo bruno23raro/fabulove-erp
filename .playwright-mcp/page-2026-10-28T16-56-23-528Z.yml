@@ -1,0 +1,203 @@
+- generic [ref=f340e1]:
+  - generic [ref=f340e5]:
+    - generic [ref=f340e6]:
+      - generic [ref=f340e7]:
+        - button "Olist" [ref=f340e9] [cursor=pointer]:
+          - img "Olist" [ref=f340e10]
+        - button [ref=f340e12] [cursor=pointer]:
+          - img "Lis" [ref=f340e13]
+      - generic [ref=f340e16]:
+        - link [ref=f340e19] [cursor=pointer]:
+          - /url: https://erp.olist.com/
+          - img "ERP" [ref=f340e20]
+        - link [ref=f340e23] [cursor=pointer]:
+          - /url: pdv
+          - img "PDV" [ref=f340e24]
+        - link [ref=f340e27] [cursor=pointer]:
+          - /url: conta_digital
+          - img "Conta Digital" [ref=f340e28]
+        - link [ref=f340e31] [cursor=pointer]:
+          - /url: olist_envios
+          - img "Envios" [ref=f340e32]
+        - link [ref=f340e35] [cursor=pointer]:
+          - /url: olist_ecommerce
+          - img "Ecommerce" [ref=f340e36]
+        - link [ref=f340e39] [cursor=pointer]:
+          - /url: https://agents.olist.com/chats/new/
+          - img "Lis" [ref=f340e40]
+      - generic [ref=f340e41]:
+        - button "AD" [ref=f340e43] [cursor=pointer]
+        - button [ref=f340e48] [cursor=pointer]:
+          - img "Notificações" [ref=f340e50]
+        - button [ref=f340e52] [cursor=pointer]:
+          - img "Ajuda" [ref=f340e54]
+    - generic [ref=f340e57]:
+      - generic [ref=f340e58]:
+        - generic:
+          - generic:
+            - generic [ref=f340e59]:
+              - button
+              - heading "ERP" [level=2]
+            - navigation "ERP" [ref=f340e60]:
+              - list:
+                - listitem:
+                  - link [ref=f340e61] [cursor=pointer]:
+                    - /url: index
+                - listitem:
+                  - link [ref=f340e65] [cursor=pointer]:
+                    - /url: contatos
+                - listitem:
+                  - link [ref=f340e73] [cursor=pointer]:
+                    - /url: estoques
+                - listitem:
+                  - link [ref=f340e77] [cursor=pointer]:
+                    - /url: crm
+                - listitem:
+                  - link [ref=f340e81] [cursor=pointer]:
+                    - /url: caixa
+        - generic [ref=f340e86]:
+          - link [ref=f340e87] [cursor=pointer]:
+            - /url: ideias
+            - generic:
+              - paragraph: Canal de ideias
+          - link [ref=f340e91] [cursor=pointer]:
+            - /url: https://cloud.comunicacao.olist.com/indique-e-ganhe
+            - generic:
+              - paragraph: Indique e ganhe
+          - button [ref=f340e95] [cursor=pointer]:
+            - img "Configurações" [ref=f340e97]
+            - generic:
+              - paragraph: Configurações
+          - generic [ref=f340e101]:
+            - generic [ref=f340e102]: Fixar menu
+            - switch "Fixar menu" [checked] [ref=f340e103] [cursor=pointer]
+      - generic [ref=f340e105]:
+        - button "Vendas" [ref=f340e107] [cursor=pointer]
+        - generic [ref=f340e114]:
+          - link [ref=f340e115] [cursor=pointer]:
+            - /url: crm
+            - paragraph [ref=f340e121]: CRM
+          - link [ref=f340e122] [cursor=pointer]:
+            - /url: automacoes
+            - paragraph [ref=f340e128]: Painel de Automações
+          - link [ref=f340e129] [cursor=pointer]:
+            - /url: pdv
+            - paragraph [ref=f340e135]: PDV
+          - link [ref=f340e136] [cursor=pointer]:
+            - /url: orcamentos#list
+            - paragraph [ref=f340e142]: Propostas Comerciais
+          - link [ref=f340e143] [cursor=pointer]:
+            - /url: vendas#list
+            - paragraph [ref=f340e149]: Pedidos de Venda
+          - link [ref=f340e150] [cursor=pointer]:
+            - /url: notas_fiscais#list
+            - paragraph [ref=f340e156]: Notas Fiscais
+          - link [ref=f340e157] [cursor=pointer]:
+            - /url: comissoes#list
+            - paragraph [ref=f340e162]: Comissões
+          - link [ref=f340e163] [cursor=pointer]:
+            - /url: notas_fiscais_consumidor#list
+            - paragraph [ref=f340e169]: Notas Fiscais Consumidor
+          - link [ref=f340e170] [cursor=pointer]:
+            - /url: metas_venda#list
+            - paragraph [ref=f340e176]: Performance de Vendas
+          - link [ref=f340e177] [cursor=pointer]:
+            - /url: margem_contribuicao
+            - paragraph [ref=f340e183]: Margem Contribuição
+          - link [ref=f340e184] [cursor=pointer]:
+            - /url: custos_ecommerce
+            - paragraph [ref=f340e190]: Custos do e-commerce
+          - link [ref=f340e191] [cursor=pointer]:
+            - /url: separacao
+            - paragraph [ref=f340e197]: Separação
+          - link [ref=f340e198] [cursor=pointer]:
+            - /url: expedicao
+            - paragraph [ref=f340e203]: Expedição
+          - link [ref=f340e204] [cursor=pointer]:
+            - /url: devolucoes_vendas
+            - paragraph [ref=f340e209]: Devoluções de venda
+          - link [ref=f340e210] [cursor=pointer]:
+            - /url: relatorios_sistema?id=3
+            - paragraph [ref=f340e216]: Relatórios
+  - generic [ref=f340e218]:
+    - generic [ref=f340e219]:
+      - generic [ref=f340e220]:
+        - generic [ref=f340e221]:
+          - list [ref=f340e222]:
+            - listitem [ref=f340e223]:
+              - link "Início" [ref=f340e224] [cursor=pointer]:
+                - /url: https://erp.olist.com/
+            - listitem [ref=f340e225]:
+              - link " Vendas" [ref=f340e226] [cursor=pointer]:
+                - /url: javascript:void(0)
+                - generic [ref=f340e227]: 
+                - text: Vendas
+            - listitem [ref=f340e228]: CRM
+          - link "Incluir assunto" [ref=f340e230] [cursor=pointer]:
+            - /url: "#"
+        - generic [ref=f340e232]:
+          - generic [ref=f340e233]:
+            - paragraph [ref=f340e235]: Etapa atual
+            - paragraph [ref=f340e236]: Centralize seus produtos e estoque
+          - generic [ref=f340e237]:
+            - generic [ref=f340e238]: 0 de 4
+            - link "acessar o guia" [ref=f340e240] [cursor=pointer]:
+              - /url: index?abrirPassoDestaque=1
+        - generic [ref=f340e241]:
+          - text: CRM
+          - generic [ref=f340e242]: Gestão do relacionamento com os clientes
+        - generic [ref=f340e243]:
+          - generic [ref=f340e245]:
+            - textbox "Pesquise por contato, CPF/CNPJ ou descrição" [active] [ref=f340e246]
+            - button "" [ref=f340e248] [cursor=pointer]
+          - list [ref=f340e250]:
+            - listitem [ref=f340e251]:
+              - link " Lista" [ref=f340e252] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f340e253]: 
+                - text: Lista
+            - listitem [ref=f340e254]:
+              - link "por estágio" [ref=f340e255] [cursor=pointer]:
+                - /url: "#"
+            - listitem [ref=f340e256]:
+              - link " por período" [ref=f340e257] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f340e258]: 
+                - text: por período
+              - text:      
+            - listitem [ref=f340e259]:
+              - link " filtros" [ref=f340e260] [cursor=pointer]:
+                - /url: "#"
+                - generic [ref=f340e261]: 
+                - text: filtros
+        - list [ref=f340e263]:
+          - listitem [ref=f340e264]:
+            - link "Todos" [ref=f340e265]:
+              - /url: "#"
+          - listitem [ref=f340e266]:
+            - link "Com ações pendentes" [ref=f340e267] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=f340e268]:
+            - link "Encerrados" [ref=f340e269] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=f340e270]:
+            - link "mais " [ref=f340e271] [cursor=pointer]:
+              - /url: "#"
+              - generic [ref=f340e273]:
+                - text: mais
+                - generic [ref=f340e274]: 
+      - generic [ref=f340e275]:
+        - generic [ref=f340e276]:
+          - generic [ref=f340e277]:
+            - heading "Você não possui nenhum item cadastrado." [level=4] [ref=f340e278]
+            - paragraph [ref=f340e279]: Para inserir novos registros você pode clicar em incluir assunto.
+            - button "incluir assunto" [ref=f340e281] [cursor=pointer]
+          - generic [ref=f340e282]:
+            - paragraph [ref=f340e283]: Ficou com alguma dúvida?
+            - link "Acesse a ajuda do ERP." [ref=f340e284] [cursor=pointer]:
+              - /url: undefined
+        - text:              
+      - text:                   
+    - text:              
+  - status [ref=f340e285]
+  - status [ref=f340e286]

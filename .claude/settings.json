@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "defaultMode": "bypassPermissions",
+    "allow": [
+      "Bash(*)",
+      "Read(*)",
+      "Write(*)",
+      "Edit(*)",
+      "Glob(*)",
+      "Grep(*)",
+      "WebFetch(*)",
+      "WebSearch(*)",
+      "mcp__*"
+    ],
+    "additionalDirectories": [
+      "C:\\Users\\brunow\\.claude",
+      "C:\\Users\\brunow\\AppData\\Roaming\\npm"
+    ]
+  },
+  "env": {
+    "PLAYWRIGHT_MCP_EXTENSION_TOKEN": "WVzeJIiZ5Eut1E08LIJ8wq8jrHNG894cffTRdchxso"
+  }
+}

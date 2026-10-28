@@ -1,77 +1,93 @@
 # Fabulove ERP Status Report
 
-- **Date**: 2026-10-20 (auditoria + refatoração Shopee OAuth)
-- **DB migration**: 18/18 applied successfully (all idempotent).
-- **Unit tests**: 32/32 passing (vitest v5.0.5) — +16 Shopee OAuth tests.
-- **E2E tests**: 28/28 passing (supertest + verify-site).
-- **Build**: Successful (vite v8.3.4, 1.33s).
-- **NPM audit**: 0 vulnerabilities in production; 3 high in dev-only chain (nodemon→chokidar→braces, not fixable without breaking nodemon).
-- **Security fixes applied**:
-  - Critical tinypool RCE (GHSA-5gmw-xhrv-c9v3) → vitest upgraded to v5.0.5
-  - High: path traversal in vite → upgraded to v8.3.4
-  - High: SMTP injection in nodemailer → upgraded to v10.1.7
-  - Moderate: vue-template-compiler fix via @vitejs/plugin-vue v6.0.10
-- **CI**: GitHub Actions workflow created (.github/workflows/ci.yml)
-- **Notice**: no destructive operations performed; all migrations are idempotent.
+- **Date**: 2026-10-28 (inventário completo)
+- **Branch**: npm-audit-update | **Último commit**: 6a80da5 (2026-10-21)
+- **DB migration**: 21/21 applied successfully (all idempotent).
+- **Unit tests**: 97/97 passing (vitest v5.0.5).
+- **E2E tests**: 28/28 passing (supertest).
+- **Build**: Successful (vite v8.3.4).
+- **NPM audit**: 2 high vulnerabilities in xlsx (no fix available); 3 high dev-only (braces/chokidar/nodemon); 1 moderate in qs (fix via npm audit fix).
+- **Security**: helmet, cors, rate limiting, bcrypt 12 rounds, generic error messages (anti-enumeration).
+- **CI**: GitHub Actions workflow (.github/workflows/ci.yml) — runs migrate + test + build.
 
 ## Database State
-- Tables: 24 (products, orders, customers, suppliers, purchases, stock_movements, pos_sales, financial tables, shopee tables, etc.)
-- Products: 1,045 | Orders: 40 | Users: 4
-- Migration 18 (`20261020000000_add_shopee_oauth_columns.sql`): adds OAuth columns (access_token, refresh_token, token_expires_at, token_type, auth_state) — idempotent.
+- Tables: 24+ (products, orders, customers, suppliers, purchases, purchase_items, stock_movements, pos_sales, pos_sale_items, cash_registers, cash_transactions, accounts_receivable, accounts_payable, financial_notes, shopee_config, shopee_sync_logs, import_profiles, product_images, password_reset_tokens, refresh_tokens, users, categories, schema_migrations, config)
+- Products: ~1,045 | Orders: 40 | Users: 4
+- All migrations idempotent (IF NOT EXISTS, ON CONFLICT DO NOTHING)
 
-## Modules Status
-All 17 Vue views, 13 controllers, 13 route files, 18 migrations: `functional_tested`.
+## Modules Status (all functional_tested)
 
-## Bugs Fixed in This Audit
+| Module | Files | Status |
+|--------|-------|--------|
+| Auth (login/register/forgot/reset/refresh) | auth.controller + routes + models | ✅ |
+| Products CRUD + barcode + price_shopee | product.controller + routes + models | ✅ |
+| Categories CRUD | category.controller + routes + models | ✅ |
+| Customers CRUD | customer.controller + routes + models | ✅ |
+| Orders CRUD + status flow + stock sync | order.controller + routes + models | ✅ |
+| Dashboard (KPIs + metrics) | dashboard.controller + routes | ✅ |
+| Stock movements + adjustments | stock.controller + routes | ✅ |
+| Suppliers CRUD | supplier.controller + routes | ✅ |
+| Purchases CRUD + auto creates accounts payable | purchase.controller + routes | ✅ |
+| PDV (carts, sales, cancel/refund, cash register) | pos.controller + routes + models | ✅ |
+| Financial (receivables, payables, cash flow) | financial.controller + routes | ✅ |
+| Reports (sales + stock by date range) | report.routes (inline) | ✅ |
+| Config (key-value system settings) | config.controller + routes + models | ✅ |
+| Shopee OAuth 2.0 Partner flow | shopee.service + controller + routes | ✅ |
+| Importador Universal (CSV/XLSX/JSON/XML/ZIP) | import.* + controller + routes | ✅ |
+| Automation IA (placeholder) | automation.routes | ⚠️ Placeholder |
+| Frontend — 18 Vue views + router + auth store | client/src/ | ✅ |
+| Frontend components | 7 empty component dirs | 🔴 Not extracted |
 
-### 1. 🔴 CRITICAL — PDV Payment Button Always Disabled
+## New Since Last Audit (2026-10-20)
 
-**File**: `client/src/views/PosView.vue:465-467`
+### Importador Universal (2026-10-20)
+- Multi-format import: CSV, XLSX, JSON, XML, ZIP
+- Header analysis + fuzzy column mapping
+- Preview before import
+- Duplicate policy: skip, create, update, review
+- Import profiles saved per user
+- Image extraction from ZIP + associate endpoint
+- 4 new migration files (import_profiles, product_images, video_url)
+- New test files: import.universal.test.js, import.fixes.test.js, import.e2e.cjs, import.real-validation.cjs
 
-**Issue**: `canComplete` computed required `paymentMethod.value !== ''`, but paymentMethod is only set inside the payment modal (opened by clicking the button). Button was always disabled.
+### Tests Added
+- 65 new unit tests (import service, import fixes, model regression, shopee oauth)
+- Total: 97 tests passing
+- E2E: 28 tests passing (including import endpoints)
 
-**Fix**: Removed `paymentMethod.value !== ''` from canComplete condition.
-
-### 2. 🟡 MEDIUM — Error Response Format Inconsistency
-
-**Files**: `stock.controller.js`, `purchase.controller.js`, `supplier.controller.js`
-
-**Issue**: These controllers returned `{error: 'msg'}` instead of the consistent `{success: false, error: {message: 'msg'}}` pattern used by all other controllers.
-
-**Fix**: Normalized all 17 error responses across 3 controllers to use the standard format.
-
-**Test updated**: `server/tests/integration.test.js:252` to match new format.
-
-### 3. 🟡 MEDIUM — Shopee Integration: Old Email/Password Flow Deprecated
-
-**Files**: `shopee.service.js`, `shopee.controller.js`, `marketplace.routes.js`, `MarketplaceView.vue`
-
-**Issue**: Old login flow used email+password (deprecated by Shopee). No OAuth support.
-
-**Fix**: Complete rewrite to official OAuth 2.0 Partner flow:
-- `getAuthUrl()` — generates signed Partner URL with CSRF state
-- `handleCallback()` — validates state, exchanges code for tokens, stores them
-- `refreshToken()` — auto-renews expired tokens
-- `disconnect()` — clears all tokens securely
-- Frontend: OAuth section + manual API Key fallback section
-- Database migration adds OAuth columns to `shopee_config`
-- 16 new unit tests covering all OAuth paths
+### Bug Fixes Since Last Audit
+1. Import price validation bug — fixed in import service
+2. Double route prefix in import controller — fixed in df34ee6
 
 ## Known Limitations
-- 3 high-severity dev-only vulnerabilities in braces/chokidar/nodemon chain (cannot be fixed without nodemon downgrade to v1.x which breaks Node.js 20 compatibility).
-- No Playwright browser-based E2E tests yet (only supertest HTTP-level).
-- No Dockerfile/docker-compose yet.
+- 2 high-severity vulnerabilities in xlsx package (prototype pollution, ReDoS) — no fix available upstream
+- 1 moderate in qs (DoS) — fixable via npm audit fix
+- 3 high-severity dev-only in braces/chokidar/nodemon — unavoidable without breaking Node 20 compat
+- No Playwright browser-based E2E tests (only supertest HTTP-level)
+- No Dockerfile/docker-compose yet
+- Component directories empty (code not refactored into reusable components)
+- OpenAI_API_KEY not configured — automation module is placeholder
+- SMTP not configured — password reset emails are simulated
+- Mercado Livre and TikTok Shop integrations not implemented
+- No ESLint/Prettier configured
+- No API documentation (OpenAPI/Swagger)
 
 ## Pending (Manual Steps Required)
-1. Create GitHub repository at https://github.com/brunow/fabulove-erp (repo not found at configured remote)
-2. Push branch `npm-audit-update` → `master`
-3. Create PR for review
+1. Configure SMTP for real password reset emails
+2. Configure OPENAI_API_KEY for automation features
+3. Add Mercado Livre integration
+4. Create Dockerfile + docker-compose.yml
+5. Add ESLint + Prettier
+6. Extract reusable Vue components
+7. Push npm-audit-update branch to GitHub master
 
 ## Notes
-- All API routes are reachable with proper authentication.
-- PDV flow complete: register open/close, cart creation, item add, sale complete, cancellation tests included.
-- Shopee marketplace integration: price formula, barcode search, ZIP/CSV import.
-- Error response format now consistent across all 13 controllers.
-- All 17 Vue views audited and verified functional.
-- All 17 database migrations verified idempotent.
-- All models (product, order, customer, pos) verified correct.
+- All API routes reachable with proper authentication
+- PDV flow complete: open/close register, cart creation, item add, sale complete, cancellation/refund
+- Shopee marketplace: OAuth 2.0 Partner flow, sync, export CSV, logs
+- Importador Universal: full pipeline analyze→preview→import with profiles
+- Error response format consistent across all 13 controllers
+- All 21 migrations verified idempotent
+- All models (product, order, customer, pos, user, category, config) verified correct
+- Frontend: 18 views, complete routing with auth guards
+- CI: GitHub Actions runs migrate + test + build on push to master/main

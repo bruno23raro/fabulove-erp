@@ -1,0 +1,208 @@
+- generic [active] [ref=f291e1]:
+  - generic [ref=f291e5]:
+    - generic [ref=f291e6]:
+      - generic [ref=f291e7]:
+        - button "Olist" [ref=f291e9] [cursor=pointer]:
+          - img "Olist" [ref=f291e10]
+        - button [ref=f291e12] [cursor=pointer]:
+          - img "Lis" [ref=f291e13]
+      - generic [ref=f291e16]:
+        - link [ref=f291e19] [cursor=pointer]:
+          - /url: https://erp.olist.com/
+          - img "ERP" [ref=f291e20]
+        - link [ref=f291e23] [cursor=pointer]:
+          - /url: pdv
+          - img "PDV" [ref=f291e24]
+        - link [ref=f291e27] [cursor=pointer]:
+          - /url: conta_digital
+          - img "Conta Digital" [ref=f291e28]
+        - link [ref=f291e31] [cursor=pointer]:
+          - /url: olist_envios
+          - img "Envios" [ref=f291e32]
+        - link [ref=f291e35] [cursor=pointer]:
+          - /url: olist_ecommerce
+          - img "Ecommerce" [ref=f291e36]
+        - link [ref=f291e39] [cursor=pointer]:
+          - /url: https://agents.olist.com/chats/new/
+          - img "Lis" [ref=f291e40]
+      - generic [ref=f291e41]:
+        - button "AD" [ref=f291e43] [cursor=pointer]
+        - button [ref=f291e48] [cursor=pointer]:
+          - img "Notificações" [ref=f291e50]
+        - button [ref=f291e52] [cursor=pointer]:
+          - img "Ajuda" [ref=f291e54]
+    - generic [ref=f291e57]:
+      - generic [ref=f291e58]:
+        - generic:
+          - generic:
+            - generic [ref=f291e59]:
+              - button
+              - heading "ERP" [level=2]
+            - navigation "ERP" [ref=f291e60]:
+              - list:
+                - listitem:
+                  - link [ref=f291e61] [cursor=pointer]:
+                    - /url: index
+                - listitem:
+                  - link [ref=f291e65] [cursor=pointer]:
+                    - /url: contatos
+                - listitem:
+                  - link [ref=f291e73] [cursor=pointer]:
+                    - /url: estoques
+                - listitem:
+                  - link [ref=f291e77] [cursor=pointer]:
+                    - /url: crm
+                - listitem:
+                  - link [ref=f291e81] [cursor=pointer]:
+                    - /url: caixa
+        - generic [ref=f291e86]:
+          - link [ref=f291e87] [cursor=pointer]:
+            - /url: ideias
+            - generic:
+              - paragraph: Canal de ideias
+          - link [ref=f291e91] [cursor=pointer]:
+            - /url: https://cloud.comunicacao.olist.com/indique-e-ganhe
+            - generic:
+              - paragraph: Indique e ganhe
+          - button [ref=f291e95] [cursor=pointer]:
+            - img "Configurações" [ref=f291e97]
+            - generic:
+              - paragraph: Configurações
+          - generic [ref=f291e101]:
+            - generic [ref=f291e102]: Fixar menu
+            - switch "Fixar menu" [checked] [ref=f291e103] [cursor=pointer]
+      - generic [ref=f291e105]:
+        - button "Início" [ref=f291e107] [cursor=pointer]
+        - generic [ref=f291e114]:
+          - link [ref=f291e115] [cursor=pointer]:
+            - /url: index
+            - paragraph [ref=f291e121]: Índice
+          - link [ref=f291e122] [cursor=pointer]:
+            - /url: dashboard
+            - paragraph [ref=f291e129]: Dashboard
+          - link [ref=f291e130] [cursor=pointer]:
+            - /url: home_agenda
+            - paragraph [ref=f291e136]: Agenda
+          - link [ref=f291e137] [cursor=pointer]:
+            - /url: dados_conta
+            - paragraph [ref=f291e143]: Minha conta
+          - link [ref=f291e144] [cursor=pointer]:
+            - /url: integracoes
+            - paragraph [ref=f291e150]: Integrações
+          - link [ref=f291e151] [cursor=pointer]:
+            - /url: contratacao_servico
+            - paragraph [ref=f291e158]: Upgrade de plano
+          - link [ref=f291e159] [cursor=pointer]:
+            - /url: detalhes_versao
+            - paragraph [ref=f291e165]: Sobre a versão
+          - link [ref=f291e166] [cursor=pointer]:
+            - /url: ajuda/
+            - paragraph [ref=f291e171]: Ajuda do ERP
+          - link [ref=f291e172] [cursor=pointer]:
+            - /url: ferramentas_geral
+            - paragraph [ref=f291e179]: Ferramentas
+          - link [ref=f291e180] [cursor=pointer]:
+            - /url: loja_aplicativos
+            - paragraph [ref=f291e185]: Loja de extensões
+          - link [ref=f291e186] [cursor=pointer]:
+            - /url: https://olist.com/parceiros
+            - paragraph [ref=f291e191]: Shopping de Serviços
+  - generic [ref=f291e194]:
+    - generic [ref=f291e195]:
+      - list [ref=f291e197]:
+        - listitem [ref=f291e198]:
+          - link " Início" [ref=f291e199] [cursor=pointer]:
+            - /url: javascript:void(0)
+            - generic [ref=f291e200]: 
+            - text: Início
+        - listitem [ref=f291e201]: Agenda
+      - generic [ref=f291e203]:
+        - generic [ref=f291e204]:
+          - paragraph [ref=f291e206]: Etapa atual
+          - paragraph [ref=f291e207]: Centralize seus produtos e estoque
+        - generic [ref=f291e208]:
+          - generic [ref=f291e209]: 0 de 4
+          - link "acessar o guia" [ref=f291e211] [cursor=pointer]:
+            - /url: index?abrirPassoDestaque=1
+      - generic [ref=f291e212]: Agenda
+      - list [ref=f291e214]:
+        - listitem [ref=f291e215]:
+          - link "Meus compromissos" [ref=f291e216]:
+            - /url: "#"
+        - listitem [ref=f291e217]:
+          - link "Agendados para outros usuários" [ref=f291e218] [cursor=pointer]:
+            - /url: "#"
+        - text:  
+    - generic [ref=f291e222]:
+      - table [ref=f291e223]:
+        - rowgroup [ref=f291e224]:
+          - row [ref=f291e225]:
+            - cell [ref=f291e226]:
+              - generic [ref=f291e227] [cursor=pointer]: 
+              - generic [ref=f291e228] [cursor=pointer]: 
+              - generic: hoje
+            - cell [ref=f291e230]:
+              - heading "Outubro 2026" [level=2] [ref=f291e232]
+            - cell "mensal semanal diário" [ref=f291e233]:
+              - generic [ref=f291e234] [cursor=pointer]: mensal
+              - generic [ref=f291e237] [cursor=pointer]: semanal
+              - generic [ref=f291e240] [cursor=pointer]: diário
+      - table [ref=f291e245]:
+        - rowgroup [ref=f291e246]:
+          - row [ref=f291e247]:
+            - columnheader "Dom" [ref=f291e248]
+            - columnheader "Seg" [ref=f291e249]
+            - columnheader "Ter" [ref=f291e250]
+            - columnheader "Qua" [ref=f291e251]
+            - columnheader "Qui" [ref=f291e252]
+            - columnheader "Sex" [ref=f291e253]
+            - columnheader "Sab" [ref=f291e254]
+        - rowgroup [ref=f291e255]:
+          - row [ref=f291e256]:
+            - cell "27" [ref=f291e257]
+            - cell "28" [ref=f291e261]
+            - cell "29" [ref=f291e266]
+            - cell "30" [ref=f291e271]
+            - cell "1" [ref=f291e276]
+            - cell "2" [ref=f291e281]
+            - cell "3" [ref=f291e286]
+          - row [ref=f291e291]:
+            - cell "4" [ref=f291e292]
+            - cell "5" [ref=f291e296]
+            - cell "6" [ref=f291e301]
+            - cell "7" [ref=f291e306]
+            - cell "8" [ref=f291e311]
+            - cell "9" [ref=f291e316]
+            - cell "10" [ref=f291e321]
+          - row [ref=f291e326]:
+            - cell "11" [ref=f291e327]
+            - cell "12" [ref=f291e331]
+            - cell "13" [ref=f291e336]
+            - cell "14" [ref=f291e341]
+            - cell "15" [ref=f291e346]
+            - cell "16" [ref=f291e351]
+            - cell "17" [ref=f291e356]
+          - row [ref=f291e361]:
+            - cell "18" [ref=f291e362]
+            - cell "19" [ref=f291e366]
+            - cell "20" [ref=f291e371]
+            - cell "21" [ref=f291e376]
+            - cell "22" [ref=f291e381]
+            - cell "23" [ref=f291e386]
+            - cell "24" [ref=f291e391]
+          - row [ref=f291e396]:
+            - cell "25" [ref=f291e397]
+            - cell "26" [ref=f291e401]
+            - cell "27" [ref=f291e406]
+            - cell "28" [ref=f291e411]
+            - cell "29" [ref=f291e416]
+            - cell "30" [ref=f291e421]
+            - cell "31" [ref=f291e426]
+          - row [ref=f291e431]:
+            - cell "1" [ref=f291e432]
+            - cell "2" [ref=f291e436]
+            - cell "3" [ref=f291e441]
+            - cell "4" [ref=f291e446]
+            - cell "5" [ref=f291e451]
+            - cell "6" [ref=f291e456]
+            - cell "7" [ref=f291e461]

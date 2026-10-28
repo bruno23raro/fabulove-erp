@@ -1,0 +1,154 @@
+- generic [active] [ref=f364e1]:
+  - generic [ref=f364e5]:
+    - generic [ref=f364e6]:
+      - generic [ref=f364e7]:
+        - button "Olist" [ref=f364e9] [cursor=pointer]:
+          - img "Olist" [ref=f364e10]
+        - button [ref=f364e12] [cursor=pointer]:
+          - img "Lis" [ref=f364e13]
+      - generic [ref=f364e16]:
+        - link [ref=f364e19] [cursor=pointer]:
+          - /url: https://erp.olist.com/
+          - img "ERP" [ref=f364e20]
+        - link [ref=f364e23] [cursor=pointer]:
+          - /url: pdv
+          - img "PDV" [ref=f364e24]
+        - link [ref=f364e27] [cursor=pointer]:
+          - /url: conta_digital
+          - img "Conta Digital" [ref=f364e28]
+        - link [ref=f364e31] [cursor=pointer]:
+          - /url: olist_envios
+          - img "Envios" [ref=f364e32]
+        - link [ref=f364e35] [cursor=pointer]:
+          - /url: olist_ecommerce
+          - img "Ecommerce" [ref=f364e36]
+        - link [ref=f364e39] [cursor=pointer]:
+          - /url: https://agents.olist.com/chats/new/
+          - img "Lis" [ref=f364e40]
+      - generic [ref=f364e41]:
+        - button "AD" [ref=f364e43] [cursor=pointer]
+        - button [ref=f364e48] [cursor=pointer]:
+          - img "Notificações" [ref=f364e50]
+        - button [ref=f364e52] [cursor=pointer]:
+          - img "Ajuda" [ref=f364e54]
+    - generic [ref=f364e57]:
+      - generic [ref=f364e58]:
+        - generic:
+          - generic:
+            - generic [ref=f364e59]:
+              - button
+              - heading "ERP" [level=2]
+            - navigation "ERP" [ref=f364e60]:
+              - list:
+                - listitem:
+                  - link [ref=f364e61] [cursor=pointer]:
+                    - /url: index
+                - listitem:
+                  - link [ref=f364e65] [cursor=pointer]:
+                    - /url: contatos
+                - listitem:
+                  - link [ref=f364e73] [cursor=pointer]:
+                    - /url: estoques
+                - listitem:
+                  - link [ref=f364e77] [cursor=pointer]:
+                    - /url: crm
+                - listitem:
+                  - link [ref=f364e81] [cursor=pointer]:
+                    - /url: caixa
+        - generic [ref=f364e86]:
+          - link [ref=f364e87] [cursor=pointer]:
+            - /url: ideias
+            - generic:
+              - paragraph: Canal de ideias
+          - link [ref=f364e91] [cursor=pointer]:
+            - /url: https://cloud.comunicacao.olist.com/indique-e-ganhe
+            - generic:
+              - paragraph: Indique e ganhe
+          - button [ref=f364e95] [cursor=pointer]:
+            - img "Configurações" [ref=f364e97]
+            - generic:
+              - paragraph: Configurações
+          - generic [ref=f364e101]:
+            - generic [ref=f364e102]: Fixar menu
+            - switch "Fixar menu" [checked] [ref=f364e103] [cursor=pointer]
+      - generic [ref=f364e105]:
+        - button "Finanças" [ref=f364e107] [cursor=pointer]
+        - generic [ref=f364e114]:
+          - link [ref=f364e115] [cursor=pointer]:
+            - /url: caixa
+            - paragraph [ref=f364e121]: Caixa
+          - link "Conta Digital pix grátis" [ref=f364e122] [cursor=pointer]:
+            - /url: conta_digital?utm=modulo
+            - paragraph [ref=f364e127]: Conta Digital
+            - generic [ref=f364e128]: pix grátis
+          - link [ref=f364e129] [cursor=pointer]:
+            - /url: conta_digital_pagar_com_cartao
+            - paragraph [ref=f364e135]: Parcelamento de contas
+          - link [ref=f364e136] [cursor=pointer]:
+            - /url: contas_pagar
+            - paragraph [ref=f364e142]: Contas a Pagar
+          - link [ref=f364e143] [cursor=pointer]:
+            - /url: contas_receber
+            - paragraph [ref=f364e149]: Contas a Receber
+          - link [ref=f364e150] [cursor=pointer]:
+            - /url: cobrancas_registradas
+            - paragraph [ref=f364e157]: Cobranças Bancárias
+          - link [ref=f364e158] [cursor=pointer]:
+            - /url: extratos_bancarios
+            - paragraph [ref=f364e164]: Extratos Bancários
+          - link [ref=f364e165] [cursor=pointer]:
+            - /url: relatorios_sistema?id=5
+            - paragraph [ref=f364e171]: Relatórios
+          - link "Painel de Contadores Novo" [ref=f364e172] [cursor=pointer]:
+            - /url: painel_contador
+            - paragraph [ref=f364e177]: Painel de Contadores
+            - generic [ref=f364e178]: Novo
+  - generic [ref=f364e182]:
+    - generic [ref=f364e183]:
+      - list [ref=f364e185]:
+        - listitem [ref=f364e186]:
+          - link " Voltar" [ref=f364e187] [cursor=pointer]:
+            - /url: ""
+            - generic [ref=f364e188]: 
+            - text: Voltar
+        - listitem [ref=f364e189]:
+          - link "Início" [ref=f364e190] [cursor=pointer]:
+            - /url: index
+        - listitem [ref=f364e191]:
+          - link " Finanças" [ref=f364e192] [cursor=pointer]:
+            - /url: caixa
+            - generic [ref=f364e193]: 
+            - text: Finanças
+        - listitem [ref=f364e194]: Contadores
+      - generic [ref=f364e196]:
+        - generic [ref=f364e197]:
+          - paragraph [ref=f364e199]: Etapa atual
+          - paragraph [ref=f364e200]: Centralize seus produtos e estoque
+        - generic [ref=f364e201]:
+          - generic [ref=f364e202]: 0 de 4
+          - link "acessar o guia" [ref=f364e204] [cursor=pointer]:
+            - /url: index?abrirPassoDestaque=1
+      - generic [ref=f364e205]: Painel de contadores
+      - generic [ref=f364e206]:
+        - text: Dê autonomia ao seu contador e agilize o fechamento mensal da sua empresa com o compartilhamento automático de dados fiscais.
+        - link "Saiba mais" [ref=f364e207] [cursor=pointer]:
+          - /url: https://ajuda.olist.com/relatorios-de-financas/faq-%E2%80%93-painel-de-contadores-olist?from_search=229198839&swifty_search_highlight=contadores
+    - generic [ref=f364e208]:
+      - generic [ref=f364e209]:
+        - heading "Nenhum contador adicionado" [level=3] [ref=f364e234]
+        - paragraph [ref=f364e235]: Adicione um contador para liberar acesso aos seus relatórios.
+        - button "Adicionar contador" [ref=f364e236] [cursor=pointer]
+      - generic [ref=f364e237]:
+        - generic [ref=f364e238]:
+          - heading "Benefícios de usar o painel" [level=3] [ref=f364e239]
+          - paragraph [ref=f364e240]: Chega de perder tempo enviando relatórios e NFs manualmente. Com o Painel de Contadores, você integra sua gestão ao escritório contábil e reduz falhas manuais.
+        - generic [ref=f364e241]:
+          - generic [ref=f364e242]:
+            - heading "Fechamento mensal sem burocracia" [level=4] [ref=f364e243]
+            - paragraph [ref=f364e244]: Com sua autorização, seu contador acessa dados financeiros e fiscais em um painel exclusivo, sem troca excessiva de emails.
+          - generic [ref=f364e245]:
+            - heading "Segurança e controle" [level=4] [ref=f364e246]
+            - paragraph [ref=f364e247]: Você autoriza o acesso do seu contador e pode revogar a permissão se necessário.
+          - generic [ref=f364e248]:
+            - heading "Relatórios" [level=4] [ref=f364e249]
+            - paragraph [ref=f364e250]: O contador visualiza apenas os relatórios de notas de entrada ou saída, NFC-e, numeração de notas fiscais, contas a pagar ou receber e de movimentações de caixa.

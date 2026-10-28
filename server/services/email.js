@@ -12,8 +12,8 @@ const SMTP_PORT     = parseInt(process.env.SMTP_PORT || '587', 10);
 const SMTP_SECURE   = process.env.SMTP_SECURE === 'true';
 const SMTP_USER     = process.env.SMTP_USER     || null;
 const SMTP_PASS     = process.env.SMTP_PASS     || null;
-const EMAIL_FROM    = process.env.EMAIL_FROM    || 'noreply@fabulove.com';
-const EMAIL_FROM_NAME = process.env.EMAIL_FROM_NAME || 'Fabulove AI';
+const EMAIL_FROM    = process.env.EMAIL_FROM    || 'noreply@sizen.com';
+const EMAIL_FROM_NAME = process.env.EMAIL_FROM_NAME || 'SIZEN ERP';
 
 /** Configura transporter se credenciais existem; senão retorna null */
 function createTransporter() {
@@ -52,7 +52,7 @@ function buildResetTemplate({ name, resetLink, expiresInMinutes }) {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Recuperação de Senha — Fabulove</title>
+<title>Recuperação de Senha — SIZEN</title>
 <style>
   body { font-family: system-ui, -apple-system, Segoe UI, sans-serif; background: #f6f7fa; color: #222; margin: 0; padding: 0; }
   .container { max-width: 560px; margin: 40px auto; background: #fff; border-radius: 14px; box-shadow: 0 4px 24px rgba(0,0,0,.06); padding: 36px 28px; }
@@ -68,7 +68,7 @@ function buildResetTemplate({ name, resetLink, expiresInMinutes }) {
 <body>
 <div class="container">
   <h1>Olá, ${name || 'usuário'} 👋</h1>
-  <p>Recebemos uma solicitação para redefinir a senha da sua conta no <strong>Fabulove AI Seller Agent ERP</strong>.</p>
+  <p>Recebemos uma solicitação para redefinir a senha da sua conta no <strong>SIZEN ERP</strong>.</p>
   <p>Se foi você, clique no botão abaixo para criar uma nova senha. Este link expira em <strong>${expiresInMinutes} minutos</strong>.</p>
   <p style="text-align:center; margin: 24px 0;">
     <a class="btn" href="${resetLink}" target="_blank" rel="noopener noreferrer">Redefinir minha senha</a>
@@ -78,7 +78,7 @@ function buildResetTemplate({ name, resetLink, expiresInMinutes }) {
   <div class="note">
     <strong>Dica de segurança:</strong> nunca compartilhe este link com ninguém. Se você não solicitou esta alteração, pode ignorar este email com segurança — sua senha atual continuará válida.
   </div>
-  <div class="footer">Fabulove AI Seller Agent ERP — ${new Date().getFullYear()}</div>
+  <div class="footer">SIZEN ERP — ${new Date().getFullYear()}</div>
 </div>
 </body>
 </html>`;
@@ -102,9 +102,9 @@ export async function sendPasswordResetEmail({ to, name, resetLink, expiresInMin
   const info = await transporter.sendMail({
     from: `"${EMAIL_FROM_NAME}" <${EMAIL_FROM}>`,
     to,
-    subject: 'Fabulove — Recuperação de Senha',
+    subject: 'SIZEN — Recuperação de Senha',
     html: buildResetTemplate({ name, resetLink, expiresInMinutes }),
-    text: `Recuperação de senha Fabulove. Link (expira em ${expiresInMinutes} min): ${resetLink}. Se não solicitou, ignore.`
+    text: `Recuperação de senha SIZEN. Link (expira em ${expiresInMinutes} min): ${resetLink}. Se não solicitou, ignore.`
   });
 
   return {
