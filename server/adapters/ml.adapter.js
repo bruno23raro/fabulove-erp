@@ -12,9 +12,6 @@
 import crypto from 'node:crypto';
 
 const ML_AUTH_URL = 'https://auth.mercadolibre.com/authorization';
-const ML_TOKEN_URL = 'https://api.mercadolibre.com/oauth/token';
-const ML_API_BASE = 'https://api.mercadolibre.com';
-
 const ML_SCOPES = ['offline_access', 'read', 'write'];
 
 /** Mercado Livre Adapter — implements MarketplaceAdapter interface */
