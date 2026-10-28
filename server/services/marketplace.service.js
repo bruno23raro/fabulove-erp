@@ -182,6 +182,14 @@ export async function registerBuiltins() {
   } catch (err) {
     console.warn('[marketplace] Could not register ML adapter:', err.message);
   }
+
+  // Register Shopee adapter
+  try {
+    const { ShopeeAdapter } = await import('../adapters/shopee.adapter.js');
+    registerAdapter('shopee', new ShopeeAdapter());
+  } catch (err) {
+    console.warn('[marketplace] Could not register Shopee adapter:', err.message);
+  }
 }
 
 export default {
