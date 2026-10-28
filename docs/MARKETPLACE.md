@@ -37,52 +37,9 @@ Arquitetura baseada em interface única `MarketplaceAdapter` que permite integra
 - **Status**: 🟡 Skeleton — métodos retornam placeholders, aguarda credenciais
 
 ### 3. Shopee Adapter (`shopee`)
-- **Uso**: Integração com Shopee Open Platform
-- **Auth**: Partner App OAuth 2.0
-- **Status**: ⚠️ Implementação existente em `server/services/shopee.service.js` — precisa migrar para nova interface
-
-## Service de Orquestração
-
-`server/services/marketplace.service.js`:
-- `registerAdapter(name, adapter)` — registra adapter
-- `getAdapter(name)` — obtém instância
-- `listAdapters()` — lista todos com status
-- `connect(name, params)` — inicia OAuth
-- `handleCallback(name, code, state)` — processa callback
-- `disconnect(name)` — desconecta
-- `syncProducts(name)` — sincroniza produtos
-- `syncStock(name)` — sincroniza estoque
-- `pushProduct(name, product)` — envia produto
-
-## Banco de Dados
-
-Tabela `marketplace_accounts` (migration `20261028000001`):
-```sql
-id, name, provider, access_token, refresh_token, token_expires_at,
-config_json, connected_at, last_sync_at, status
-```
-
-Tokens armazenados criptografados (TODO: implementar encryption at rest).
-
-## Frontend
-
-Tela em `/marketplaces` (rotas existentes em `MarketplaceView.vue`):
-- Status de conexão por loja
-- Botão "Conectar" → fluxo OAuth → status conectado/desconectado
-- Sincronização manual de produtos/estoque
-
-## Próximos Passos (Bloqueiam em Credenciais)
-
-| Tarefa | Bloqueio | Ação |
-|--------|----------|------|
-| Mercado Livre real | Criar app em https://developers.mercadolivre.com.br | Preencher ML_CLIENT_ID, ML_CLIENT_SECRET, ML_REDIRECT_URI |
-| Shopee real | Criar Partner App em https://open.shopee.com | Preencher SHOPEE_PARTNER_ID, SHOPEE_PARTNER_KEY |
-| Encryption at rest | Nenhum | Adicionar `pgcrypto` ou lib nativa para tokens |
-| Webhook idempotency | Nenhum | Implementar tabela `marketplace_webhook_events` com `event_id` único |
-
-## Troca por Agregadora
-
-Para usar marketapi.shop ou eCartAPI:
-1. Criar `server/adapters/marketapi.adapter.js` implementando a interface
-2. Registrar com `registerAdapter('marketapi', new MarketapiAdapter())`
-3. Core e frontend permanecem inalterados
+- **Uso**: Integração real com Shopee Open Platform
+- **Arquivo**: `server/adapters/shopee.adapter.js`
+- **Auth**: Partner App OAuth 2.0 com `shopee-api` SDK
+- **Endpoints**: `https://partner.shopeemobile.com`
+- **Referência**: https://open.shopee.com
+- **Status**: ✅ Completo — 8 métodos + webhook HMAC (11 testes)

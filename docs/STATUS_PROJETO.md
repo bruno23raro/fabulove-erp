@@ -38,6 +38,8 @@
 | CRM (leads, deals, activities) | crm.controller + routes + models | ✅ |
 | AI / IA (multi-provider: NVIDIA NIM, Agnes AI) | ai.controller + routes + views/AiView.vue | ✅ |
 | Marketplace Adapter (mock, ML skeleton, service) | adapters/ + marketplace.service.js | ✅ |
+| Shopee Adapter (real shopee-api integration) | shopee.adapter.js | ✅ |
+| Mercado Livre Adapter (skeleton — aguarda credenciais) | ml.adapter.js | ✅ |
 | Rebrand Fabulove → SIZEN | minimal name/UI changes | ✅ |
 | Automation IA (placeholder) | automation.routes | ⚠️ Placeholder |
 | Frontend — 19 Vue views + router + auth store | client/src/ | ✅ |
@@ -57,13 +59,18 @@
 
 ### Tests Added
 - 28 new unit tests (marketplace adapter, ML skeleton)
-- Total: 125 tests passing
+- 11 new unit tests (Shopee adapter)
+- Total: 136 tests passing
 - E2E: 28 tests passing (including import endpoints)
 
 ### Bloco A-C Completed (2026-10-28)
 1. **A) Remove OpenAI** — AI service agora só suporta NVIDIA NIM + Agnes AI
 2. **B) Vitest coverage thresholds** — configurados em vitest.config.js (23%/25%/20%/23%)
 3. **C) MarketplaceAdapter architecture** — interface + mock + ML skeleton + service + 15 testes
+
+### Bloco D Completed (2026-10-28)
+4. **D) Mercado Livre real adapter** — ml.adapter.js skeleton pronto (aguarda ML_CLIENT_ID/SECRET)
+5. **E) Shopee real adapter** — shopee.adapter.js com integração shopee-api completa (8 métodos + webhook HMAC)
 
 ## Known Limitations
 
