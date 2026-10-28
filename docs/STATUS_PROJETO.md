@@ -1,8 +1,8 @@
-# Fabulove ERP Status Report
+# SIZEN ERP Status Report
 
-- **Date**: 2026-10-28 (inventário completo)
-- **Branch**: npm-audit-update | **Último commit**: 6a80da5 (2026-10-21)
-- **DB migration**: 21/21 applied successfully (all idempotent).
+- **Date**: 2026-10-28
+- **Branch**: sizren-erp-rebrand | **Último commit**: c762dec (2026-10-28)
+- **DB migration**: 22/22 applied successfully (all idempotent).
 - **Unit tests**: 97/97 passing (vitest v5.0.5).
 - **E2E tests**: 28/28 passing (supertest).
 - **Build**: Successful (vite v8.3.4).
@@ -11,7 +11,7 @@
 - **CI**: GitHub Actions workflow (.github/workflows/ci.yml) — runs migrate + test + build.
 
 ## Database State
-- Tables: 24+ (products, orders, customers, suppliers, purchases, purchase_items, stock_movements, pos_sales, pos_sale_items, cash_registers, cash_transactions, accounts_receivable, accounts_payable, financial_notes, shopee_config, shopee_sync_logs, import_profiles, product_images, password_reset_tokens, refresh_tokens, users, categories, schema_migrations, config)
+- Tables: 27+ (products, orders, customers, suppliers, purchases, purchase_items, stock_movements, pos_sales, pos_sale_items, cash_registers, cash_transactions, accounts_receivable, accounts_payable, financial_notes, shopee_config, shopee_sync_logs, import_profiles, product_images, password_reset_tokens, refresh_tokens, users, categories, schema_migrations, config, crm_leads, crm_deals, crm_activities)
 - Products: ~1,045 | Orders: 40 | Users: 4
 - All migrations idempotent (IF NOT EXISTS, ON CONFLICT DO NOTHING)
 
@@ -33,7 +33,8 @@
 | Reports (sales + stock by date range) | report.routes (inline) | ✅ |
 | Config (key-value system settings) | config.controller + routes + models | ✅ |
 | Shopee OAuth 2.0 Partner flow | shopee.service + controller + routes | ✅ |
-| Importador Universal (CSV/XLSX/JSON/XML/ZIP) | import.* + controller + routes | ✅ |
+| CRM (leads, deals, activities) | crm.controller + routes + models | ✅ |
+| Rebrand Fabulove → SIZEN | minimal name/UI changes | ✅ |
 | Automation IA (placeholder) | automation.routes | ⚠️ Placeholder |
 | Frontend — 18 Vue views + router + auth store | client/src/ | ✅ |
 | Frontend components | 7 empty component dirs | 🔴 Not extracted |

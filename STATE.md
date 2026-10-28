@@ -29,6 +29,8 @@
 - [x] Auditoria e correções
 - [x] Engenharia reversa do Olist ERP
 - [x] Documentação completa (OLIST_FEATURE_MAP + GAP ANALYSIS)
+- [x] Rebrand Fabulove → SIZEN ERP
+- [x] Módulo CRM (leads, deals, atividades)
 
 ---
 
@@ -37,11 +39,10 @@
 1. Configurar SMTP (recuperação de senha real)
 2. Configurar OpenAI API Key (automação IA)
 3. Adicionar Mercado Livre integration
-4. Criar CRM (pipeline de vendas)
-5. Dashboard avançado (mapa, horários, devoluções)
-6. Módulo Agenda
-7. ESLint + Prettier
-8. Dockerfile + docker-compose
+4. Dashboard avançado (mapa, horários, devoluções)
+5. Módulo Agenda
+6. ESLint + Prettier
+7. Dockerfile + docker-compose
 
 ---
 
