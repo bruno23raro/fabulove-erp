@@ -21,7 +21,7 @@ export const useAuthStore = defineStore('auth', () => {
     try {
       const refreshToken = localStorage.getItem('refreshToken')
       await api.post('/auth/logout', { refreshToken })
-    } catch (_) {
+    } catch {
       // ignora erros no logout
     } finally {
       accessToken.value = null
@@ -36,7 +36,7 @@ export const useAuthStore = defineStore('auth', () => {
     try {
       const { data } = await api.get('/auth/me')
       user.value = data.user
-    } catch (_) {
+    } catch {
       accessToken.value = null
       localStorage.removeItem('accessToken')
       localStorage.removeItem('refreshToken')

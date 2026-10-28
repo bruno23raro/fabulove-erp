@@ -4,7 +4,6 @@
 
 import { OrderModel } from '../models/order.model.js';
 import { ProductModel } from '../models/product.model.js';
-import { CustomerModel } from '../models/customer.model.js';
 import pool from '../config/database.js';
 
 // GET /api/dashboard

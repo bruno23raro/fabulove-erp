@@ -51,7 +51,7 @@ export const authenticateToken = (req, res, next) => {
     const decoded = verifyToken(token);
     req.user = decoded;
     next();
-  } catch (error) {
+  } catch {
     return res.status(403).json({
       success: false,
       error: { message: 'Token inválido ou expirado' },

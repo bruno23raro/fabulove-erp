@@ -80,7 +80,7 @@ router.post('/import', upload.single('file'), async (req, res, next) => {
     if (mapping) {
       try {
         parsedMapping = typeof mapping === 'string' ? JSON.parse(mapping) : mapping
-      } catch (_) {
+      } catch {
         return res.status(400).json({ success: false, error: { message: 'Mapeamento de colunas inválido.' } })
       }
     }

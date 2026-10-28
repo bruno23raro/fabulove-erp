@@ -59,7 +59,7 @@ export async function getAccountReceivable(req, res, next) {
 export async function payAccountReceivable(req, res, next) {
   try {
     const { id } = req.params;
-    const { amount, payment_method, notes } = req.body;
+    const { amount, payment_method } = req.body;
 
     const client = await pool.connect();
     try {

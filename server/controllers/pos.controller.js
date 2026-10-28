@@ -24,9 +24,7 @@
  *   POST   /api/pos/cash/register/:id/entry   — entrada/saída de dinheiro
  */
 
-import { PosModel, POS_STATUS } from '../models/pos.model.js';
-import { authenticateToken, authorizeRole } from '../utils/jwt.js';
-import logger from '../utils/logger.js';
+import { PosModel } from '../models/pos.model.js';
 
 // ── Produtos / Busca ──────────────────────────────────────────────────────────
 
@@ -109,7 +107,7 @@ export const addItem = async (req, res, next) => {
       });
     }
 
-    const item = await PosModel.addItem(req.params.id, productId, parseInt(quantity), price, barcodeScanned);
+    await PosModel.addItem(req.params.id, productId, parseInt(quantity), price, barcodeScanned);
     const sale = await PosModel.findById(req.params.id);
     return res.json({ success: true, data: sale });
   } catch (err) {

@@ -6,7 +6,6 @@
  */
 
 const REQUIRED = ['DB_HOST', 'DB_NAME', 'DB_USER', 'PORT', 'NODE_ENV'];
-const SECURITY_WARN = ['JWT_SECRET'];
 const INSECURE_JWT_DEFAULTS = [
   'fabulove-erp-dev-secret-change-in-production-use-128-chars-min',
   'default-secret-change-in-production',

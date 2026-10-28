@@ -12,19 +12,19 @@ export async function createPurchase(req, res) {
       const purchaseId = insertResult.rows[0].id;
 
       let totalAmount = 0;
-      for (const item of items || []) {
-        const quantity = Number(item.quantity);
-        const cost = Number(item.cost);
+      for (const _item of items || []) {
+        const quantity = Number(_item.quantity);
+        const cost = Number(_item.cost);
         if (!Number.isFinite(quantity) || !Number.isFinite(cost) || quantity <= 0 || cost < 0) {
           await client.query('ROLLBACK');
-          return res.status(400).json({ success: false, error: { message: `Item inválido: quantidade=${item.quantity}, custo=${item.cost}` } });
+          return res.status(400).json({ success: false, error: { message: `Item inválido: quantidade=${_item.quantity}, custo=${_item.cost}` } });
         }
         const subtotal = cost * quantity;
         totalAmount += subtotal;
         await client.query(
           `INSERT INTO purchase_items (purchase_id, product_id, quantity, unit_price, total_price)
            VALUES ($1, $2, $3, $4, $5)`,
-          [purchaseId, item.product_id, quantity, cost, subtotal]
+          [purchaseId, _item.product_id, quantity, cost, subtotal]
         );
       }
 
@@ -42,19 +42,17 @@ export async function createPurchase(req, res) {
            RETURNING id`,
           [supplier_id, purchaseId, `Compra ${purchase_number || purchaseId} — ${supplierName}`, totalAmount, dueDate.toISOString().slice(0, 10), 'pending', `PDV: auto-criado no recebimento da compra ${purchase_number || purchaseId}`]
         );
-      } catch (_) {
+      } catch {
         // Conta a pagar opcional — não interrompe a compra
       }
 
       await client.query('COMMIT');
       return res.status(201).json({ success: true, data: { id: purchaseId, total_amount: totalAmount } });
-    } catch (e) {
-      await client.query('ROLLBACK');
-      throw e;
-    } finally {
+    } catch (err) { await client.query("ROLLBACK"); throw err; }
+    finally {
       client.release();
     }
-  } catch (e) {
+  } catch {
     return res.status(500).json({ success: false, error: { message: 'Erro ao criar compra.' } });
   }
 }
@@ -63,7 +61,7 @@ export async function listPurchases(req, res) {
   try {
     const result = await pool.query('SELECT * FROM purchases ORDER BY created_at DESC LIMIT 50');
     return res.json({ success: true, data: result.rows });
-  } catch (e) {
+  } catch {
     return res.status(500).json({ success: false, error: { message: 'Erro ao listar compras.' } });
   }
 }
@@ -79,7 +77,7 @@ export async function getPurchase(req, res) {
       [id]
     );
     return res.json({ success: true, data: { ...purchase.rows[0], items: items.rows } });
-  } catch (e) {
+  } catch {
     return res.status(500).json({ success: false, error: { message: 'Erro ao buscar compra.' } });
   }
 }
@@ -104,7 +102,7 @@ export async function updatePurchase(req, res) {
     await pool.query(`UPDATE purchases SET ${fields.join(', ')} WHERE id = $${idx}`, values);
     const updated = await pool.query('SELECT * FROM purchases WHERE id = $1', [id]);
     return res.json({ success: true, data: updated.rows[0] });
-  } catch (e) {
+  } catch {
     return res.status(500).json({ success: false, error: { message: 'Erro ao atualizar compra.' } });
   }
 }
@@ -123,11 +121,11 @@ export async function deletePurchase(req, res) {
       await pool.query('DELETE FROM purchases WHERE id = $1', [id]);
       await pool.query('COMMIT');
       return res.json({ success: true });
-    } catch (e) {
+    } catch (err) {
       await pool.query('ROLLBACK');
-      throw e;
+      throw err;
     }
-  } catch (e) {
+  } catch {
     return res.status(500).json({ success: false, error: { message: 'Erro ao excluir compra.' } });
   }
 }

@@ -1,0 +1,12 @@
+# Files to ignore
+node_modules/
+dist/
+client/dist/
+coverage/
+.env
+.env.local
+*.local.md
+logs/
+temp/
+.playwright-mcp/
+.VSCodeCounter/

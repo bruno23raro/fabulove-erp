@@ -15,7 +15,6 @@
  *
  * Nenhuma credencial é exposta em logs.
  */
-import crypto from 'crypto';
 import pool from '../config/database.js';
 import { generateToken, signRefreshToken } from '../utils/jwt.js';
 import bcrypt from 'bcryptjs';
@@ -141,7 +140,7 @@ export async function resetPassword(req, res) {
       'INSERT INTO refresh_tokens (user_id, token_hash, expires_at, ip_address, user_agent) VALUES ($1, $2, $3, $4, $5)',
       [userId, hashToken(newRefreshToken), new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), req.ip, req.get('user-agent')]
     );
-  } catch (_) { /* silently ignore — não expõe erro ao cliente */ }
+  } catch { /* silently ignore — não expõe erro ao cliente */ }
 
   return res.json({
     message: 'Senha atualizada com sucesso. Faça login novamente.',
@@ -153,7 +152,6 @@ export async function resetPassword(req, res) {
 // ---------------------------------------------------------------------------
 // Métodos existentes (login, register, refreshToken, logout, me) mantidos
 // ---------------------------------------------------------------------------
-import { authenticateToken } from '../utils/jwt.js';
 
 export async function login(req, res) {
   const { email, password } = req.body || {};
@@ -317,7 +315,7 @@ export async function logout(req, res) {
         'UPDATE refresh_tokens SET revoked_at = CURRENT_TIMESTAMP WHERE token_hash = $1 AND revoked_at IS NULL',
         [hashToken(refresh_token)]
       );
-    } catch (_) {}
+    } catch { /* silently ignore — não expõe erro ao cliente */ }
   }
   return res.json({ message: 'Logout realizado.' });
 }

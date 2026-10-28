@@ -50,13 +50,11 @@ export async function adjustStock(req, res) {
 
       await client.query('COMMIT');
       return res.status(201).json({ success: true, data: result.rows[0], balance: type === 'adjust' ? currentStock : newBalance });
-    } catch (e) {
-      await client.query('ROLLBACK');
-      throw e;
+    } catch (err) { await client.query("ROLLBACK"); throw err;
     } finally {
       client.release();
     }
-  } catch (e) {
+  } catch {
     return res.status(500).json({ success: false, error: { message: 'Erro ao ajustar estoque.' } });
   }
 }
@@ -67,7 +65,7 @@ export async function listMovements(req, res) {
       'SELECT sm.*, p.name as product_name FROM stock_movements sm LEFT JOIN products p ON p.id = sm.product_id ORDER BY sm.created_at DESC LIMIT 100'
     );
     return res.json({ success: true, data: result.rows });
-  } catch (e) {
+  } catch {
     return res.status(500).json({ success: false, error: { message: 'Erro ao listar movimentações.' } });
   }
 }

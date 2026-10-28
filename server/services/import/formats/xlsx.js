@@ -82,7 +82,7 @@ export const xlsxFormat = {
     const normalizeRow = (row) => {
       const normalized = []
       for (let i = 0; i < headers.length; i++) {
-        let val = row[i]
+        const val = row[i]
         if (val instanceof Date) {
           normalized.push(val.toISOString().split('T')[0])
         } else if (val === null || val === undefined) {

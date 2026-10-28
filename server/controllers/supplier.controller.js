@@ -14,7 +14,7 @@ export async function createSupplier(req, res) {
       ]
     );
     return res.status(201).json({ success: true, data: result.rows[0] });
-  } catch (e) {
+  } catch {
     return res.status(500).json({ success: false, error: { message: 'Erro ao criar fornecedor.' } });
   }
 }
@@ -25,7 +25,7 @@ export async function getSupplier(req, res) {
     const supplier = rows[0];
     if (!supplier) return res.status(404).json({ success: false, error: { message: 'Fornecedor não encontrado.' } });
     return res.json({ success: true, data: supplier });
-  } catch (e) {
+  } catch {
     return res.status(500).json({ success: false, error: { message: 'Erro ao buscar fornecedor.' } });
   }
 }
@@ -53,7 +53,7 @@ export async function updateSupplier(req, res) {
     );
     const { rows } = await pool.query('SELECT * FROM suppliers WHERE id = $1', [req.params.id]);
     return res.json({ success: true, data: rows[0] });
-  } catch (e) {
+  } catch {
     return res.status(500).json({ success: false, error: { message: 'Erro ao atualizar fornecedor.' } });
   }
 }
@@ -63,7 +63,7 @@ export async function deleteSupplier(req, res) {
     const { rows } = await pool.query('DELETE FROM suppliers WHERE id = $1 RETURNING id', [req.params.id]);
     if (!rows[0]) return res.status(404).json({ success: false, error: { message: 'Fornecedor não encontrado.' } });
     return res.json({ success: true, data: { message: 'Fornecedor excluído.' } });
-  } catch (e) {
+  } catch {
     return res.status(500).json({ success: false, error: { message: 'Erro ao excluir fornecedor.' } });
   }
 }
@@ -72,7 +72,7 @@ export async function listSuppliers(req, res) {
   try {
     const result = await pool.query('SELECT * FROM suppliers ORDER BY created_at DESC');
     return res.json({ success: true, data: result.rows });
-  } catch (e) {
+  } catch {
     return res.status(500).json({ success: false, error: { message: 'Erro ao listar fornecedores.' } });
   }
 }

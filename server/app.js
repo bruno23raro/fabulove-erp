@@ -42,6 +42,9 @@ import crmRoutes from './routes/crm.routes.js';
 import errorHandler from './middleware/errorHandler.js';
 import { authRateLimit, apiRateLimit } from './middleware/rateLimit.js';
 import logger from './utils/logger.js';
+import { registerSignals } from './utils/gracefulShutdown.js';
+
+registerSignals();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname  = path.dirname(__filename);
@@ -123,9 +126,16 @@ if (fs.existsSync(clientDist)) {
 app.use(errorHandler);
 
 // ── Inicialização ─────────────────────────────────────────────────────────────
-app.listen(PORT, () => {
+import('./config/database.js').then(({ default: pool }) => {
+  import('./utils/gracefulShutdown.js').then(({ register }) => {
+    register(server, pool);
+  });
+});
+
+const server = app.listen(PORT, () => {
   logger.info(`🚀 SIZEN ERP server rodando na porta ${PORT}`);
   logger.info(`📊 Ambiente: ${process.env.NODE_ENV || 'development'}`);
+  logger.info(`📧 Email: ${process.env.RESEND_API_KEY ? 'Resend' : (process.env.SMTP_HOST ? 'SMTP' : 'simulado')}`);
 });
 
 export default app;
