@@ -53,7 +53,11 @@ const __dirname  = path.dirname(__filename);
 
 // Garantir que o diretório de logs existe
 const logsDir = path.join(__dirname, '..', 'logs');
-if (!fs.existsSync(logsDir)) fs.mkdirSync(logsDir, { recursive: true });
+try {
+  if (!fs.existsSync(logsDir)) fs.mkdirSync(logsDir, { recursive: true });
+} catch (err) {
+  console.warn('[LOGS] Não foi possível criar:', err.message);
+}
 
 const app  = express();
 const PORT = parseInt(process.env.PORT) || 3000;
@@ -76,16 +80,18 @@ app.use(morgan('combined', {
 }));
 
 // ── Arquivos estáticos ────────────────────────────────────────────────────────
-try {
-  const uploadsDir = path.join(__dirname, '..', 'uploads');
-  if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
-  app.use('/uploads', express.static(uploadsDir));
-} catch (err) {
-  console.warn('[STATIC] Usuário não pôde criar uploads:', err.message);
+const uploadsDir = path.join(__dirname, '..', 'uploads');
+if (process.env.NODE_ENV !== 'production') {
+  try {
+    if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
+    app.use('/uploads', express.static(uploadsDir));
+  } catch (err) {
+    console.warn('[STATIC] Não foi possível servir uploads:', err.message);
+  }
 }
 
+const clientDist = path.join(__dirname, '..', 'client', 'dist');
 try {
-  const clientDist = path.join(__dirname, '..', 'client', 'dist');
   if (fs.existsSync(clientDist)) {
     app.use(express.static(clientDist));
   }
