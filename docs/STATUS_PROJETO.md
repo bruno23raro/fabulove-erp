@@ -34,6 +34,7 @@
 | Config (key-value system settings) | config.controller + routes + models | ✅ |
 | Shopee OAuth 2.0 Partner flow | shopee.service + controller + routes | ✅ |
 | CRM (leads, deals, activities) | crm.controller + routes + models | ✅ |
+| AI / IA (multi-provider: OpenAI, NVIDIA NIM, Agnes AI) | ai.controller + routes + views/AiView.vue | ✅ |
 | Rebrand Fabulove → SIZEN | minimal name/UI changes | ✅ |
 | Automation IA (placeholder) | automation.routes | ⚠️ Placeholder |
 | Frontend — 18 Vue views + router + auth store | client/src/ | ✅ |
@@ -70,17 +71,19 @@
 - OpenAI_API_KEY not configured — automation module is placeholder
 - SMTP not configured — password reset emails are simulated
 - Mercado Livre and TikTok Shop integrations not implemented
-- No ESLint/Prettier configured
-- No API documentation (OpenAPI/Swagger)
+- No ESLint configured ❌ → ✅ Configured (flat config, warnings only)
+- No Prettier configured ❌ → ✅ Configured
+- No API documentation (OpenAPI/Swagger) ❌ → Pendente
+- SMTP não configurado ❌ → ✅ Resend API configurado (RESEND_API_KEY)
+- OpenAI não configurado ❌ → ✅ Multi-provider AI service criado (pende API key)
 
 ## Pending (Manual Steps Required)
-1. Configure SMTP for real password reset emails
-2. Configure OPENAI_API_KEY for automation features
-3. Add Mercado Livre integration
-4. Create Dockerfile + docker-compose.yml
-5. Add ESLint + Prettier
-6. Extract reusable Vue components
-7. Push npm-audit-update branch to GitHub master
+
+1. ⏳ Configure OPENAI_API_KEY ou NVIDIA_NIM_API_KEY para ativar automações IA
+2. ⏳ Adicionar Mercado Livre integration (OAuth pendente)
+3. ⏳ Criar Dockerfile + docker-compose.yml (bloco C)
+4. ⏳ Documentação API (OpenAPI/Swagger) — bloco A pendente
+5. ⏳ Vitest coverage report — bloco A pendente
 
 ## Notes
 - All API routes reachable with proper authentication
