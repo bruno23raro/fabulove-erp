@@ -1,7 +1,7 @@
 # SIZEN ERP Status Report
 
 - **Date**: 2026-10-28
-- **Branch**: sizren-erp-rebrand | **Último commit**: 1bebf5d (2026-10-28)
+- **Branch**: sizren-erp-rebrand | **Último commit**: a2d365e (2026-10-28)
 - **DB migration**: 21/21 applied successfully (all idempotent).
 - **Unit tests**: 136/136 passing (vitest v5.0.5).
 - **E2E tests**: 28/28 passing (supertest).
