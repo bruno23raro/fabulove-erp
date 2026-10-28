@@ -76,6 +76,7 @@ const navItems = [
   { to: '/reports',    icon: '📈', label: 'Relatórios' },
   { to: '/financial',  icon: '💰', label: 'Financeiro' },
   { to: '/crm',        icon: '🤝', label: 'CRM' },
+  { to: '/ai',         icon: '🤖', label: 'IA' },
   { to: '/config',     icon: '⚙️', label: 'Configurações' },
 ]
 
@@ -93,6 +94,7 @@ const titles = {
   '/reports':       'Relatórios',
   '/financial':     'Financeiro',
   '/crm':           'CRM',
+  '/ai':            'IA',
   '/financial/receivables': 'Contas a Receber',
   '/financial/payable': 'Contas a Pagar',
   '/financial/cash': 'Caixa',

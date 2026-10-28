@@ -91,6 +91,12 @@ const routes = [
         component: () => import('@/views/CrmView.vue'),
       },
       {
+        path: 'ai',
+        name: 'AI',
+        component: () => import('@/views/AiView.vue'),
+        meta: { role: 'admin' },
+      },
+      {
         path: 'financial',
         name: 'Financeiro',
         redirect: '/financial',
