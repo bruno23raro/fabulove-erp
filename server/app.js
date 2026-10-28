@@ -100,6 +100,7 @@ try {
 }
 
 // ── Health & versão ───────────────────────────────────────────────────────────
+app.get('/', (req, res) => res.json({ service: 'SIZEN ERP', status: 'ok', version: '1.0.0' }));
 app.get('/api/health',  (req, res) => res.json({ status: 'ok', timestamp: new Date().toISOString() }));
 app.get('/api/version', (req, res) => res.json({ version: '1.0.0', name: 'SIZEN ERP' }));
 
