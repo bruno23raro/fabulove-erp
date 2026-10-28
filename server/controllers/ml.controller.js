@@ -14,8 +14,8 @@
  */
 
 import { MercadoLivreAdapter } from '../adapters/ml.adapter.js';
-import { sequelize } from '../config/database.js';
-import { getAdapter, registerBuiltins } from '../services/marketplace.service.js';
+import pool from '../config/database.js';
+import { registerBuiltins } from '../services/marketplace.service.js';
 
 const adapter = new MercadoLivreAdapter();
 
@@ -56,7 +56,7 @@ export const handleCallback = async (req, res, next) => {
     const tokens = await adapter.callbackHandler(code, state);
 
     // Store tokens in marketplace_accounts table
-    const [account] = await sequelize.query(
+    const [account] = await pool.query(
       `INSERT INTO marketplace_accounts (name, provider, access_token, refresh_token, token_expires_at, status, connected_at)
        VALUES ('Mercado Livre', 'ml', :access_token, :refresh_token, NOW() + INTERVAL '6 hours', 'connected', NOW())
        ON CONFLICT (name) DO UPDATE SET
@@ -79,7 +79,7 @@ export const handleCallback = async (req, res, next) => {
 // ── Disconnect ────────────────────────────────────────────────────────────────
 export const disconnect = async (_req, res, next) => {
   try {
-    await sequelize.query(
+    await pool.query(
       `UPDATE marketplace_accounts
        SET access_token = NULL, refresh_token = NULL, status = 'disconnected', updated_at = NOW()
        WHERE provider = 'ml'`
