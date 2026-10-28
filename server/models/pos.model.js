@@ -8,7 +8,6 @@
 import pool from '../config/database.js';
 import { ShopeeService } from '../services/shopee.service.js';
 import { ProductModel } from './product.model.js';
-import logger from '../utils/logger.js';
 
 export const POS_STATUS = {
   CART:      'cart',
@@ -254,7 +253,7 @@ export const PosModel = {
   },
 
   // ── Finalização da venda ──────────────────────────────────────────────────
-  async completeSale(saleId, paymentMethod, paymentDetails, cashRegisterId, sellerId) {
+  async completeSale(saleId, paymentMethod, paymentDetails, cashRegisterId, _sellerId) {
     const client = await pool.connect();
     try {
       await client.query('BEGIN');
@@ -290,7 +289,9 @@ export const PosModel = {
         // Tenta sincronizar estoque com Shopee (não bloqueia a venda se falhar)
         try {
           await ShopeeService.syncStock(item.product_id, item.quantity);
-        } catch (_) { /* ignora erro de sync — venda já foi registrada */ }
+        } catch {
+          /* ignora erro de sync — venda já foi registrada */
+        }
       }
 
       // Atualiza status da venda

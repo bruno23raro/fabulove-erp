@@ -29,7 +29,7 @@ export const zipFormat = {
     try {
       zip = new AdmZip(_buffer)
     } catch (err) {
-      throw new Error(`Arquivo ZIP inválido ou corrompido: ${err.message}`)
+      throw new Error(`Arquivo ZIP inválido ou corrompido: ${err.message}`, { cause: err })
     }
 
     const entries = zip.getEntries()
@@ -85,7 +85,6 @@ export const zipFormat = {
 
     // Reconstruct buffer for format detection
     const fakeBuffer = Buffer.from(content, 'utf-8')
-    const ext = preferred.entryName.split('.').pop()?.toLowerCase() || ''
 
     // Import the file using the appropriate format handler
     const { detectFormat } = await import('./base.js')

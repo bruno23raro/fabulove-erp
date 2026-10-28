@@ -68,7 +68,7 @@ export const csvFormat = {
         try {
           result = tryParseWithEncoding(buffer, enc)
           if (result) break
-        } catch (_) { /* try next encoding */ }
+        } catch { /* try next encoding */ }
       }
     } else {
       result = tryParseWithEncoding(buffer, 'utf-8')
@@ -78,7 +78,7 @@ export const csvFormat = {
       throw new Error('Não foi possível detectar o formato do arquivo CSV.')
     }
 
-    const { text, sep, lines } = result
+    const { text, sep } = result
 
     // Use PapaParse for robust CSV parsing
     const parseResult = Papa.parse(text, {

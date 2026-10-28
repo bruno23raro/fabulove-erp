@@ -8,7 +8,7 @@ export async function getConfig(req, res) {
     const info = getProviderInfo();
     const currentModel = getModel();
     return res.json({ success: true, data: { ...info, currentModel } });
-  } catch (err) {
+  } catch {
     return res.status(500).json({ success: false, error: { message: 'Erro ao obter config AI' } });
   }
 }

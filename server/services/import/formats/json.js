@@ -20,7 +20,7 @@ export const jsonFormat = {
       const text = buffer.toString('utf-8').trim()
       JSON.parse(text)
       return 0.9
-    } catch (_) { return 0 }
+    } catch { return 0 }
   },
 
   async parse(buffer) {
@@ -30,15 +30,15 @@ export const jsonFormat = {
     let data
     try {
       data = JSON.parse(text)
-    } catch (err) {
+    } catch (_err) {
       // Try NDJSON (one JSON object per line)
       const lines = text.split(/\r?\n/).filter(l => l.trim())
-      if (lines.length === 0) throw new Error('Arquivo JSON inválido.')
+      if (lines.length === 0) throw new Error('Arquivo JSON inválido.', { cause: _err })
       data = lines.map(line => {
         try { return JSON.parse(line.trim()) }
-        catch (_) { return null }
+        catch { return null }
       }).filter(Boolean)
-      if (data.length === 0) throw new Error('Nenhum objeto JSON válido encontrado.')
+      if (data.length === 0) throw new Error('Nenhum objeto JSON válido encontrado.', { cause: _err })
       return {
         headers: Object.keys(data[0]),
         rows: data.map(obj => Object.values(obj).map(v => v === null ? '' : String(v))),

@@ -1,0 +1,219 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "SIZEN ERP API",
+    "description": "API RESTful para gestão de ERP com integração de marketplaces",
+    "version": "1.0.0"
+  },
+  "servers": [{ "url": "https://fabulove-erp.vercel.app", "description": "Production" }],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "paths": {
+    "/": {
+      "get": {
+        "summary": "Service status",
+        "tags": ["Health"],
+        "responses": { "200": { "description": "Service status JSON" } }
+      }
+    },
+    "/api/health": {
+      "get": {
+        "summary": "Health check",
+        "tags": ["Health"],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/version": {
+      "get": {
+        "summary": "API version",
+        "tags": ["Health"],
+        "responses": { "200": { "description": "Version info" } }
+      }
+    },
+    "/api/auth/register": {
+      "post": {
+        "summary": "Register user",
+        "tags": ["Auth"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["email", "password", "name"],
+                "properties": {
+                  "email": { "type": "string", "format": "email" },
+                  "password": { "type": "string", "minLength": 6 },
+                  "name": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "User created" },
+          "400": { "description": "Validation error" }
+        }
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "summary": "Login",
+        "tags": ["Auth"],
+        "requestBody": {
+          "content": { "application/json": { "schema": {
+            "type": "object",
+            "required": ["email", "password"],
+            "properties": {
+              "email": { "type": "string" },
+              "password": { "type": "string" }
+            }
+          }}}
+        },
+        "responses": {
+          "200": { "description": "Tokens returned" },
+          "401": { "description": "Invalid credentials" }
+        }
+      }
+    },
+    "/api/products": {
+      "get": {
+        "summary": "List products",
+        "tags": ["Products"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "in": "query", "name": "limit", "schema": { "type": "integer", "default": 20 } },
+          { "in": "query", "name": "offset", "schema": { "type": "integer", "default": 0 } },
+          { "in": "query", "name": "category_id", "schema": { "type": "integer" } }
+        ],
+        "responses": { "200": { "description": "Product list" } }
+      },
+      "post": {
+        "summary": "Create product",
+        "tags": ["Products"],
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "content": { "application/json": { "schema": {
+            "type": "object",
+            "required": ["name", "price"],
+            "properties": {
+              "name": { "type": "string" },
+              "price": { "type": "number" },
+              "category_id": { "type": "integer" },
+              "stock": { "type": "integer", "default": 0 }
+            }
+          }}}
+        },
+        "responses": { "201": { "description": "Product created" } }
+      }
+    },
+    "/api/products/{id}": {
+      "get": {
+        "summary": "Get product by ID",
+        "tags": ["Products"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [{ "in": "path", "name": "id", "required": true, "schema": { "type": "integer" } }],
+        "responses": { "200": { "description": "Product" }, "404": { "description": "Not found" } }
+      },
+      "put": {
+        "summary": "Update product",
+        "tags": ["Products"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [{ "in": "path", "name": "id", "required": true, "schema": { "type": "integer" } }],
+        "requestBody": {
+          "content": { "application/json": { "schema": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "price": { "type": "number" },
+              "stock": { "type": "integer" }
+            }
+          }}}
+        },
+        "responses": { "200": { "description": "Updated" } }
+      },
+      "delete": {
+        "summary": "Delete product",
+        "tags": ["Products"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [{ "in": "path", "name": "id", "required": true, "schema": { "type": "integer" } }],
+        "responses": { "200": { "description": "Deleted" } }
+      }
+    },
+    "/api/marketplaces/ml/status": {
+      "get": {
+        "summary": "ML connection status",
+        "tags": ["Marketplaces"],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": { "description": "Connection status" },
+          "401": { "description": "Unauthorized" }
+        }
+      }
+    },
+    "/api/marketplaces/ml/auth-url": {
+      "post": {
+        "summary": "Generate ML OAuth URL",
+        "tags": ["Marketplaces"],
+        "security": [{ "bearerAuth": [] }],
+        "responses": { "200": { "description": "OAuth URL" } }
+      }
+    },
+    "/api/marketplaces/shopee/status": {
+      "get": {
+        "summary": "Shopee connection status",
+        "tags": ["Marketplaces"],
+        "security": [{ "bearerAuth": [] }],
+        "responses": { "200": { "description": "Connection status" } }
+      }
+    },
+    "/api/marketplaces/status": {
+      "get": {
+        "summary": "All marketplace statuses",
+        "tags": ["Marketplaces"],
+        "security": [{ "bearerAuth": [] }],
+        "responses": { "200": { "description": "Integration statuses" } }
+      }
+    },
+    "/api/dashboard/kpis": {
+      "get": {
+        "summary": "Dashboard KPIs",
+        "tags": ["Dashboard"],
+        "security": [{ "bearerAuth": [] }],
+        "responses": { "200": { "description": "KPI data" } }
+      }
+    },
+    "/api/ai/generate": {
+      "post": {
+        "summary": "Generate AI completion",
+        "tags": ["AI"],
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "content": { "application/json": { "schema": {
+            "type": "object",
+            "required": ["messages"],
+            "properties": {
+              "messages": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "role": { "type": "string", "enum": ["system", "user", "assistant"] },
+                    "content": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }}}
+        },
+        "responses": { "200": { "description": "AI response" } }
+      }
+    }
+  }
+}

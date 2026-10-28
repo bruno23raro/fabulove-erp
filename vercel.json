@@ -1,23 +1,22 @@
 {
-  "version": 2,
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "npm install --include=dev && npm run build",
+  "devCommand": "npm run dev",
+  "installCommand": "npm install --include=dev",
+  "framework": null,
+  "outputDirectory": "client/dist",
   "builds": [
     {
-      "src": "package.json",
+      "src": "server/app.js",
       "use": "@vercel/node"
     },
     {
-      "src": "client/package.json",
-      "use": "@vercel/next"
+      "src": "client/dist/**",
+      "use": "@vercel/static"
     }
   ],
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/server/app.js"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/client/dist/index.html"
-    }
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/server/app.js" },
+    { "source": "/(.*)", "destination": "/client/dist/$1" }
   ]
 }

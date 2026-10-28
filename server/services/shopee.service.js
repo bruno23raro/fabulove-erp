@@ -38,7 +38,7 @@ async function setConfig(fields) {
   if (existing) {
     await pool.query(
       `UPDATE shopee_config SET ${Object.entries(fields)
-        .map(([k, v], i) => `${k} = $${i + 1}`)
+        .map(([k, _v], i) => `${k} = $${i + 1}`)
         .join(', ')} WHERE id = $${Object.keys(fields).length + 1}`,
       [...Object.values(fields), existing.id]
     );
@@ -203,7 +203,7 @@ export const ShopeeService = {
         body,
       });
     } catch (err) {
-      throw new Error(`Falha na comunicação com a Shopee ao trocar o código por token: ${err.message}`);
+      throw new Error(`Falha na comunicação com a Shopee ao trocar o código por token: ${err.message}`, { cause: err });
     }
 
     let data;
@@ -297,7 +297,7 @@ export const ShopeeService = {
         body,
       });
     } catch (err) {
-      throw new Error(`Falha ao renovar token: ${err.message}`);
+      throw new Error(`Falha ao renovar token: ${err.message}`, { cause: err });
     }
 
     let data;
@@ -342,7 +342,7 @@ export const ShopeeService = {
         await this.refreshToken();
         config = await getConfig();
       } catch (err) {
-        throw new Error(`Falha na renovação do token: ${err.message}`);
+        throw new Error(`Falha na renovação do token: ${err.message}`, { cause: err });
       }
     }
 
@@ -378,54 +378,49 @@ export const ShopeeService = {
 
     if (config.shop_id) headers['X-ShopeeShop-Id'] = config.shop_id;
 
-    try {
-      const res = await fetch(`${SHOP_API_BASE}/${API_VERSION}${apiPath}`, {
-        method,
-        headers,
-        body: bodyStr || undefined,
-      });
+    const res = await fetch(`${SHOP_API_BASE}/${API_VERSION}${apiPath}`, {
+      method,
+      headers,
+      body: bodyStr || undefined,
+    });
 
-      const text = await res.text();
-      let data;
-      try { data = JSON.parse(text); } catch {
-        throw new Error(`Shopee API retornou resposta não-JSON: ${text.slice(0, 200)}`);
-      }
+    const text = await res.text();
+    let data;
+    try { data = JSON.parse(text); } catch {
+      throw new Error(`Shopee API retornou resposta não-JSON: ${text.slice(0, 200)}`);
+    }
 
-      // Token expirado? Tenta renovar e retry
-      if ((data.error || (data.status === 1)) && data.message) {
-        const msg = (data.message || '').toLowerCase();
-        if (msg.includes('token') || msg.includes('expired') || msg.includes('unauthorized')) {
-          if (config.refresh_token) {
-            try {
-              await this.refreshToken();
-              config = await getConfig();
-              const retryHeaders = {
-                'Content-Type': 'application/json; charset=UTF-8',
-                'Authorization': `Bearer ${config.access_token}`,
-                'X-Timestamp': timestamp,
-                'X-Source': 'Partner',
-                ...(config.shop_id ? { 'X-ShopeeShop-Id': config.shop_id } : {}),
-              };
-              const retryRes = await fetch(`${SHOP_API_BASE}/${API_VERSION}${apiPath}`, {
-                method, headers: retryHeaders, body: bodyStr || undefined,
-              });
-              const retryText = await retryRes.text();
-              try { data = JSON.parse(retryText); } catch {
-                throw new Error(`Shopee API error (retry): ${retryText.slice(0, 200)}`);
-              }
-            } catch (_) { /* ignora falha no retry */ }
-          }
+    // Token expirado? Tenta renovar e retry
+    if ((data.error || (data.status === 1)) && data.message) {
+      const msg = (data.message || '').toLowerCase();
+      if (msg.includes('token') || msg.includes('expired') || msg.includes('unauthorized')) {
+        if (config.refresh_token) {
+          try {
+            await this.refreshToken();
+            config = await getConfig();
+            const retryHeaders = {
+              'Content-Type': 'application/json; charset=UTF-8',
+              'Authorization': `Bearer ${config.access_token}`,
+              'X-Timestamp': timestamp,
+              'X-Source': 'Partner',
+              ...(config.shop_id ? { 'X-ShopeeShop-Id': config.shop_id } : {}),
+            };
+            const retryRes = await fetch(`${SHOP_API_BASE}/${API_VERSION}${apiPath}`, {
+              method, headers: retryHeaders, body: bodyStr || undefined,
+            });
+            const retryText = await retryRes.text();
+            try { data = JSON.parse(retryText); } catch {
+              throw new Error(`Shopee API error (retry): ${retryText.slice(0, 200)}`);
+            }
+          } catch { /* ignora falha no retry */ }
         }
       }
-
-      if (data.error || data.status === 1) {
-        throw new Error(`Shopee API error: ${data.message ?? JSON.stringify(data)}`);
-      }
-      return data;
-    } catch (err) {
-      // Erros de rede já são propagados
-      throw err;
     }
+
+    if (data.error || data.status === 1) {
+      throw new Error(`Shopee API error: ${data.message ?? JSON.stringify(data)}`);
+    }
+    return data;
   },
 
   /**
@@ -632,9 +627,7 @@ export const ShopeeService = {
           shopeeItemId = found.item_id;
           newStock = Math.max(0, found.stock - quantitySold);
         }
-      } catch (_) {
-        // Não bloqueia a venda
-      }
+      } catch { /* Não bloqueia a venda */ }
     }
 
     if (shopeeItemId) {

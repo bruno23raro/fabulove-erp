@@ -33,7 +33,7 @@ export const xlsxFormat = {
     try {
       wb = XLSX.read(_buffer, { type: 'buffer', cellDates: true })
     } catch (err) {
-      throw new Error(`Não foi possível ler arquivo Excel: ${err.message}`)
+      throw new Error(`Não foi possível ler arquivo Excel: ${err.message}`, { cause: err })
     }
 
     const sheetNames = wb.SheetNames
@@ -41,10 +41,8 @@ export const xlsxFormat = {
     const preferredName = options.sheetName
       ? (sheetNames.includes(options.sheetName) ? options.sheetName : sheetNames[0])
       : sheetNames.reduce((best, name) => {
-          const ws = wb.Sheets[name]
-          const range = XLSX.utils.decode_range(ws['!ref'] || 'A1')
+          const ws = wb.Sheets[name]; const range = XLSX.utils.decode_range(ws['!ref'] || 'A1')
           const rows = range.e.r - range.s.r + 1
-          const cols = range.e.c - range.s.c + 1
           const bestRange = wb.Sheets[best]['!ref']
             ? XLSX.utils.decode_range(wb.Sheets[best]['!ref']).e.r - XLSX.utils.decode_range(wb.Sheets[best]['!ref']).s.r
             : 0
@@ -52,7 +50,6 @@ export const xlsxFormat = {
         }, sheetNames[0])
 
     const ws = wb.Sheets[preferredName]
-    const range = XLSX.utils.decode_range(ws['!ref'] || 'A1')
 
     // Extract raw data as arrays
     const rawData = XLSX.utils.sheet_to_json(ws, { header: 1, defval: '', raw: true, blankrows: false })

@@ -153,7 +153,7 @@ export class ImageService {
     for (const id of imageIds) {
       const img = await pool.query(`SELECT file_path FROM product_images WHERE id = $1`, [id])
       if (img.rows[0] && img.rows[0].file_path) {
-        try { await fs.unlink(img.rows[0].file_path) } catch (_) {}
+        try { await fs.unlink(img.rows[0].file_path) } catch { /* ignore */ }
       }
       await pool.query(`DELETE FROM product_images WHERE id = $1`, [id])
     }
@@ -167,7 +167,7 @@ export class ImageService {
     return parseInt(result.rows[0]?.cnt || 0)
   }
 
-  _guessMimeType(ext, filename) {
+  _guessMimeType(ext, _filename) {
     const map = { '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.png': 'image/png', '.webp': 'image/webp', '.gif': 'image/gif' }
     return map[ext.toLowerCase()] || 'application/octet-stream'
   }

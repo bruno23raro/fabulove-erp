@@ -14,6 +14,13 @@ import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs';
+import swaggerUi from 'swagger-ui-express';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname  = path.dirname(__filename);
+
+// Load OpenAPI spec
+const openApiSpec = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'openapi.json'), 'utf-8'));
 
 // Carregar .env antes de tudo
 dotenv.config();
@@ -47,9 +54,6 @@ import logger from './utils/logger.js';
 import { registerSignals } from './utils/gracefulShutdown.js';
 
 registerSignals();
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname  = path.dirname(__filename);
 
 // Garantir que o diretório de logs existe
 const logsDir = path.join(__dirname, '..', 'logs');
@@ -103,6 +107,9 @@ try {
 app.get('/', (req, res) => res.json({ service: 'SIZEN ERP', status: 'ok', version: '1.0.0' }));
 app.get('/api/health',  (req, res) => res.json({ status: 'ok', timestamp: new Date().toISOString() }));
 app.get('/api/version', (req, res) => res.json({ version: '1.0.0', name: 'SIZEN ERP' }));
+
+// ── OpenAPI / Swagger ──────────────────────────────────────────────────────────
+app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(openApiSpec, { customSiteTitle: 'SIZEN ERP API Docs' }));
 
 // ── Rate limiting ─────────────────────────────────────────────────────────────
 app.use('/api/auth', authRateLimit);   // mais restritivo — 20 req/15min

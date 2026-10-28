@@ -9,7 +9,7 @@ const MAX_PREVIEW_ROWS = 20
 const DEFAULT_ANALYSIS_LIMIT = 500 // rows to scan for analysis
 
 export async function analyzeFile(buffer, filename, options = {}) {
-  const { sheetName, maxRows = DEFAULT_ANALYSIS_LIMIT } = options
+  const { maxRows = DEFAULT_ANALYSIS_LIMIT } = options
 
   // Detect format
   const fmt = detectFormat(buffer, filename)

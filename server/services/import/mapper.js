@@ -21,7 +21,6 @@ function similarity(a, b) {
   if (na.includes(nb) || nb.includes(na)) {
     // Substring match: require minimum length to avoid false positives
     // e.g. "cod" (3 chars) matching "codigo de barras" (16 chars) should NOT score 0.85
-    const minLen = Math.max(na.length, nb.length)
     const maxLen = Math.min(na.length, nb.length)
     if (maxLen < 4) return 0.3 // too short to be a meaningful substring match
     return 0.85
@@ -238,7 +237,7 @@ export function normalizeRow(rawRow, fieldMapping) {
    * Map a raw row to normalized product object.
    */
   const product = {}
-  for (const { field, header, index, missing } of fieldMapping) {
+  for (const { field, index, missing } of fieldMapping) {
     if (missing) {
       product[field] = null
       continue

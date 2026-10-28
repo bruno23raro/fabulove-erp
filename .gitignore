@@ -17,3 +17,6 @@ test-results/
 .env
 .vscode/settings.local.json
 playwright/.auth/
+
+.vercel
+.env*

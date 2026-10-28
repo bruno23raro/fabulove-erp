@@ -58,7 +58,7 @@ export class ImportService {
     onProgress?.({ step: 'parsed', progress: 10, total: rows.length, current: rows.length })
 
     // ── Step 2: Column mapping ───────────────────────────────────────────────
-    let headerAnalysis = analyzeHeaders(headers)
+    const initialHeaderAnalysis = analyzeHeaders(headers)
     let fieldMapping
 
     if (mapping) {
@@ -66,12 +66,8 @@ export class ImportService {
       fieldMapping = mapColumns(headers, mapping)
     } else {
       // Auto-detect best mapping
-      const autoMapping = this._autoMapHeaders(headerAnalysis)
+      const autoMapping = this._autoMapHeaders(initialHeaderAnalysis)
       fieldMapping = mapColumns(headers, autoMapping)
-      headerAnalysis = headerAnalysis.map(h => ({
-        ...h,
-        mappedField: fieldMapping.fieldMapping.find(f => f.header === h.header)?.mappedField || h.mappedField,
-      }))
     }
 
     // Track which fields were explicitly mapped (to distinguish "not provided" from "mapped to null")

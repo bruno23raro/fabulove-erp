@@ -39,7 +39,7 @@ export const xmlFormat = {
     try {
       parsed = new XMLParser(DEFAULT_XML_OPTIONS).parse(text)
     } catch (err) {
-      throw new Error(`XML inválido: ${err.message}`)
+      throw new Error(`XML inválido: ${err.message}`, { cause: err })
     }
 
     // Navigate to the array of product-like objects

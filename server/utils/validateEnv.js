@@ -5,13 +5,22 @@
  * e encerra o processo para vars obrigatórias ausentes.
  */
 
-const REQUIRED = ['DB_HOST', 'DB_NAME', 'DB_USER', 'PORT', 'NODE_ENV'];
+const REQUIRED = ['PORT', 'NODE_ENV'];
 const INSECURE_JWT_DEFAULTS = [
   'fabulove-erp-dev-secret-change-in-production-use-128-chars-min',
   'default-secret-change-in-production',
 ];
 
 export function validateEnv() {
+  // Aceita DATABASE_URL (Supabase/cloud) OU DB_HOST + DB_NAME + DB_USER
+  const hasDatabaseUrl = !!process.env.DATABASE_URL;
+  const hasIndividualDbVars = !!(process.env.DB_HOST && process.env.DB_NAME && process.env.DB_USER);
+
+  if (!hasDatabaseUrl && !hasIndividualDbVars) {
+    console.error('[ENV] ❌ Configuração de banco ausente: defina DATABASE_URL ou DB_HOST+DB_NAME+DB_USER');
+    process.exit(1);
+  }
+
   const missing = REQUIRED.filter(k => !process.env[k]);
   if (missing.length > 0) {
     console.error(`[ENV] ❌ Variáveis obrigatórias ausentes: ${missing.join(', ')}`);
@@ -34,7 +43,7 @@ export function validateEnv() {
     console.warn('[ENV] ⚠️  JWT_SECRET está usando valor padrão de desenvolvimento. TROQUE antes de ir para produção.');
   }
 
-  if (!process.env.DB_PASSWORD) {
+  if (!process.env.DB_PASSWORD && !hasDatabaseUrl) {
     console.warn('[ENV] ⚠️  DB_PASSWORD não definido — usando sem senha (só aceitável localmente).');
   }
 

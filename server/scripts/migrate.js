@@ -68,7 +68,7 @@ async function runMigration(client, filePath, filename) {
     const safeMsg = error.message || 'unknown';
     // Nenhuma credencial (password, token, secret) é logada — apenas códigos SQL e metadados do erro
     logger.error(`❌ Migration ${filename} falhou: ${safeMsg} [PG code=${pgCode}] ${pgDetail ? 'detail='+pgDetail+' ' : ''}${pgHint ? 'hint='+pgHint+' ' : ''}${pgPos !== '' ? 'position='+pgPos : ''}`);
-    throw new Error(`Erro na migration ${filename}: ${safeMsg} [PG ${pgCode}]`);
+    throw new Error(`Erro na migration ${filename}: ${safeMsg} [PG ${pgCode}]`, { cause: error });
   }
 }
 

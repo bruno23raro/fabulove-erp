@@ -9,10 +9,10 @@ const INT_MONETARY = /^(\d{1,3}(?:,\d{3})*(?:\.\d{2})?|\d+(?:\.\d{2})?)$/
 // Pure number (integer or decimal with period)
 const PURE_NUM = /^-?\d+(?:\.\d+)?$/
 // Barcode: 12-14 digits, possibly with dashes
-const BARCODE = /^[\d\-]{8,14}$/
+const BARCODE = /^[\d-]{8,14}$/
 // Date patterns
-const DATE_BR = /^\d{2}[/\-]\d{2}[/\-]\d{2,4}$/
-const DATE_ISO = /^\d{4}[/\-]\d{2}[/\-]\d{2}$/
+const DATE_BR = /^\d{2}[/.-]\d{2}[/.-]\d{2,4}$/
+const DATE_ISO = /^\d{4}[/.-]\d{2}[/.-]\d{2}$/
 
 export function normalizeString(val) {
   if (val === null || val === undefined || val === '') return null
@@ -25,7 +25,7 @@ export function normalizePrice(val) {
   if (!s) return null
 
   // Remove currency symbols and whitespace
-  const cleaned = s.replace(/[R$\$€£¥\s]/g, '').replace(/[„"”]/g, '')
+  const cleaned = s.replace(/[R$€£¥\s]/g, '').replace(/[„"”]/g, '')
 
   // Brazilian: 1.234,56 → 1234.56
   if (BR_MONETARY.test(cleaned)) {
@@ -86,7 +86,7 @@ export function normalizeBarcode(val) {
   if (val === null || val === undefined || val === '') return null
   const s = String(val).trim()
   // Strip common separators
-  const clean = s.replace(/[\s\-]/g, '')
+  const clean = s.replace(/[\s-]/g, '')
   if (BARCODE.test(clean)) return clean
   return null // Invalid barcode — caller decides what to do
 }

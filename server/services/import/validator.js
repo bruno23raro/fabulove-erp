@@ -15,7 +15,7 @@ export class ImportValidator {
    * Validate a single product object against the ERP schema.
    * Returns { valid, errors, warnings }
    */
-  validate(product, existingProduct = null) {
+  validate(product, _existingProduct = null) {
     const errors = []
     const warnings = []
 
