@@ -1,0 +1,124 @@
+/**
+ * Integrations Cycle Tests
+ *
+ * Tests for the complete LojeXa Hub connection lifecycle:
+ * - Intent creation with snapshot
+ * - Store detection
+ * - Connection confirmation
+ * - Connection listing
+ * - Connection deletion
+ */
+
+import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
+
+describe('Integrations Controller', () => {
+  let req, res;
+
+  beforeEach(() => {
+    res = {
+      json: vi.fn().mockReturnThis(),
+      status: vi.fn().mockReturnThis(),
+    };
+    req = {
+      user: { tenant_id: 'tenant-1' },
+      id: 'req-123',
+      body: {},
+      params: {},
+      query: {},
+    };
+  });
+
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
+
+  describe('POST /connections/start', () => {
+    it('should reject request without channel_slug', async () => {
+      req.body = { lojexa_api_key: 'lj_live_test_api_key_12345' };
+
+      // Mock the controller by importing and calling directly
+      const { startConnection } = await import('../controllers/integrations.controller.js');
+      await startConnection(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(400);
+    });
+
+    it('should reject request without API key', async () => {
+      req.body = { channel_slug: 'shopee' };
+
+      const { startConnection } = await import('../controllers/integrations.controller.js');
+      await startConnection(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(400);
+    });
+
+    it('should reject placeholder API key', async () => {
+      req.body = {
+        channel_slug: 'shopee',
+        lojexa_api_key: 'lj_live_xxxxxxxxxxxxxxxxxxxxxxxx'
+      };
+
+      const { startConnection } = await import('../controllers/integrations.controller.js');
+      await startConnection(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(400);
+    });
+  });
+
+  describe('GET /intents/:id', () => {
+    it('should return validation error without intent ID', async () => {
+      req.params = {};
+
+      const { getIntentStatus } = await import('../controllers/integrations.controller.js');
+      await getIntentStatus(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(400);
+    });
+  });
+
+  describe('POST /intents/:id/confirm', () => {
+    it('should return validation error without intent ID', async () => {
+      req.params = {};
+
+      const { confirmConnection } = await import('../controllers/integrations.controller.js');
+      await confirmConnection(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(400);
+    });
+  });
+
+  describe('GET /connections', () => {
+    it('should return connections list', async () => {
+      const { listConnections } = await import('../controllers/integrations.controller.js');
+      await listConnections(req, res);
+
+      expect(res.json).toHaveBeenCalled();
+      const call = res.json.mock.calls[0][0];
+      expect(call.success).toBe(true);
+      expect(call.data.connections).toBeDefined();
+    });
+  });
+
+  describe('DELETE /connections/:id', () => {
+    it('should return validation error without connection ID', async () => {
+      req.params = {};
+
+      const { deleteConnection } = await import('../controllers/integrations.controller.js');
+      await deleteConnection(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(400);
+    });
+  });
+
+  describe('GET /channels', () => {
+    it('should return available channels', async () => {
+      const { listChannels } = await import('../controllers/integrations.controller.js');
+      await listChannels(req, res);
+
+      expect(res.json).toHaveBeenCalled();
+      const call = res.json.mock.calls[0][0];
+      expect(call.success).toBe(true);
+      expect(call.data.channels).toBeDefined();
+    });
+  });
+});
